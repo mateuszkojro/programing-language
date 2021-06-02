@@ -1,0 +1,8 @@
+mat x<2,3> = []
+vector y = [[2]]
+mat string = [[a,b,c,d,f]]
+x = add(x,[[2,2]])
+
+while(  ){
+
+}
