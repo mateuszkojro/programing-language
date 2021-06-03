@@ -9,24 +9,30 @@
 class Matrix {
 public:
 
+    static bool is_matrix(const std::string buffer) {
+        return buffer[0] == '[' && buffer[1] == '[';
+    }
+
     void add_column() {
-        assert(rows == 0);
+        assert(rows == 1);
         cols += 1;
     }
 
     void add_row() {
-        assert(streak == cols);
         rows += 1;
+        assert(cols == streak);
+        streak = 0;
     }
 
     bool add_value(double value) {
+        streak += 1;
         if (streak > cols)
             return false;
         data_.push_back(value);
         return true;
     }
 
-    Matrix() : cols(0), rows(0) {}
+    Matrix() : cols(0), rows(0), streak(0) {}
 
 private:
     int streak;
@@ -52,7 +58,7 @@ public:
 class Variable : public Token {
 public:
     Variable(std::string name, ValueType value)
-            : name_(std::move(name)) {}
+            : name_(std::move(name)), value_(std::move(value)) {}
 
     std::string &get_name() override {
         return name_;
@@ -62,14 +68,23 @@ public:
         return TokenType::variable;
     }
 
+    void set_value(Matrix value) {
+        value_ = std::move(value);
+    }
+
+    Matrix get_value() {
+        return value_;
+    }
+
 private:
+    Matrix value_;
     std::string name_;
 };
 
 
 class Parser;
 
-using Stack = std::stack<Token *>;
+using Stack = std::vector<Token *>;
 
 class State {
 public:
@@ -113,26 +128,123 @@ bool is_number(char znak) {
     return false;
 }
 
+class RowState : public State {
+    Matrix &matrix;
+    std::string buffer;
+public:
+    RowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {}
 
-class VariableValueState : public State {
+    State *parse(const std::string &text, int position) override {
+        if (text[position] == '[')
+            return this;
+
+        if (text[position] == ',') {
+            matrix.add_value(std::stod(buffer));
+            buffer = "";
+            return this;
+        }
+        if (text[position] == ']') {
+            matrix.add_value(std::stod(buffer));
+            buffer = "";
+            if (text[position + 1] == ']')
+                return nullptr;
+            matrix.add_row();
+            return new RowState(stack_, matrix);
+        }
+        if (!whitespace(text[position])) {
+            buffer.push_back(text[position]);
+            return this;
+        }
+        if (whitespace(text[position])) {
+            return this;
+        }
+    }
+
+};
+
+class FirstRowState : public State {
+    Matrix &matrix;
+    std::string buffer;
+public:
+    FirstRowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {}
+
+    State *parse(const std::string &text, int position) override {
+        if (text[position] == '[') {
+            matrix.add_row();
+//            matrix.add_column();
+            return this;
+        }
+        if (text[position] == ',') {
+            matrix.add_column();
+            matrix.add_value(std::stod(buffer));
+            buffer = "";
+            return this;
+        }
+        if (text[position] == ']') {
+            matrix.add_column();
+            matrix.add_value(std::stod(buffer));
+            buffer = "";
+            if (text[position + 1] == ']')
+                return nullptr;
+
+            matrix.add_row();
+            return new RowState(stack_, matrix);
+        }
+        if (!whitespace(text[position])) {
+            buffer.push_back(text[position]);
+            return this;
+        }
+        if (whitespace(text[position])) {
+            return this;
+        }
+
+    }
+};
+
+
+bool parse_matrix(const std::string &code, Matrix &matrix) {
+    Stack stack;
+    State *cureent_state = new FirstRowState(stack, matrix);
+    for (int i = 1; i < code.size(); i++) {
+        State *next_state = cureent_state->parse(code, i);
+        if (next_state == nullptr)
+            return true;
+        if (cureent_state != next_state) {
+            delete cureent_state;
+            cureent_state = next_state;
+        }
+    }
+    return false;
+}
+
+class CreateVariable$ValueState : public State {
     std::string name_;
     std::string buffer;
     int open_matrix;
     bool ready;
     Matrix value;
 public:
-    VariableValueState(const std::string &name, Stack &stack) : State(stack), name_(name), open_matrix(0) {
+    CreateVariable$ValueState(const std::string &name, Stack &stack) : State(stack), name_(name), open_matrix(0) {
         std::cout << "variable value";
     }
 
     State *parse(const std::string &text, int position) override {
 
         std::cout << text[position] << " buffer: " << buffer << std::endl;
-        if (text[position] == ';'){
+        if (text[position] == ';') {
             if (buffer == "null") {
-                stack_.push(new Variable(name_, Matrix{}));
+                stack_.push_back(new Variable(name_, Matrix{}));
                 return new Error("NULL", stack_);
             }
+
+            Matrix matrix;
+            bool succes = parse_matrix(buffer, matrix);
+
+            if (succes) {
+                stack_.push_back(new Variable(name_, matrix));
+                return new Error("Good matrix", stack_);
+            }
+            return new Error("Bad matrix", stack_);
         }
 
         if (!whitespace(text[position])) {
@@ -175,17 +287,17 @@ public:
 
 
         if (ready) {
-            stack_.push(new Variable(name_, value));
+            stack_.push_back(new Variable(name_, value));
             return new Error("OK", stack_);
         }
     }
 };
 
 
-class VariableNameState : public State {
+class CreateVariable$NameState : public State {
     std::string buffer;
 public:
-    VariableNameState(Stack &stack) : State(stack) {
+    CreateVariable$NameState(Stack &stack) : State(stack) {
         std::cout << "\nvariable name\n";
     }
 
@@ -193,7 +305,7 @@ public:
         std::cout << text[position];
 
         if (text[position] == '=')
-            return new VariableValueState(buffer, stack_);
+            return new CreateVariable$ValueState(buffer, stack_);
 
         if (!whitespace(text[position])) {
             buffer += text[position];
@@ -205,6 +317,51 @@ public:
 
 
         return new Error("Expected =", stack_);
+    }
+};
+
+Token *find_token(const Stack &stack, const std::string &token_name) {
+    for (Token *token: stack) {
+        if (token->get_name() == token_name)
+            return token;
+    }
+    return nullptr;
+}
+
+class VariableAssigment : public State {
+    std::string value_buffer;
+    Variable *variable_;
+public:
+    VariableAssigment(Stack &stack, Variable *variable) : State(stack), variable_(variable) {}
+
+    State *parse(const std::string &text, int position) override {
+        if (whitespace(text[position])) {
+            return this;
+        }
+        if (text[position] == '=') {
+            return this;
+        }
+        if (text[position] == ';') {
+            if (Matrix::is_matrix(value_buffer)) {
+                Matrix matrix;
+                if (parse_matrix(value_buffer, matrix)) {
+                    variable_->set_value(matrix);
+                    return new Error("Assigment succesfull", stack_);
+                }
+                return new Error("Bad matrix", stack_);
+            }
+            Token *token = find_token(stack_, value_buffer);
+            if (token) {
+                Variable *temp = (Variable *) token;
+                variable_->set_value(temp->get_value());
+                return new Error("Assigment succesfull", stack_);
+            }
+            return new Error("Expected new matrix or variable name ", stack_);
+        }
+        if (!whitespace(text[position])) {
+            value_buffer.push_back(text[position]);
+            return this;
+        }
     }
 };
 
@@ -223,11 +380,16 @@ public:
         }
 
         if (buffer == "mat") {
-            return new VariableNameState(stack_);
+            return new CreateVariable$NameState(stack_);
+        }
+
+        Token *token = find_token(stack_, buffer);
+        if (token) {
+            return new VariableAssigment(stack_, (Variable *) token);
         }
 
         std::cout << "buffer: " << buffer << "\n";
-        return new Error("Expected token", stack_);
+        return new Error("Token not found: " + buffer, stack_);
     }
 
 };
@@ -255,7 +417,9 @@ private:
 
 int main() {
     Parser parser;
-
-    parser.parse_string("mat x = null;");
+    Matrix matrix;
+    parse_matrix("[[1]]", matrix);
+    parser.stack_.push_back(new Variable("x", matrix));
+    parser.parse_string("x = [[1,2,3]];");
     return 0;
 }
