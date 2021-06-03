@@ -6,41 +6,7 @@
 #define UI4_PROGRAMOWANIE_OBIEKTOWE_VARIABLE_H
 
 #include "tokens/Token.h"
-
-class Matrix {
-public:
-
-    static bool is_matrix(const std::string buffer) {
-        return buffer[0] == '[' && buffer[1] == '[';
-    }
-
-    void add_column() {
-        assert(rows == 1);
-        cols += 1;
-    }
-
-    void add_row() {
-        rows += 1;
-        assert(cols == streak);
-        streak = 0;
-    }
-
-    bool add_value(double value) {
-        streak += 1;
-        if (streak > cols)
-            return false;
-        data_.push_back(value);
-        return true;
-    }
-
-    Matrix() : cols(0), rows(0), streak(0) {}
-
-private:
-    int streak;
-    int cols;
-    int rows;
-    std::vector<double> data_;
-};
+#include "Matrix.h"
 
 using ValueType = Matrix;
 

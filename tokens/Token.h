@@ -5,6 +5,7 @@
 #ifndef UI4_PROGRAMOWANIE_OBIEKTOWE_TOKEN_H
 #define UI4_PROGRAMOWANIE_OBIEKTOWE_TOKEN_H
 
+
 class Token {
 public:
     enum TokenType {
@@ -16,5 +17,6 @@ public:
     virtual TokenType get_type() = 0;
 };
 
+using Stack = std::vector<Token *>;
 
 #endif //UI4_PROGRAMOWANIE_OBIEKTOWE_TOKEN_H

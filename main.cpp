@@ -8,30 +8,6 @@
 
 class Parser;
 
-using Stack = std::vector<Token *>;
-
-class State {
-public:
-    State(Stack &stack) : stack_(stack) {}
-
-    virtual State *parse(const std::string &text, int position) = 0;
-
-protected:
-    Stack &stack_;
-};
-
-bool whitespace(char letter) {
-    switch (letter) {
-        case '\n':
-        case '\t':
-        case '\r':
-        case ' ':
-            return true;
-        default:
-            return false;
-    }
-}
-
 class Error : public State {
 public:
     explicit Error(const std::string &error, Stack &stack) : State(stack) {
@@ -49,95 +25,6 @@ class Base;
 bool is_number(char znak) {
     if (znak >= 30 && znak <= 39)
         return true;
-    return false;
-}
-
-class RowState : public State {
-    Matrix &matrix;
-    std::string buffer;
-public:
-    RowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {}
-
-    State *parse(const std::string &text, int position) override {
-        if (text[position] == '[')
-            return this;
-
-        if (text[position] == ',') {
-            matrix.add_value(std::stod(buffer));
-            buffer = "";
-            return this;
-        }
-        if (text[position] == ']') {
-            matrix.add_value(std::stod(buffer));
-            buffer = "";
-            if (text[position + 1] == ']')
-                return nullptr;
-            matrix.add_row();
-            return new RowState(stack_, matrix);
-        }
-        if (!whitespace(text[position])) {
-            buffer.push_back(text[position]);
-            return this;
-        }
-        if (whitespace(text[position])) {
-            return this;
-        }
-    }
-
-};
-
-class FirstRowState : public State {
-    Matrix &matrix;
-    std::string buffer;
-public:
-    FirstRowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {}
-
-    State *parse(const std::string &text, int position) override {
-        if (text[position] == '[') {
-            matrix.add_row();
-//            matrix.add_column();
-            return this;
-        }
-        if (text[position] == ',') {
-            matrix.add_column();
-            matrix.add_value(std::stod(buffer));
-            buffer = "";
-            return this;
-        }
-        if (text[position] == ']') {
-            matrix.add_column();
-            matrix.add_value(std::stod(buffer));
-            buffer = "";
-            if (text[position + 1] == ']')
-                return nullptr;
-
-            matrix.add_row();
-            return new RowState(stack_, matrix);
-        }
-        if (!whitespace(text[position])) {
-            buffer.push_back(text[position]);
-            return this;
-        }
-        if (whitespace(text[position])) {
-            return this;
-        }
-
-    }
-};
-
-
-bool parse_matrix(const std::string &code, Matrix &matrix) {
-    Stack stack;
-    State *cureent_state = new FirstRowState(stack, matrix);
-    for (int i = 1; i < code.size(); i++) {
-        State *next_state = cureent_state->parse(code, i);
-        if (next_state == nullptr)
-            return true;
-        if (cureent_state != next_state) {
-            delete cureent_state;
-            cureent_state = next_state;
-        }
-    }
     return false;
 }
 
@@ -162,7 +49,7 @@ public:
             }
 
             Matrix matrix;
-            bool succes = parse_matrix(buffer, matrix);
+            bool succes = Matrix::parse_matrix(buffer, matrix);
 
             if (succes) {
                 stack_.push_back(new Variable(name_, matrix));
@@ -171,11 +58,11 @@ public:
             return new Error("Bad matrix", stack_);
         }
 
-        if (!whitespace(text[position])) {
+        if (!Utility::whitespace(text[position])) {
             buffer.push_back(text[position]);
             return this;
         }
-        if (whitespace(text[position]))
+        if (Utility::whitespace(text[position]))
             return this;
 
 
@@ -231,12 +118,12 @@ public:
         if (text[position] == '=')
             return new CreateVariable$ValueState(buffer, stack_);
 
-        if (!whitespace(text[position])) {
+        if (!Utility::whitespace(text[position])) {
             buffer += text[position];
             return this;
         }
 
-        if (whitespace(text[position]))
+        if (Utility::whitespace(text[position]))
             return this;
 
 
@@ -259,7 +146,7 @@ public:
     VariableAssigment(Stack &stack, Variable *variable) : State(stack), variable_(variable) {}
 
     State *parse(const std::string &text, int position) override {
-        if (whitespace(text[position])) {
+        if (Utility::whitespace(text[position])) {
             return this;
         }
         if (text[position] == '=') {
@@ -268,7 +155,7 @@ public:
         if (text[position] == ';') {
             if (Matrix::is_matrix(value_buffer)) {
                 Matrix matrix;
-                if (parse_matrix(value_buffer, matrix)) {
+                if (Matrix::parse_matrix(value_buffer, matrix)) {
                     variable_->set_value(matrix);
                     return new Error("Assigment succesfull", stack_);
                 }
@@ -282,7 +169,7 @@ public:
             }
             return new Error("Expected new matrix or variable name ", stack_);
         }
-        if (!whitespace(text[position])) {
+        if (!Utility::whitespace(text[position])) {
             value_buffer.push_back(text[position]);
             return this;
         }
@@ -297,7 +184,7 @@ public:
     }
 
     State *parse(const std::string &text, int position) override {
-        if (!whitespace(text[position])) {
+        if (!Utility::whitespace(text[position])) {
             std::cout << text[position];
             buffer.push_back(text[position]);
             return this;
@@ -342,7 +229,7 @@ private:
 int main() {
     Parser parser;
     Matrix matrix;
-    parse_matrix("[[1]]", matrix);
+    Matrix::parse_matrix("[[1]]", matrix);
     parser.stack_.push_back(new Variable("x", matrix));
     parser.parse_string("x = [[1,2,3]];");
     return 0;
