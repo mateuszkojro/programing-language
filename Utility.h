@@ -7,6 +7,14 @@
 
 class Utility {
 public:
+    static Token *find_token(const Stack &stack, const std::string &token_name) {
+        for (Token *token: stack) {
+            if (token->get_name() == token_name)
+                return token;
+        }
+        return nullptr;
+    }
+
     static bool whitespace(char letter) {
         switch (letter) {
             case '\n':
