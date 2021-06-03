@@ -81,7 +81,7 @@ protected:
     Stack &stack_;
 };
 
-bool not_whitespace(char letter) {
+bool whitespace(char letter) {
     switch (letter) {
         case '\n':
         case '\t':
@@ -114,7 +114,6 @@ bool is_number(char znak) {
 }
 
 
-
 class VariableValueState : public State {
     std::string name_;
     std::string buffer;
@@ -122,17 +121,28 @@ class VariableValueState : public State {
     bool ready;
     Matrix value;
 public:
-    VariableValueState(const std::string &name, Stack &stack) : State(stack), name_(name), open_matrix(0) {}
+    VariableValueState(const std::string &name, Stack &stack) : State(stack), name_(name), open_matrix(0) {
+        std::cout << "variable value";
+    }
 
     State *parse(const std::string &text, int position) override {
-        if (not_whitespace(text[position])) {
-            buffer += text[position];
+
+        std::cout << text[position] << " buffer: " << buffer << std::endl;
+        if (text[position] == ';'){
+            if (buffer == "null") {
+                stack_.push(new Variable(name_, Matrix{}));
+                return new Error("NULL", stack_);
+            }
+        }
+
+        if (!whitespace(text[position])) {
+            buffer.push_back(text[position]);
             return this;
         }
-        if (buffer == "null") {
-            stack_.push(new Variable(name_, Matrix{}));
-            return new Error("OK", stack_);
-        }
+        if (whitespace(text[position]))
+            return this;
+
+
 
         // todo there should be whole matrix parser here
         if (text[position] == '[') {
@@ -155,8 +165,8 @@ public:
             value.add_value(std::stoi(temp));
         }
 
-        if (text[position] == ']'){
-            if(open_matrix == 0){
+        if (text[position] == ']') {
+            if (open_matrix == 0) {
                 ready = true;
             } else {
                 open_matrix -= 1;
@@ -175,30 +185,48 @@ public:
 class VariableNameState : public State {
     std::string buffer;
 public:
-    VariableNameState(Stack &stack) : State(stack) {}
+    VariableNameState(Stack &stack) : State(stack) {
+        std::cout << "\nvariable name\n";
+    }
 
     State *parse(const std::string &text, int position) override {
-        if (not_whitespace(text[position])) {
+        std::cout << text[position];
+
+        if (text[position] == '=')
+            return new VariableValueState(buffer, stack_);
+
+        if (!whitespace(text[position])) {
             buffer += text[position];
             return this;
         }
-        return new VariableValueState(buffer, stack_);
+
+        if (whitespace(text[position]))
+            return this;
+
+
+        return new Error("Expected =", stack_);
     }
 };
 
 class Base : public State {
     std::string buffer;
 public:
-    Base(Stack &stack) : State(stack) {}
+    Base(Stack &stack) : State(stack) {
+        buffer = "";
+    }
 
     State *parse(const std::string &text, int position) override {
-        if (not_whitespace(text[position])) {
-            buffer += text[position];
+        if (!whitespace(text[position])) {
+            std::cout << text[position];
+            buffer.push_back(text[position]);
             return this;
         }
+
         if (buffer == "mat") {
             return new VariableNameState(stack_);
         }
+
+        std::cout << "buffer: " << buffer << "\n";
         return new Error("Expected token", stack_);
     }
 
@@ -226,6 +254,8 @@ private:
 };
 
 int main() {
+    Parser parser;
 
+    parser.parse_string("mat x = null;");
     return 0;
 }
