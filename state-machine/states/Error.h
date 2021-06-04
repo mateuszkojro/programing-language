@@ -8,7 +8,7 @@
 class Error : public State {
 public:
     explicit Error(const std::string &error, Stack &stack) : State(stack) {
-        std::cout << error << std::endl;
+        std::clog << error << std::endl;
         exit(1);
     }
 

@@ -18,8 +18,6 @@ public:
     }
 
     State *parse(const std::string &text, int position) override {
-
-        std::cout << buffer << std::endl;
         if (buffer == "mat"){
             buffer = "";
             return new CreateVariable$NameState(stack_);

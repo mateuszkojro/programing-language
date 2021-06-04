@@ -12,7 +12,7 @@ class VariableAssigment : public State {
     Variable *variable_;
 public:
     VariableAssigment(Stack &stack, Variable *variable) : State(stack), variable_(variable) {
-        std::cout << "VariableAssigment" << std::endl;
+        CHANGE_STATE("VariableAssigment");
     }
 
     State *parse(const std::string &text, int position) override {
@@ -23,7 +23,6 @@ public:
             return this;
         }
         if (text[position] == ';') {
-            std::cout << value_buffer << std::endl;
             if (Matrix::is_matrix(value_buffer)) {
                 Matrix matrix;
                 if (Matrix::parse_matrix(value_buffer, matrix)) {
