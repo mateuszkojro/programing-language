@@ -17,4 +17,7 @@ set(TOKENS
         tokens/Variable.h
         )
 
-add_executable(ui4_programowanie_obiektowe main.cpp Matrix.cpp ${STATES} ${TOKENS})
+include_directories(tokens)
+include_directories(state-machine)
+
+add_executable(ui4_programowanie_obiektowe main.cpp Matrix.cpp)
