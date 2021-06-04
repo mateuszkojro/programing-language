@@ -10,9 +10,11 @@
 class Parser {
 public:
     Stack stack_;
-
-    void parse_string(const std::string &code) {
+    Parser(){
         current_state_ = new Base(stack_);
+    }
+    void parse_string(const std::string &code) {
+//        current_state_ = new Base(stack_);
         for (int i = 0; i < code.size(); i++) {
             std::clog << code[i] << std::endl;
             State *next_state = current_state_->parse(code, i);
