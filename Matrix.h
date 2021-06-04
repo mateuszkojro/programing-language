@@ -10,8 +10,8 @@
 #include <vector>
 #include <deque>
 
-#include "tokens/Token.h"
-#include "state-machine/State.h"
+#include "Token.h"
+#include "State.h"
 #include "Utility.h"
 
 
@@ -21,7 +21,8 @@ public:
     static bool parse_matrix(const std::string &code, Matrix &matrix);
 
     static bool is_matrix(const std::string buffer) {
-        return buffer[0] == '[' && buffer[1] == '[';
+
+        return (buffer[0] == '[' && buffer[1] == '[') || buffer == "null" ;
     }
 
     void add_column() {

@@ -5,11 +5,15 @@
 #ifndef UI4_PROGRAMOWANIE_OBIEKTOWE_VARIABLEASSIGMENT_H
 #define UI4_PROGRAMOWANIE_OBIEKTOWE_VARIABLEASSIGMENT_H
 
+#include "Base.h"
+
 class VariableAssigment : public State {
     std::string value_buffer;
     Variable *variable_;
 public:
-    VariableAssigment(Stack &stack, Variable *variable) : State(stack), variable_(variable) {}
+    VariableAssigment(Stack &stack, Variable *variable) : State(stack), variable_(variable) {
+        std::cout << "VariableAssigment" << std::endl;
+    }
 
     State *parse(const std::string &text, int position) override {
         if (Utility::whitespace(text[position])) {
@@ -19,11 +23,12 @@ public:
             return this;
         }
         if (text[position] == ';') {
+            std::cout << value_buffer << std::endl;
             if (Matrix::is_matrix(value_buffer)) {
                 Matrix matrix;
                 if (Matrix::parse_matrix(value_buffer, matrix)) {
                     variable_->set_value(matrix);
-                    return new Error("Assigment succesfull", stack_);
+                    return nullptr;
                 }
                 return new Error("Bad matrix", stack_);
             }
@@ -31,7 +36,7 @@ public:
             if (token) {
                 Variable *temp = (Variable *) token;
                 variable_->set_value(temp->get_value());
-                return new Error("Assigment succesfull", stack_);
+                return nullptr;
             }
             return new Error("Expected new matrix or variable name ", stack_);
         }

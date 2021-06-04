@@ -8,7 +8,9 @@ class RowState : public State {
     Matrix &matrix;
     std::string buffer;
 public:
-    RowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {}
+    RowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {
+        CHANGE_STATE("RowState");
+    }
 
     State *parse(const std::string &text, int position) override {
         if (text[position] == '[')
@@ -42,7 +44,9 @@ class FirstRowState : public State {
     Matrix &matrix;
     std::string buffer;
 public:
-    FirstRowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {}
+    FirstRowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {
+        CHANGE_STATE("FristRowState");
+    }
 
     State *parse(const std::string &text, int position) override {
         if (text[position] == '[') {
@@ -79,6 +83,9 @@ public:
 
 bool Matrix::parse_matrix(const std::string &code, Matrix &matrix) {
     Stack stack;
+    if (code == "null") {
+        return true;
+    }
     State *cureent_state = new FirstRowState(stack, matrix);
     for (int i = 1; i < code.size(); i++) {
         State *next_state = cureent_state->parse(code, i);

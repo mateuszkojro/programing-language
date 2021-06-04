@@ -7,6 +7,9 @@
 
 #include <deque>
 #include "tokens/Token.h"
+#include <iostream>
+
+#define CHANGE_STATE(state) std::clog << state << std::endl
 
 class State {
 public:
