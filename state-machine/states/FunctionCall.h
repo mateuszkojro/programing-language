@@ -22,11 +22,37 @@ public:
     }
 
     State *parse(const std::string &text, int position) override {
+
+        auto push_value = [this]() {
+            Token *token = Utility::find_token(stack_, buffer_);
+            if (token) {
+                stack_.push_back(token);
+                buffer_ = "";
+                return (State *) this;
+            }
+
+            if (Matrix::is_matrix(buffer_)) {
+                Matrix matrix;
+                if (Matrix::parse_matrix(buffer_, matrix)) {
+                    stack_.push_back(new Variable("arg", matrix));
+                    return (State *) this;
+                }
+            }
+
+            return (State *) new Error("Could not find token", stack_);
+        };
+
         if (text[position] == ',') {
-//            stack_.push_back()
+            return push_value();
         }
 
         if (text[position] == ')') {
+
+            if (!buffer_.empty())
+                return push_value();
+        }
+
+        if (text[position] == ';'){
             // call the fucntion
             Token *token = Utility::find_token(stack_, function_name_);
             if (token != nullptr) {

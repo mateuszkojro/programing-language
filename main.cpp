@@ -14,17 +14,27 @@ int exit_func(Stack &stack) {
     return 0;
 }
 
+int print(Stack &stack) {
+    Token *arg = stack.back();
+    stack.pop_back();
+
+    std::cout << arg->get_name() << std::endl;
+
+    return 0;
+}
+
 int main(int argc, char **argv) {
     Parser parser;
 //    std::function<int(Stack&)> func = hello;
     parser.stack_.push_back(new Function("hello", hello));
     parser.stack_.push_back(new Function("exit", exit_func));
+    parser.stack_.push_back(new Function("print", print));
 
     if (argc < 2) {
         // maybe repl?
-        while (true){
+        while (true) {
             std::string line;
-            std::getline(std::cin,line);
+            std::getline(std::cin, line);
             parser.parse_string(line);
             if (line == "#quit#")
                 break;
