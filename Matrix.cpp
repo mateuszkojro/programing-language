@@ -98,3 +98,23 @@ bool Matrix::parse_matrix(const std::string &code, Matrix &matrix) {
     }
     return false;
 }
+
+// Thanks to https://github.com/piotr233 for impl
+std::string Matrix::repr() {
+
+
+    std::string out;
+    out += "[";
+    for (unsigned i = 0; i < rows; i++) {
+        out += "[";
+        for (unsigned j = 0; j < cols; j++) {
+            out += std::to_string(data_[i * cols + j]);
+            if (j != cols - 1)
+                out += ", ";
+        }
+        out += "]";
+        if (i != rows - 1) out += "\n";
+    }
+    out += "]\n";
+    return out;
+}

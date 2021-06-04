@@ -15,11 +15,10 @@ int exit_func(Stack &stack) {
 }
 
 int print(Stack &stack) {
-    Token *arg = stack.back();
+    Variable *variable = (Variable *) stack.back();
     stack.pop_back();
 
-    std::cout << arg->get_name() << std::endl;
-
+    std::cout << variable->get_value().repr() << std::endl;
     return 0;
 }
 

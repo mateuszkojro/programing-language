@@ -46,6 +46,8 @@ public:
 
     Matrix() : cols(0), rows(0), streak(0) {}
 
+    std::string repr();
+
 private:
     int streak;
     int cols;
