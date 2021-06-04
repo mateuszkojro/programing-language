@@ -8,6 +8,7 @@
 
 #include "states/CreateVariable.h"
 #include "states/VariableAssigment.h"
+#include "states/FunctionCall.h"
 #include "states/Error.h"
 
 class Base : public State {
@@ -18,12 +19,12 @@ public:
     }
 
     State *parse(const std::string &text, int position) override {
-        if (buffer == "mat"){
+        if (buffer == "mat") {
             buffer = "";
             return new CreateVariable$NameState(stack_);
         }
 
-        if (text[position] == '='){
+        if (text[position] == '=') {
 
             Token *token = Utility::find_token(stack_, buffer);
             if (token != nullptr) {
@@ -33,7 +34,11 @@ public:
             return new Error("Token not found: " + buffer, stack_);
         }
 
-        if (Utility::whitespace(text[position])){
+        if (text[position] == '(') {
+            return new FunctionCall(stack_, buffer);
+        }
+
+        if (Utility::whitespace(text[position])) {
             return this;
         }
 

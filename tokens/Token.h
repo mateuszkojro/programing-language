@@ -10,6 +10,8 @@ class Token {
 public:
     enum TokenType {
         variable,
+        function,
+        scope
     };
 
     virtual const std::string &get_name() = 0;
