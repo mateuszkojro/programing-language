@@ -17,7 +17,6 @@ int exit_func(Stack &stack) {
 int print(Stack &stack) {
     Variable *variable = (Variable *) stack.back();
     stack.pop_back();
-
     std::cout << variable->get_value().repr() << std::endl;
     return 0;
 }
@@ -26,6 +25,25 @@ int ones(Stack &stack) {
     Matrix m;
     Matrix::parse_matrix("[[1,1,1][1,1,1][1,1,1]]", m);
     stack.push_back(new Variable("return", m));
+    return 1;
+}
+
+int input(Stack &stack) {
+    Matrix m;
+    std::string input;
+    std::getline(std::cin, input);
+    Matrix::parse_matrix(input, m);
+    stack.push_back(new Variable("return", m));
+    return 1;
+}
+
+int text(Stack &stack) {
+    Variable *variable = (Variable *) stack.back();
+    stack.pop_back();
+    Matrix val = variable->get_value();
+    for (int i = 0; i < val.size(); i++) {
+        std::cout << (char) val.get(i) << std::endl;
+    }
     return 1;
 }
 
@@ -53,6 +71,8 @@ int main(int argc, char **argv) {
     parser.stack_.push_back(new Function("print", print));
     parser.stack_.push_back(new Function("ones", ones));
     parser.stack_.push_back(new Function("eq", eq));
+    parser.stack_.push_back(new Function("input", input));
+    parser.stack_.push_back(new Function("text", text));
 
     if (argc < 2) {
         // maybe repl?
