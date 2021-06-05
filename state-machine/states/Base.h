@@ -10,6 +10,8 @@
 #include "states/VariableAssigment.h"
 #include "states/FunctionCall.h"
 #include "states/Error.h"
+#include "Conditional.h"
+
 
 class Base : public State {
     std::string buffer;
@@ -23,6 +25,13 @@ public:
             buffer = "";
             return new CreateVariable$NameState(stack_);
         }
+
+        if (buffer == "if") {
+            return new Conditional(stack_);
+        }
+
+        if (text[position] == '}')
+            return this;
 
         if (text[position] == '=') {
 
