@@ -58,6 +58,12 @@ public:
     }
 
     Matrix() : cols(0), rows(0), streak(0) {}
+    explicit Matrix(bool val) : cols(1), rows(1), streak(1) {
+        if (val)
+            data_.push_back(1);
+        else
+            data_.push_back(0);
+    }
 
     std::string repr();
 
