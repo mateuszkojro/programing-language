@@ -22,7 +22,7 @@ public:
 
     static bool is_matrix(const std::string buffer) {
 
-        return (buffer[0] == '[' && buffer[1] == '[') || buffer == "null" ;
+        return (buffer[0] == '[' && buffer[1] == '[') || buffer == "null";
     }
 
     void add_column() {
@@ -41,6 +41,19 @@ public:
         if (streak > cols)
             return false;
         data_.push_back(value);
+        return true;
+    }
+
+    bool operator==(const Matrix &other) const {
+        if (cols != other.cols)
+            return false;
+        if (rows != other.rows)
+            return false;
+        for (int i = 0; i < data_.size(); i++) {
+            if (data_[i] != other.data_[i]) {
+                return false;
+            }
+        }
         return true;
     }
 

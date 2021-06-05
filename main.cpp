@@ -29,6 +29,22 @@ int ones(Stack &stack) {
     return 1;
 }
 
+int eq(Stack &stack) {
+    Variable *mat1 = (Variable *) stack.back();
+    stack.pop_back();
+    Variable *mat2 = (Variable *) stack.back();
+    stack.pop_back();
+
+    Matrix m;
+    if (mat1->get_value() == mat2->get_value()) {
+        Matrix::parse_matrix("[[1]]", m);
+    } else {
+        Matrix::parse_matrix("[[0]]", m);
+    }
+    stack.push_back(new Variable("return", m));
+    return 1;
+}
+
 int main(int argc, char **argv) {
     Parser parser;
 //    std::function<int(Stack&)> func = hello;
@@ -36,6 +52,7 @@ int main(int argc, char **argv) {
     parser.stack_.push_back(new Function("exit", exit_func));
     parser.stack_.push_back(new Function("print", print));
     parser.stack_.push_back(new Function("ones", ones));
+    parser.stack_.push_back(new Function("eq", eq));
 
     if (argc < 2) {
         // maybe repl?
