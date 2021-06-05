@@ -6,6 +6,7 @@
 #define UI4_PROGRAMOWANIE_OBIEKTOWE_VARIABLEASSIGMENT_H
 
 #include "Base.h"
+#include "FunctionCall.h"
 
 class VariableAssigment : public State {
     std::string value_buffer;
@@ -21,6 +22,9 @@ public:
         }
         if (text[position] == '=') {
             return this;
+        }
+        if (text[position] == '(') {
+            return new FunctionCall(stack_, value_buffer, variable_);
         }
         if (text[position] == ';') {
             if (Matrix::is_matrix(value_buffer)) {

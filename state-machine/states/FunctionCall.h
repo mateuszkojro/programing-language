@@ -14,12 +14,27 @@
 #include "Utility.h"
 
 class FunctionCall : public State {
+    Variable *target_token_;
     std::string function_name_;
     std::string buffer_;
+
+    void clean() {
+        Token *token = stack_.back();
+        while (token->get_name() != function_name_ + "Call") {
+            stack_.pop_back();
+            token = stack_.back();
+        }
+        stack_.pop_back();
+    }
+
 public:
-    FunctionCall(Stack &stack, std::string buffer) : State(stack), function_name_(std::move(buffer)) {
+    FunctionCall(Stack &stack, std::string buffer, Token *token) : State(stack),
+                                                                   function_name_(std::move(buffer)),
+                                                                   target_token_((Variable *) token) {
+        CHANGE_STATE("FunctionCall");
         stack.push_back(new Scope(function_name_ + "Call"));
     }
+
 
     State *parse(const std::string &text, int position) override {
 
@@ -52,13 +67,18 @@ public:
                 return push_value();
         }
 
-        if (text[position] == ';'){
+        if (text[position] == ';') {
             // call the fucntion
             Token *token = Utility::find_token(stack_, function_name_);
             if (token != nullptr) {
                 Function *function = (Function *) token;
                 auto func = function->get_value();
-                func(stack_);
+                int number_of_return_vars = func(stack_);
+                if (target_token_) {
+                    Variable *result = (Variable *) stack_.back();
+                    target_token_->set_value(result->get_value());
+                }
+                clean();
                 return nullptr;
             }
             return new Error("Bad function call: \"" + function_name_ + "\"", stack_);

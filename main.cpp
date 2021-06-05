@@ -22,12 +22,20 @@ int print(Stack &stack) {
     return 0;
 }
 
+int ones(Stack &stack) {
+    Matrix m;
+    Matrix::parse_matrix("[[1,1,1][1,1,1][1,1,1]]", m);
+    stack.push_back(new Variable("return", m));
+    return 1;
+}
+
 int main(int argc, char **argv) {
     Parser parser;
 //    std::function<int(Stack&)> func = hello;
     parser.stack_.push_back(new Function("hello", hello));
     parser.stack_.push_back(new Function("exit", exit_func));
     parser.stack_.push_back(new Function("print", print));
+    parser.stack_.push_back(new Function("ones", ones));
 
     if (argc < 2) {
         // maybe repl?

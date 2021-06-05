@@ -35,7 +35,7 @@ public:
         }
 
         if (text[position] == '(') {
-            return new FunctionCall(stack_, buffer);
+            return new FunctionCall(stack_, buffer, nullptr);
         }
 
         if (Utility::whitespace(text[position])) {
