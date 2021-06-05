@@ -8,6 +8,7 @@
 #include "../State.h"
 #include "Base.h"
 #include "Error.h"
+#include "VariableAssigment.h"
 
 class CreateVariable$ValueState : public State {
     std::string name_;
@@ -49,8 +50,23 @@ public:
 
     State *parse(const std::string &text, int position) override {
 
-        if (text[position] == '=')
-            return new CreateVariable$ValueState(buffer, stack_);
+//        if (text[position] == '=')
+//            return new CreateVariable$ValueState(buffer, stack_);
+        // todo we should check if var arledy exists
+
+        if (text[position] == '=') {
+            Matrix m;
+            Variable *var = new Variable(buffer, m);
+            stack_.push_back(var);
+            return new VariableAssigment(stack_, var);
+        }
+
+        if (text[position] == ';') {
+            Matrix m;
+            Variable *var = new Variable(buffer, m);
+            stack_.push_back(var);
+            return nullptr;
+        }
 
         if (!Utility::whitespace(text[position])) {
             buffer += text[position];

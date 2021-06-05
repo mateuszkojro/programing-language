@@ -21,4 +21,4 @@ include_directories(tokens)
 include_directories(state-machine)
 include_directories(states)
 
-add_executable(ui4_programowanie_obiektowe main.cpp Matrix.cpp tokens/Function.h tokens/Scope.h)
+add_executable(ui4_programowanie_obiektowe main.cpp Matrix.cpp tokens/Function.h tokens/Scope.h state-machine/states/Conditional.h)
