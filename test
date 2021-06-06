@@ -1,8 +1,15 @@
-mat x = [[2]];
-x = null;
-x = x;
-mat y = [[1,2,3,4][1,2,3,4]];
-x = y;
-hello();
-mat ala ma kota = null;
-print(alamakota);
+mat greating = "Give yor name: ";
+text(greating);
+mat name = input();
+
+mat expected_name = "Mateusz";
+mat condition = eq(name,expected_name);
+if condition {
+    mat resp = "Hello";
+    text(resp);
+    newline();
+    text(name);
+}
+resp = "bye!";
+newline();
+text(resp);
