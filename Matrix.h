@@ -22,7 +22,7 @@ public:
 
     static bool is_matrix(const std::string buffer) {
 
-        return (buffer[0] == '[' && buffer[1] == '[') || buffer == "null";
+        return (buffer[0] == '[' && buffer[1] == '[') || buffer == "null" || buffer[0] == '"';
     }
 
     void add_column() {
