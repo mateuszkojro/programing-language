@@ -42,7 +42,7 @@ int text(Stack &stack) {
     stack.pop_back();
     Matrix val = variable->get_value();
     for (int i = 0; i < val.size(); i++) {
-        std::cout << (char) val.get(i) << std::endl;
+        std::cout << (char) val.get(i);
     }
     return 1;
 }
@@ -63,6 +63,22 @@ int eq(Stack &stack) {
     return 1;
 }
 
+int newline(Stack &stack) {
+    std::cout << std::endl;
+    return 1;
+}
+
+//int not_func(Stack& stack){
+//    Variable *variable = (Variable *) stack.back();
+//    stack.pop_back();
+//    Matrix val = variable->get_value();
+//    Matrix result;
+//    for (int i = 0; i < val.size(); i++) {
+//        result. val.get(i);
+//    }
+//
+//}
+
 int main(int argc, char **argv) {
     Parser parser;
 //    std::function<int(Stack&)> func = hello;
@@ -73,6 +89,8 @@ int main(int argc, char **argv) {
     parser.stack_.push_back(new Function("eq", eq));
     parser.stack_.push_back(new Function("input", input));
     parser.stack_.push_back(new Function("text", text));
+    parser.stack_.push_back(new Function("newline", newline));
+
 
     if (argc < 2) {
         // maybe repl?
