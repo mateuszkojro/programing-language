@@ -84,6 +84,7 @@ int main(int argc, char **argv) {
     parser.stack_.push_back(new Function("input", input));
     parser.stack_.push_back(new Function("text", text));
     parser.stack_.push_back(new Function("newline", newline));
+    parser.stack_.push_back(new Function("not", not_func));
 
 
     if (argc < 2) {
