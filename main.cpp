@@ -15,9 +15,8 @@ int exit_func(Stack &stack) {
 }
 
 int print(Stack &stack) {
-    Variable *variable = (Variable *) stack.back();
-    stack.pop_back();
-    std::cout << variable->get_value().repr() << std::endl;
+    auto mat = Matrix::get_from_stack(stack);
+    std::cout << mat.repr() << std::endl;
     return 0;
 }
 
@@ -38,9 +37,7 @@ int input(Stack &stack) {
 }
 
 int text(Stack &stack) {
-    Variable *variable = (Variable *) stack.back();
-    stack.pop_back();
-    Matrix val = variable->get_value();
+    auto val = Matrix::get_from_stack(stack);
     for (int i = 0; i < val.size(); i++) {
         std::cout << (char) val.get(i);
     }
@@ -48,13 +45,11 @@ int text(Stack &stack) {
 }
 
 int eq(Stack &stack) {
-    Variable *mat1 = (Variable *) stack.back();
-    stack.pop_back();
-    Variable *mat2 = (Variable *) stack.back();
-    stack.pop_back();
+    auto mat1 = Matrix::get_from_stack(stack);
+    auto mat2 = Matrix::get_from_stack(stack);
 
     Matrix m;
-    if (mat1->get_value() == mat2->get_value()) {
+    if (mat1 == mat2) {
         Matrix::parse_matrix("[[1]]", m);
     } else {
         Matrix::parse_matrix("[[0]]", m);
@@ -68,16 +63,15 @@ int newline(Stack &stack) {
     return 1;
 }
 
-//int not_func(Stack& stack){
-//    Variable *variable = (Variable *) stack.back();
-//    stack.pop_back();
-//    Matrix val = variable->get_value();
-//    Matrix result;
-//    for (int i = 0; i < val.size(); i++) {
-//        result. val.get(i);
-//    }
-//
-//}
+int not_func(Stack &stack) {
+    Matrix val = Matrix::get_from_stack(stack);
+    Matrix result;
+    for (int i = 0; i < val.size(); i++) {
+        result(i) = val(i) == 0 ? 1 : 0;
+    }
+    stack.push_back(new Variable("return", result));
+    return 1;
+}
 
 int main(int argc, char **argv) {
     Parser parser;

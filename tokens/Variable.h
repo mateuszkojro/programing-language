@@ -27,7 +27,7 @@ public:
         value_ = std::move(value);
     }
 
-    Matrix get_value() {
+    Matrix& get_value() {
         return value_;
     }
 

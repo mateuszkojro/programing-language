@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <deque>
+#include <Variable.h>
 
 #include "Token.h"
 #include "State.h"
@@ -66,6 +67,19 @@ public:
             data_.push_back(0);
     }
 
+    [[nodiscard]]
+    int translate(int row, int col) const {
+        return row * rows + col;
+    }
+
+    double &operator()(int idx) {
+        return data_.at(idx);
+    }
+
+    double &operator()(int row, int col) {
+        return data_.at(translate(row, col));
+    }
+
     double get(int position) {
         return data_.at(position);
     }
@@ -74,6 +88,11 @@ public:
         return data_.size();
     }
 
+    static Matrix &get_from_stack(Stack &stack) {
+        Variable *variable = (Variable *) stack.back();
+        stack.pop_back();
+        return variable->get_value();
+    }
 
     std::string repr();
 
