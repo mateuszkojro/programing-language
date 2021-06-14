@@ -13,11 +13,17 @@
 #include "Scope.h"
 #include "Utility.h"
 
+/// \brief State used for function calls
 class FunctionCall : public State {
+    /// \brief return value from called function if function returns nullptr else
     Variable *target_token_;
+    /// \brief Name of the function to be called
     std::string function_name_;
+
+    /// \brief used for building up variables to be passed to a function
     std::string buffer_;
 
+    /// \brief Cleans up the stack after exiting functions scope
     void clean() {
         Token *token = stack_.back();
         while (token->get_name() != function_name_ + "Call") {
@@ -62,7 +68,6 @@ public:
         }
 
         if (text[position] == ')') {
-
             if (!buffer_.empty())
                 return push_value();
         }
