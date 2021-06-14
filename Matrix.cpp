@@ -4,8 +4,11 @@
 
 #include "Matrix.h"
 
+/// \brief State used for creating rows in matrix
 class RowState : public State {
+    /// \brief Matrix val that is being build
     Matrix &matrix;
+    /// \brief Temporary buffer
     std::string buffer;
 public:
     RowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {
@@ -40,9 +43,13 @@ public:
 
 };
 
+/// \brief State used for creating first row in Matrix
 class FirstRowState : public State {
+    /// \brief Matrix val that is being build
     Matrix &matrix;
+    /// \brief if the matrix being parsed is a string literal we need to act differently
     bool is_string;
+    /// \brief Temporary buffer
     std::string buffer;
 public:
     FirstRowState(Stack &stack, Matrix &matrix) : State(stack), matrix(matrix) {
@@ -102,7 +109,10 @@ public:
     }
 };
 
-
+/// Function that parses a matrix and assigns it into @matrix
+/// \param code code to be parsed
+/// \param matrix matrix to bullied up
+/// \return true if parsing completed successfully and false if it failed
 bool Matrix::parse_matrix(const std::string &code, Matrix &matrix) {
     Stack stack;
     if (code == "null") {
@@ -122,6 +132,8 @@ bool Matrix::parse_matrix(const std::string &code, Matrix &matrix) {
 }
 
 // Thanks to https://github.com/piotr233 for impl
+/// Create string representing the matrix
+/// \return string representation of the matrix
 std::string Matrix::repr() {
 
     std::string out;
