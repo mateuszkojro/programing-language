@@ -16,6 +16,21 @@ public:
         CHANGE_STATE("VariableAssigment");
     }
 
+//    static bool parse_variable(const std::string &code, Variable **variable) {
+//        Stack stack;
+//        State* current_state = new VariableAssigment(stack, *variable);
+//        for (int i = 1; i < code.size(); i++) {
+//            State *next_state = current_state->parse(code, i);
+//            if (next_state == nullptr)
+//                return true;
+//            if (current_state != next_state) {
+//                delete current_state;
+//                current_state = next_state;
+//            }
+//        }
+//        return false;
+//    }
+
     State *parse(const std::string &text, int position) override {
         if (Utility::whitespace(text[position])) {
             return this;
