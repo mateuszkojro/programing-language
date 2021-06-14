@@ -8,8 +8,11 @@
 #include "Base.h"
 #include "FunctionCall.h"
 
+/// \brief State used for parsing variables
 class VariableAssigment : public State {
+    /// \brief Buffer containing the code for the variable value (it will be parsed latter)
     std::string value_buffer;
+    /// \brief Variable that is being built up
     Variable *variable_;
 public:
     VariableAssigment(Stack &stack, Variable *variable) : State(stack), variable_(variable) {
