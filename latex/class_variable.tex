@@ -1,0 +1,111 @@
+\hypertarget{class_variable}{}\doxysection{Variable Class Reference}
+\label{class_variable}\index{Variable@{Variable}}
+
+
+{\ttfamily \#include $<$Variable.\+h$>$}
+
+
+
+Inheritance diagram for Variable\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=131pt]{class_variable__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Variable\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=131pt]{class_variable__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_variable_a9f57a3f80c2dd14a062bce5d33188b10}{Variable}} (std\+::string name, \mbox{\hyperlink{_variable_8h_ae5d7afa59421ba1fb328bc1b33f4b067}{Value\+Type}} value)
+\item 
+std\+::string \& \mbox{\hyperlink{class_variable_a338ca990feccb3be7d23c18d9c0385a1}{get\+\_\+name}} () override
+\item 
+\mbox{\hyperlink{class_token_ad80928a0dff686ec8d11da0b5d6944a2}{Token\+Type}} \mbox{\hyperlink{class_variable_ab2384682f087c0f70044c943fa7fce14}{get\+\_\+type}} () override
+\item 
+void \mbox{\hyperlink{class_variable_a265bfa0579dd2b35664837261a825a21}{set\+\_\+value}} (\mbox{\hyperlink{class_matrix}{Matrix}} value)
+\item 
+\mbox{\hyperlink{class_matrix}{Matrix}} \& \mbox{\hyperlink{class_variable_a1895f23171bde2d8610892d80843ff55}{get\+\_\+value}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_variable_a9f57a3f80c2dd14a062bce5d33188b10}\label{class_variable_a9f57a3f80c2dd14a062bce5d33188b10}} 
+\index{Variable@{Variable}!Variable@{Variable}}
+\index{Variable@{Variable}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{Variable()}{Variable()}}
+{\footnotesize\ttfamily Variable\+::\+Variable (\begin{DoxyParamCaption}\item[{std\+::string}]{name,  }\item[{\mbox{\hyperlink{_variable_8h_ae5d7afa59421ba1fb328bc1b33f4b067}{Value\+Type}}}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_variable_a338ca990feccb3be7d23c18d9c0385a1}\label{class_variable_a338ca990feccb3be7d23c18d9c0385a1}} 
+\index{Variable@{Variable}!get\_name@{get\_name}}
+\index{get\_name@{get\_name}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{get\_name()}{get\_name()}}
+{\footnotesize\ttfamily std\+::string\& Variable\+::get\+\_\+name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Get the name used to access the token in the code \begin{DoxyReturn}{Returns}
+name of the tokne in code 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_token_a1ad490b264385957c9ff84a365cce5a4}{Token}}.
+
+\mbox{\Hypertarget{class_variable_ab2384682f087c0f70044c943fa7fce14}\label{class_variable_ab2384682f087c0f70044c943fa7fce14}} 
+\index{Variable@{Variable}!get\_type@{get\_type}}
+\index{get\_type@{get\_type}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{get\_type()}{get\_type()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_token_ad80928a0dff686ec8d11da0b5d6944a2}{Token\+Type}} Variable\+::get\+\_\+type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+Return the type of the token being accessed \begin{DoxyReturn}{Returns}
+the type of the token 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_token_a24f4ffc6363d71ea9ae67038e256a275}{Token}}.
+
+\mbox{\Hypertarget{class_variable_a1895f23171bde2d8610892d80843ff55}\label{class_variable_a1895f23171bde2d8610892d80843ff55}} 
+\index{Variable@{Variable}!get\_value@{get\_value}}
+\index{get\_value@{get\_value}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{get\_value()}{get\_value()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_matrix}{Matrix}}\& Variable\+::get\+\_\+value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_variable_a1895f23171bde2d8610892d80843ff55_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_variable_a265bfa0579dd2b35664837261a825a21}\label{class_variable_a265bfa0579dd2b35664837261a825a21}} 
+\index{Variable@{Variable}!set\_value@{set\_value}}
+\index{set\_value@{set\_value}!Variable@{Variable}}
+\doxysubsubsection{\texorpdfstring{set\_value()}{set\_value()}}
+{\footnotesize\ttfamily void Variable\+::set\+\_\+value (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_matrix}{Matrix}}}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_variable_a265bfa0579dd2b35664837261a825a21_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tokens/\mbox{\hyperlink{_variable_8h}{Variable.\+h}}\end{DoxyCompactItemize}
