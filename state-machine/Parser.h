@@ -35,3 +35,7 @@ private:
 };
 
 #endif //UI4_PROGRAMOWANIE_OBIEKTOWE_PARSER_H
+
+
+/// Notes:
+// -

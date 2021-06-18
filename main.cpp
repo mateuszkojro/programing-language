@@ -22,7 +22,7 @@ int print(Stack &stack) {
 
 int ones(Stack &stack) {
     Matrix m;
-    Matrix::parse_matrix("[[1,1,1][1,1,1][1,1,1]]", m);
+    Matrix::ParseMatrix("[[1,1,1][1,1,1][1,1,1]]", m);
     stack.push_back(new Variable("return", m));
     return 1;
 }
@@ -31,7 +31,7 @@ int input(Stack &stack) {
     Matrix m;
     std::string input;
     std::getline(std::cin, input);
-    Matrix::parse_matrix(input, m);
+    Matrix::ParseMatrix(input, m);
     stack.push_back(new Variable("return", m));
     return 1;
 }
@@ -50,9 +50,9 @@ int eq(Stack &stack) {
 
     Matrix m;
     if (mat1 == mat2) {
-        Matrix::parse_matrix("[[1]]", m);
+        Matrix::ParseMatrix("[[1]]", m);
     } else {
-        Matrix::parse_matrix("[[0]]", m);
+        Matrix::ParseMatrix("[[0]]", m);
     }
     stack.push_back(new Variable("return", m));
     return 1;
@@ -64,9 +64,9 @@ int newline(Stack &stack) {
 }
 
 int not_func(Stack &stack) {
-    Matrix val = Matrix::get_from_stack(stack);
+    Matrix val = Matrix::GetFromStack(stack);
     Matrix result;
-    for (int i = 0; i < val.size(); i++) {
+    for (int i = 0; i < val.Size(); i++) {
         result(i) = val(i) == 0 ? 1 : 0;
     }
     stack.push_back(new Variable("return", result));

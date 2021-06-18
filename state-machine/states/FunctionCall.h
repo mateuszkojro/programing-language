@@ -52,9 +52,9 @@ public:
                 return (State *) this;
             }
 
-            if (Matrix::is_matrix(buffer_)) {
+            if (Matrix::IsMatrix(buffer_)) {
                 Matrix matrix;
-                if (Matrix::parse_matrix(buffer_, matrix)) {
+                if (Matrix::ParseMatrix(buffer_, matrix)) {
                     stack_.push_back(new Variable("arg", matrix));
                     return (State *) this;
                 }

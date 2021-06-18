@@ -45,9 +45,9 @@ public:
             return new FunctionCall(stack_, value_buffer, variable_);
         }
         if (text[position] == ';') {
-            if (Matrix::is_matrix(value_buffer)) {
+            if (Matrix::IsMatrix(value_buffer)) {
                 Matrix matrix;
-                if (Matrix::parse_matrix(value_buffer, matrix)) {
+                if (Matrix::ParseMatrix(value_buffer, matrix)) {
                     variable_->set_value(matrix);
                     return nullptr;
                 }

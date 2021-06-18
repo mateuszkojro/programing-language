@@ -5,6 +5,9 @@
 #ifndef UI4_PROGRAMOWANIE_OBIEKTOWE_UTILITY_H
 #define UI4_PROGRAMOWANIE_OBIEKTOWE_UTILITY_H
 
+#include "Variable.h"
+#include "Matrix.h"
+
 class Utility {
 public:
     static Token *find_token(const Stack &stack, const std::string &token_name) {
@@ -26,6 +29,12 @@ public:
                 return false;
         }
     }
+
+  static Matrix &get_from_stack(Stack &stack) {
+	Variable *var = (Variable *) stack.back();
+	stack.pop_back();
+	return variable->get_value();
+  }
 };
 
 #endif //UI4_PROGRAMOWANIE_OBIEKTOWE_UTILITY_H

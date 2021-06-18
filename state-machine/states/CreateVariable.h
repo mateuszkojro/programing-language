@@ -22,7 +22,7 @@ public:
 
         if (text[position] == ';') {
             Matrix matrix;
-            bool succes = Matrix::parse_matrix(buffer, matrix);
+            bool succes = Matrix::ParseMatrix(buffer, matrix);
 
             if (succes) {
                 stack_.push_back(new Variable(name_, matrix));

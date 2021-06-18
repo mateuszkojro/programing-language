@@ -20,16 +20,16 @@ public:
             return this;
 
         if (text[position] == ',') {
-            matrix.add_value(std::stod(buffer));
+            matrix.AddValue(std::stod(buffer));
             buffer = "";
             return this;
         }
         if (text[position] == ']') {
-            matrix.add_value(std::stod(buffer));
+            matrix.AddValue(std::stod(buffer));
             buffer = "";
             if (text[position + 1] == ']')
                 return nullptr;
-            matrix.add_row();
+            matrix.AddRow();
             return new RowState(stack_, matrix);
         }
         if (!Utility::whitespace(text[position])) {
@@ -60,9 +60,9 @@ public:
     State *parse(const std::string &text, int position) override {
         if (text[position - 1] == '"') {
             if (!is_string) {
-                matrix.add_row();
-                matrix.add_column();
-                matrix.add_value(text[position]);
+                matrix.AddRow();
+                matrix.AddColumn();
+                matrix.AddValue(text[position]);
                 is_string = true;
                 return this;
             }
@@ -70,31 +70,31 @@ public:
 
         if (!is_string) {
             if (text[position] == '[') {
-                matrix.add_row();
+                matrix.AddRow();
                 return this;
             }
             if (text[position] == ',') {
-                matrix.add_column();
-                matrix.add_value(std::stod(buffer));
+                matrix.AddColumn();
+                matrix.AddValue(std::stod(buffer));
                 buffer = "";
                 return this;
             }
             if (text[position] == ']') {
-                matrix.add_column();
-                matrix.add_value(std::stod(buffer));
+                matrix.AddColumn();
+                matrix.AddValue(std::stod(buffer));
                 buffer = "";
                 if (text[position + 1] == ']')
                     return nullptr;
 
-                matrix.add_row();
+                matrix.AddRow();
                 return new RowState(stack_, matrix);
             }
         } else {
             if (text[position] == '"') {
                 return nullptr;
             }
-            matrix.add_column();
-            matrix.add_value(text[position]);
+            matrix.AddColumn();
+            matrix.AddValue(text[position]);
             return this;
         }
 
@@ -113,7 +113,7 @@ public:
 /// \param code code to be parsed
 /// \param matrix matrix to bullied up
 /// \return true if parsing completed successfully and false if it failed
-bool Matrix::parse_matrix(const std::string &code, Matrix &matrix) {
+bool Matrix::ParseMatrix(const std::string &code, Matrix &matrix) {
     Stack stack;
     if (code == "null") {
         return true;
@@ -134,19 +134,19 @@ bool Matrix::parse_matrix(const std::string &code, Matrix &matrix) {
 // Thanks to https://github.com/piotr233 for impl
 /// Create string representing the matrix
 /// \return string representation of the matrix
-std::string Matrix::repr() {
+std::string Matrix::Repr() {
 
     std::string out;
     out += "[";
-    for (unsigned i = 0; i < rows; i++) {
+    for (unsigned i = 0; i < rows_; i++) {
         out += "[";
-        for (unsigned j = 0; j < cols; j++) {
-            out += std::to_string(data_[i * cols + j]);
-            if (j != cols - 1)
+        for (unsigned j = 0; j < cols_; j++) {
+            out += std::to_string(data_[i * cols_ + j]);
+            if (j != cols_ - 1)
                 out += ", ";
         }
         out += "]";
-        if (i != rows - 1) out += "\n";
+        if (i != rows_ - 1) out += "\n";
     }
     out += "]\n";
     return out;
