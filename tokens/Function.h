@@ -9,29 +9,24 @@
 #include <functional>
 #include <utility>
 #include "Token.h"
+#include "../Stack.h"
 
-#define FUNCTION std::function<int(Stack&)>
+#define FUNCTION_TYPE std::function<int(Stack&)>
 
 class Function : public Token {
-    std::string name_;
+  std::string name_;
 
-    FUNCTION function_;
+  FUNCTION_TYPE function_;
 
-public:
-    Function(std::string name, FUNCTION function)
-            : name_(std::move(name)), function_(std::move(function)) {};
+ public:
+  Function(std::string name, FUNCTION_TYPE function)
+	  : name_(std::move(name)), function_(std::move(function)) {};
 
-    const std::string &get_name() override {
-        return name_;
-    }
+  const std::string &GetName() override;
 
-    TokenType get_type() override {
-        return function;
-    }
+  TokenType GetType() override;
 
-    FUNCTION get_value() {
-        return function_;
-    }
+  FUNCTION_TYPE GetValue();
 
 };
 

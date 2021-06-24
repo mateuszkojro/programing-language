@@ -14,13 +14,9 @@ class Scope : public Token {
 public:
     Scope(std::string name) : name_(name) {}
 
-    const std::string &get_name() override {
-        return name_;
-    }
+    const std::string &GetName() override;
 
-    TokenType get_type() override {
-        return scope;
-    }
+    TokenType GetType() override;
 
 };
 

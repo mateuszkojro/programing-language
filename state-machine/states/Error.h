@@ -7,14 +7,9 @@
 
 class Error : public State {
 public:
-    explicit Error(const std::string &error, Stack &stack) : State(stack) {
-        std::clog << error << std::endl;
-        exit(1);
-    }
+    explicit Error(const std::string &error, Stack &stack);
 
-    State *parse(const std::string &text, int position) override {
-        return nullptr;
-    }
+    State *Parse(const std::string &text, int position) override;
 };
 
 #endif //UI4_PROGRAMOWANIE_OBIEKTOWE_ERROR_H

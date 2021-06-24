@@ -10,75 +10,22 @@
 #include "Error.h"
 #include "VariableAssigment.h"
 
-class CreateVariable$ValueState : public State {
+class CreateVariableValueState : public State {
     std::string name_;
-    std::string buffer;
+    std::string buffer_;
 public:
-    CreateVariable$ValueState(const std::string &name, Stack &stack) : State(stack), name_(name) {
-        CHANGE_STATE("CreateVariable$ValueState");
-    }
+    CreateVariableValueState(std::string name, Stack &stack);
 
-    State *parse(const std::string &text, int position) override {
-
-        if (text[position] == ';') {
-            Matrix matrix;
-            bool succes = Matrix::parse_matrix(buffer, matrix);
-
-            if (succes) {
-                stack_.push_back(new Variable(name_, matrix));
-                return nullptr;
-            }
-            return new Error("Bad matrix", stack_);
-        }
-
-        if (!Utility::whitespace(text[position])) {
-            buffer.push_back(text[position]);
-            return this;
-        }
-        if (Utility::whitespace(text[position]))
-            return this;
-    }
+    State *Parse(const std::string &text, int position) override;
 };
 
 
-class CreateVariable$NameState : public State {
-    std::string buffer;
+class CreateVariableNameState : public State {
+    std::string buffer_;
 public:
-    CreateVariable$NameState(Stack &stack) : State(stack) {
-        CHANGE_STATE("CreateVariable$NameState");
-    }
+    explicit CreateVariableNameState(Stack &stack);
 
-    State *parse(const std::string &text, int position) override {
-
-//        if (text[position] == '=')
-//            return new CreateVariable$ValueState(buffer, stack_);
-        // todo we should check if var arledy exists
-
-        if (text[position] == '=') {
-            Matrix m;
-            Variable *var = new Variable(buffer, m);
-            stack_.push_back(var);
-            return new VariableAssigment(stack_, var);
-        }
-
-        if (text[position] == ';') {
-            Matrix m;
-            Variable *var = new Variable(buffer, m);
-            stack_.push_back(var);
-            return nullptr;
-        }
-
-        if (!Utility::whitespace(text[position])) {
-            buffer += text[position];
-            return this;
-        }
-
-        if (Utility::whitespace(text[position]))
-            return this;
-
-
-        return new Error("Expected =", stack_);
-    }
+    State *Parse(const std::string &text, int position) override;
 };
 
 #endif //UI4_PROGRAMOWANIE_OBIEKTOWE_CREATEVARIABLE_H

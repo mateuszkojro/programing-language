@@ -5,8 +5,8 @@
 #ifndef UI4_PROGRAMOWANIE_OBIEKTOWE_VARIABLE_H
 #define UI4_PROGRAMOWANIE_OBIEKTOWE_VARIABLE_H
 
-#include "tokens/Token.h"
-#include "Matrix.h"
+#include "Token.h"
+#include "../Matrix.h"
 
 using ValueType = Matrix;
 
@@ -15,24 +15,18 @@ public:
     Variable(std::string name, ValueType value)
             : name_(std::move(name)), value_(std::move(value)) {}
 
-    std::string &get_name() override {
-        return name_;
-    }
+    std::string &GetName() override;
 
-    TokenType get_type() override {
-        return TokenType::variable;
-    }
+    TokenType GetType() override;
 
-    void set_value(Matrix value) {
+    void SetValue(Matrix value) {
         value_ = std::move(value);
     }
 
-    Matrix& get_value() {
-        return value_;
-    }
+    Matrix& GetValue();
 
 private:
-    Matrix value_;
+    ValueType value_;
     std::string name_;
 };
 

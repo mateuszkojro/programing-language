@@ -1,118 +1,125 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include "Function.h"
 #include "tokens/Variable.h"
 #include "state-machine/Parser.h"
+#include "Stack.h"
 
-int hello(Stack &stack) {
-    std::cout << "hello" << std::endl;
-    return 0;
+Matrix &GetFromStack(Stack &stack) {
+  Variable *variable = (Variable *)stack.Back();
+  stack.PopBack();
+  return variable->GetValue();
 }
 
-int exit_func(Stack &stack) {
-    exit(0);
-    return 0;
+int Hello(Stack &stack) {
+  std::cout << "Hello" << std::endl;
+  return 0;
 }
 
-int print(Stack &stack) {
-    auto mat = Matrix::get_from_stack(stack);
-    std::cout << mat.repr() << std::endl;
-    return 0;
+int ExitFunc(Stack &stack) {
+  exit(0);
+  return 0;
 }
 
-int ones(Stack &stack) {
-    Matrix m;
-    Matrix::parse_matrix("[[1,1,1][1,1,1][1,1,1]]", m);
-    stack.push_back(new Variable("return", m));
-    return 1;
+int Print(Stack &stack) {
+  auto mat = GetFromStack(stack);
+  std::cout << mat.Repr() << std::endl;
+  return 0;
 }
 
-int input(Stack &stack) {
-    Matrix m;
-    std::string input;
-    std::getline(std::cin, input);
-    Matrix::parse_matrix(input, m);
-    stack.push_back(new Variable("return", m));
-    return 1;
+int Ones(Stack &stack) {
+  Matrix m;
+  Matrix::ParseMatrix("[[1,1,1][1,1,1][1,1,1]]", m);
+  stack.PushBack(new Variable("return", m));
+  return 1;
 }
 
-int text(Stack &stack) {
-    auto val = Matrix::get_from_stack(stack);
-    for (int i = 0; i < val.size(); i++) {
-        std::cout << (char) val.get(i);
-    }
-    return 1;
+int Input(Stack &stack) {
+  Matrix m;
+  std::string input;
+  std::getline(std::cin, input);
+  Matrix::ParseMatrix(input, m);
+  stack.PushBack(new Variable("return", m));
+  return 1;
 }
 
-int eq(Stack &stack) {
-    auto mat1 = Matrix::get_from_stack(stack);
-    auto mat2 = Matrix::get_from_stack(stack);
-
-    Matrix m;
-    if (mat1 == mat2) {
-        Matrix::parse_matrix("[[1]]", m);
-    } else {
-        Matrix::parse_matrix("[[0]]", m);
-    }
-    stack.push_back(new Variable("return", m));
-    return 1;
+int Text(Stack &stack) {
+  auto val = GetFromStack(stack);
+  for (int i = 0; i < val.Size(); i++) {
+	std::cout << (char)val.Get(i);
+  }
+  return 1;
 }
 
-int newline(Stack &stack) {
-    std::cout << std::endl;
-    return 1;
+int Eq(Stack &stack) {
+  auto mat1 = GetFromStack(stack);
+  auto mat2 = GetFromStack(stack);
+
+  Matrix m;
+  if (mat1 == mat2) {
+	Matrix::ParseMatrix("[[1]]", m);
+  } else {
+	Matrix::ParseMatrix("[[0]]", m);
+  }
+  stack.PushBack(new Variable("return", m));
+  return 1;
 }
 
-int not_func(Stack &stack) {
-    Matrix val = Matrix::get_from_stack(stack);
-    Matrix result;
-    for (int i = 0; i < val.size(); i++) {
-        result(i) = val(i) == 0 ? 1 : 0;
-    }
-    stack.push_back(new Variable("return", result));
-    return 1;
+int Newline(Stack &stack) {
+  std::cout << std::endl;
+  return 1;
+}
+
+int NotFunc(Stack &stack) {
+  Matrix val = GetFromStack(stack);
+  Matrix result;
+  for (int i = 0; i < val.Size(); i++) {
+	result(i) = val(i) == 0 ? 1 : 0;
+  }
+  stack.PushBack(new Variable("return", result));
+  return 1;
 }
 
 int main(int argc, char **argv) {
-    Parser parser;
-//    std::function<int(Stack&)> func = hello;
-    parser.stack_.push_back(new Function("hello", hello));
-    parser.stack_.push_back(new Function("exit", exit_func));
-    parser.stack_.push_back(new Function("print", print));
-    parser.stack_.push_back(new Function("ones", ones));
-    parser.stack_.push_back(new Function("eq", eq));
-    parser.stack_.push_back(new Function("input", input));
-    parser.stack_.push_back(new Function("text", text));
-    parser.stack_.push_back(new Function("newline", newline));
-    parser.stack_.push_back(new Function("not", not_func));
+  Parser parser;
+//    std::FUNCTION<int(Stack&)> func = Hello;
+  parser.stack_.PushBack(new Function("hello", Hello));
+  parser.stack_.PushBack(new Function("exit", ExitFunc));
+  parser.stack_.PushBack(new Function("print", Print));
+  parser.stack_.PushBack(new Function("ones", Ones));
+  parser.stack_.PushBack(new Function("eq", Eq));
+  parser.stack_.PushBack(new Function("input", Input));
+  parser.stack_.PushBack(new Function("text", Text));
+  parser.stack_.PushBack(new Function("newline", Newline));
+  parser.stack_.PushBack(new Function("not", NotFunc));
 
+  if (argc < 2) {
+	// maybe repl?
+	while (true) {
+	  std::string line;
+	  std::getline(std::cin, line);
+	  parser.ParseString(line);
+	  if (line == "#quit#")
+		break;
+	}
+	return 0;
+  }
 
-    if (argc < 2) {
-        // maybe repl?
-        while (true) {
-            std::string line;
-            std::getline(std::cin, line);
-            parser.parse_string(line);
-            if (line == "#quit#")
-                break;
-        }
-        return 0;
-        std::cerr << "Give file as parametr" << std::endl;
-    }
+  std::fstream (file);
 
-    std::fstream (file);
+  file.open(argv[1], std::ios::in);
 
-    file.open(argv[1], std::ios::in);
+  while (file.good()) {
+	std::string line;
+	std::getline(file, line);
+	parser.ParseString(line);
+  }
 
-    while (file.good()) {
-        std::string line;
-        std::getline(file, line);
-        parser.parse_string(line);
-    }
-//
-//    parser.parse_string("mat x = [[1]];"
+//    parser.ParseString("mat x = [[1]];"
 //                        "x = [[1,2,3,4][5,6,7,8]];"
-//                        "hello()"
+//                        "Hello()"
 //    );
-    return 0;
+
+  return 0;
 }

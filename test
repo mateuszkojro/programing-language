@@ -1,9 +1,9 @@
 mat greating = "Give yor name: ";
 text(greating);
-mat name = input();
+mat name = Input();
 
 mat expected_name = "Mateusz";
-mat condition = eq(name,expected_name);
+mat condition = Eq(name,expected_name);
 if condition {
     mat resp = "Hello";
     text(resp);
@@ -11,5 +11,5 @@ if condition {
     text(name);
 }
 resp = "bye!";
-newline();
-text(resp);
+Newline();
+Text(resp);

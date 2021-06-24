@@ -5,26 +5,25 @@
 #ifndef UI4_PROGRAMOWANIE_OBIEKTOWE_TOKEN_H
 #define UI4_PROGRAMOWANIE_OBIEKTOWE_TOKEN_H
 
+#include <string>
 /// \brief Interface for all the Tokens encounter in the code
 class Token {
 public:
 
     /// \brief Every token needs to know whats it type is
     enum TokenType {
-        variable,
-        function,
-        scope
+        VARIABLE,
+        FUNCTION,
+        SCOPE
     };
 
     /// Get the name used to access the token in the code
     /// \return name of the tokne in code
-    virtual const std::string &get_name() = 0;
+    virtual const std::string &GetName() = 0;
 
     /// Return the type of the token being accessed
     /// \return the type of the token
-    virtual TokenType get_type() = 0;
+    virtual TokenType GetType() = 0;
 };
-
-using Stack = std::vector<Token *>;
 
 #endif //UI4_PROGRAMOWANIE_OBIEKTOWE_TOKEN_H

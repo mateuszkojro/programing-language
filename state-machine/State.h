@@ -6,19 +6,19 @@
 #define UI4_PROGRAMOWANIE_OBIEKTOWE_STATE_H
 
 #include <deque>
-#include "tokens/Token.h"
+#include "Token.h"
+#include "../Stack.h"
 #include <iostream>
 
-#define CHANGE_STATE(state) std::clog << state << std::endl
+#define CHANGE_STATE(state) std::clog << std::endl << state << std::endl;
 
 class State {
-public:
-    State(Stack &stack) : stack_(stack) {}
+ public:
+  explicit State(Stack &stack) : stack_(stack) {}
+  virtual State *Parse(const std::string &text, int position) = 0;
 
-    virtual State *parse(const std::string &text, int position) = 0;
-
-protected:
-    Stack &stack_;
+ protected:
+  Stack &stack_;
 };
 
 #endif //UI4_PROGRAMOWANIE_OBIEKTOWE_STATE_H
