@@ -1,9 +1,0 @@
-<map id="state&#45;machine/states/Error.h" name="state&#45;machine/states/Error.h">
-<area shape="rect" id="node1" title=" " alt="" coords="35,5,180,47"/>
-<area shape="rect" id="node2" href="$_base_8h.html" title=" " alt="" coords="128,95,273,136"/>
-<area shape="rect" id="node5" href="$_create_variable_8h.html" title=" " alt="" coords="5,273,151,315"/>
-<area shape="rect" id="node3" href="$_parser_8h.html" title=" " alt="" coords="349,191,508,218"/>
-<area shape="rect" id="node6" href="$_variable_assigment_8h.html" title=" " alt="" coords="128,184,273,225"/>
-<area shape="rect" id="node4" href="$main_8cpp.html" title=" " alt="" coords="391,281,466,307"/>
-<area shape="rect" id="node7" href="$_conditional_8h.html" title=" " alt="" coords="199,273,344,315"/>
-</map>
