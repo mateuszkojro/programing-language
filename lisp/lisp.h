@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "Stack.h"
+
 namespace ls
 {
     class Interpreter
@@ -9,5 +11,6 @@ namespace ls
         int interpret(const std::string &code);
 
     private:
+        Stack<int> stack_;
     };
 }
