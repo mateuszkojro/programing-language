@@ -1,6 +1,10 @@
+#ifndef LS_LISP
+#define LS_LISP
+
 #include <iostream>
 
 #include "Stack.h"
+#include "tokens/Token.h"
 
 namespace ls
 {
@@ -11,6 +15,8 @@ namespace ls
         int interpret(const std::string &code);
 
     private:
-        Stack<int> stack_;
+        Stack<Token*> stack_;
     };
 }
+
+#endif
