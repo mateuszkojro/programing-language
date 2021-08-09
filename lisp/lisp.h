@@ -16,6 +16,7 @@ namespace ls
 
     private:
         Stack<Token*> stack_;
+        Token* parsing_token_;
     };
 }
 
