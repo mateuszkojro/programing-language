@@ -37,6 +37,11 @@ std::ostream &operator<<(std::ostream &os, const Number &n) {
 
 Operator::Operator(Type t) { value_ = t; }
 
+
+Operator::Type Operator::type(){
+  return this->value_;
+}
+
 std::pair<Operator, string> Operator::Parse(const string &expr) {
 
   auto result = extract_operator(expr);
@@ -74,7 +79,7 @@ Expr Expr::Parse(const string &expr) {
 
   auto str = expr;
 
-  auto num1_parse = Number::Parse(expr);
+  auto num1_parse = Number::Parse(str);
   str = num1_parse.second;
 
   str = extract_whitespace(str).second;
@@ -108,27 +113,54 @@ bool Expr::operator==(const Expr &other) const {
   return lhs_eq && rhs_eq && op_eq;
 }
 
+// Value Expr::eval() {
+//   double result;
+
+//   switch (op_.type()) {
+//     case Operator::Add:{
+//       return 
+//     }
+//     case Operator::Subtract:{
+//       return 
+//     }
+//     case Operator::Multiply:{
+//       return 
+//     }
+//     case Operator::Divide:{
+//       return 
+//     }
+//   }
+// }
+
+
 BindDef BindDef::Parse(const string &text) {
 
+  // Variiable declaration needs to start with "mat"
   auto str = extract(text, "mat").second;
 
+  // Remove following whitespace
   str = extract_whitespace(str).second;
 
+  // Extract the name of the variable
   auto name_parse = extract_identifier(str);
   str = name_parse.second;
 
+  // Save name of the var for later
   auto bind_name = name_parse.first;
 
   str = extract_whitespace(str).second;
 
+  // Now there needs to be a "="
   str = extract(str, "=").second;
 
   str = extract_whitespace(str).second;
 
+  // Parse an expresion that should be assigned to var
   auto expr_parse = Expr::Parse(str);
 
   auto bind_expr = expr_parse;
 
+  // Create var
   return BindDef(bind_name, bind_expr);
 }
 

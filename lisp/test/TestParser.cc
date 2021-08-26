@@ -25,7 +25,7 @@ TEST_CASE("Parsing add", "[Parser]") {
           make_pair(Operator(Operator::Add), (string) ""));
 }
 
-TEST_CASE("Extracting whitespace", "[Parser]"){
+TEST_CASE("Extracting whitespace", "[Parser]") {
   REQUIRE(extract_whitespace(" 1+2") == Str2(" ", "1+2"));
 }
 
@@ -47,5 +47,10 @@ TEST_CASE("Parsing expression", "[Parser]") {
 }
 
 TEST_CASE("Parsinng binding", "[Parser]") {
-  REQUIRE(BindDef::Parse("mat x = 2 / 4") == BindDef("x", Expr(Number(2), Number(4), Operator(Operator::Divide))));
+  REQUIRE(BindDef::Parse("mat x = 2 / 4") ==
+          BindDef("x", Expr(Number(2), Number(4), Operator(Operator::Divide))));
+}
+
+TEST_CASE("Extrac constant expr", "[Parser") {
+  REQUIRE(extract("abc", "a") == Str2("a", "bc"));
 }

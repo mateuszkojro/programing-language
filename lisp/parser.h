@@ -9,6 +9,16 @@
 #include <string>
 #include <utility>
 
+// class Value {
+// public:
+//   Value() = default;
+//   virtual ~Value() = default;
+
+//   enum Type { Number } type_;
+
+//   template <class T> T get();
+// };
+
 using std::string;
 
 using Str2 = std::pair<string, string>;
@@ -68,6 +78,8 @@ public:
   static std::pair<Operator, string> Parse(const string &op);
   Operator(Type t);
 
+  Type type();
+
   bool operator==(const Operator &op) const;
   bool operator==(const Operator::Type &op) const;
 
@@ -83,6 +95,8 @@ class Expr {
 public:
   static Expr Parse(const string &expr);
   Expr(const Number &lhs, const Number &rhs, const Operator &op);
+
+  // Value eval();
 
   bool operator==(const Expr &other) const;
 
