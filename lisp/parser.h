@@ -1,6 +1,8 @@
+#include "catch2/catch.hpp"
 #include <cassert>
 #include <cctype>
 #include <cmath>
+#include <cstring>
 #include <iostream>
 #include <iterator>
 #include <ostream>
@@ -93,3 +95,33 @@ private:
   Number rhs_;
   Operator op_;
 };
+
+class BindDef {
+public:
+  static BindDef Parse(const string &text);
+
+  BindDef(const std::string &name, const Expr &expr);
+
+  bool operator==(const BindDef &op) const;
+
+private:
+  string name_;
+  Expr expr_;
+};
+
+static bool is_alphanumeric(char c) { return std::isalpha(c); }
+
+static Str2 extract(const string &text, const string &prefix) {
+  if (text.rfind(prefix, 0) == 0) { // pos=0 limits the search to the prefix
+    return std::make_pair(prefix, text.substr(prefix.size()));
+  } else {
+    std::cerr << "Expected: " << prefix << std::endl;
+    assert(false);
+  }
+}
+
+static Str2 extract_identifier(const string &text) {
+  // FIXME: First character in id can be an number using that we should not
+  // allow it
+  return take_whle(text, is_alphanumeric);
+}

@@ -6,6 +6,8 @@
 
 #include "parser.h"
 
+#define log(var) std::cerr << #var << "='" << var << "'" << std::endl;
+
 Number::Number(double number) { this->value_ = number; }
 std::pair<Number, string> Number::Parse(string number) {
   auto result = extract_digits(number);
@@ -104,4 +106,43 @@ bool Expr::operator==(const Expr &other) const {
   bool rhs_eq = this->rhs_ == other.rhs_;
   bool op_eq = this->op_ == other.op_;
   return lhs_eq && rhs_eq && op_eq;
+}
+
+BindDef BindDef::Parse(const string &text) {
+  string str;
+
+  auto keyword_parse = extract_identifier(text);
+
+  str = keyword_parse.second;
+
+  if (keyword_parse.first != "mat") {
+    std::cerr << "Expected mat" << std::endl;
+    assert(false);
+  }
+
+  str = extract_whitespace(str).second;
+
+  auto name_parse = extract_identifier(str);
+  str = name_parse.second;
+
+  auto bind_name = name_parse.first;
+
+  str = extract_whitespace(str).second;
+
+  str = extract(str, "=").second;
+
+  str = extract_whitespace(str).second;
+
+  auto expr_parse = Expr::Parse(str);
+
+  auto bind_expr = expr_parse;
+
+  return BindDef(bind_name, bind_expr);
+}
+
+BindDef::BindDef(const std::string &name, const Expr &expr)
+    : name_(name), expr_(expr) {}
+
+bool BindDef::operator==(const BindDef &other) const {
+  return name_ == other.name_ && expr_ == other.expr_;
 }
