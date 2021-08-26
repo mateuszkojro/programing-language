@@ -109,16 +109,8 @@ bool Expr::operator==(const Expr &other) const {
 }
 
 BindDef BindDef::Parse(const string &text) {
-  string str;
 
-  auto keyword_parse = extract_identifier(text);
-
-  str = keyword_parse.second;
-
-  if (keyword_parse.first != "mat") {
-    std::cerr << "Expected mat" << std::endl;
-    assert(false);
-  }
+  auto str = extract(text, "mat").second;
 
   str = extract_whitespace(str).second;
 
