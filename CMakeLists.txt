@@ -8,7 +8,6 @@ add_subdirectory(lisp/)
 
 add_executable(interpreter interpreter.cc)
 
-target_link_libraries(interpreter lisp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
