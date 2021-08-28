@@ -24,7 +24,6 @@ TEST_CASE("Parsing add", "[Parser]") {
   REQUIRE(Operator::Parse("+") ==
           make_pair(Operator(Operator::Add), (string) ""));
 }
-
 TEST_CASE("Extracting whitespace", "[Parser]") {
   REQUIRE(extract_whitespace(" 1+2") == Str2(" ", "1+2"));
 }
