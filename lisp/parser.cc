@@ -1,27 +1,34 @@
 #include <cassert>
 #include <iostream>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <utility>
 
+#include "env.h"
 #include "parser.h"
 
 #define log(var) std::cerr << #var << "='" << var << "'" << std::endl;
 
 Number::Number(double number) { this->value_ = number; }
-std::pair<Number, string> Number::Parse(string number) {
+optional<pair<Number, string>> Number::Parse(string number) {
+  
   auto result = extract_digits(number);
+  if (result.first == "")
+    return nullopt;
+
   try {
     return std::make_pair(Number(std::stod(result.first)), result.second);
   } catch (const std::invalid_argument &e) {
     std::cerr << "Malformed number: " << result.first << std::endl;
-    assert(false);
-
+    return nullopt;
   } catch (const std::out_of_range &e) {
     std::cerr << "Number too large" << std::endl;
-    assert(false);
+    return nullopt;
   }
 }
+
+double Number::get_value() const { return value_; }
 
 bool Number::operator==(const Number &other) const {
   return this->value_ == other.value_;
@@ -37,30 +44,27 @@ std::ostream &operator<<(std::ostream &os, const Number &n) {
 
 Operator::Operator(Type t) { value_ = t; }
 
+Operator::Type Operator::type() { return this->value_; }
 
-Operator::Type Operator::type(){
-  return this->value_;
-}
-
-std::pair<Operator, string> Operator::Parse(const string &expr) {
+optional<std::pair<Operator, string>> Operator::Parse(const string &expr) {
 
   auto result = extract_operator(expr);
 
-  auto op = result.first;
+  if (!result)
+    return nullopt;
+  auto op = result.value().first;
 
   if (op == "+")
-    return std::make_pair(Operator(Type::Add), result.second);
+    return std::make_pair(Operator(Type::Add), result.value().second);
   else if (op == "-")
-    return std::make_pair(Operator(Type::Subtract), result.second);
+    return std::make_pair(Operator(Type::Subtract), result.value().second);
   else if (op == "*")
-    return std::make_pair(Operator(Type::Multiply), result.second);
+    return std::make_pair(Operator(Type::Multiply), result.value().second);
   else if (op == "/")
-    return std::make_pair(Operator(Type::Divide), result.second);
+    return std::make_pair(Operator(Type::Divide), result.value().second);
 
-  else {
-    std::cerr << "Bad operator: " << op << std::endl;
-    assert(false);
-  }
+  else
+    return nullopt;
 }
 
 bool Operator::operator==(const Operator &other) const {
@@ -75,25 +79,33 @@ std::ostream &operator<<(std::ostream &os, const Operator &n) {
   return os;
 }
 
-Expr Expr::Parse(const string &expr) {
+optional<Expr> Expr::Parse(const string &expr) {
 
   auto str = expr;
 
   auto num1_parse = Number::Parse(str);
-  str = num1_parse.second;
+  if (!num1_parse)
+    return nullopt;
+
+  str = num1_parse.value().second;
 
   str = extract_whitespace(str).second;
 
   auto op_parse = Operator::Parse(str);
-  str = op_parse.second;
+  if (!op_parse)
+    return nullopt;
+
+  str = op_parse.value().second;
 
   str = extract_whitespace(str).second;
 
   auto num2_parse = Number::Parse(str);
+  if (!num2_parse)
+    return nullopt;
 
-  auto lhs = num1_parse.first;
-  auto op = op_parse.first;
-  auto rhs = num2_parse.first;
+  auto lhs = num1_parse.value().first;
+  auto op = op_parse.value().first;
+  auto rhs = num2_parse.value().first;
 
   return Expr(lhs, rhs, op);
 }
@@ -113,55 +125,72 @@ bool Expr::operator==(const Expr &other) const {
   return lhs_eq && rhs_eq && op_eq;
 }
 
-// Value Expr::eval() {
-//   double result;
+Value *Expr::eval() {
+  double result;
 
-//   switch (op_.type()) {
-//     case Operator::Add:{
-//       return 
-//     }
-//     case Operator::Subtract:{
-//       return 
-//     }
-//     case Operator::Multiply:{
-//       return 
-//     }
-//     case Operator::Divide:{
-//       return 
-//     }
-//   }
-// }
+  switch (op_.type()) {
+  case Operator::Add: {
+    result = lhs_.get_value() + rhs_.get_value();
+    break;
+  }
+  case Operator::Subtract: {
+    result = lhs_.get_value() - rhs_.get_value();
+    break;
+  }
+  case Operator::Multiply: {
+    result = lhs_.get_value() * rhs_.get_value();
+    break;
+  }
+  case Operator::Divide: {
+    result = lhs_.get_value() / rhs_.get_value();
+    break;
+  }
+  }
+  return new Number(result);
+}
 
-
-BindDef BindDef::Parse(const string &text) {
+optional<BindDef> BindDef::Parse(const string &text) {
 
   // Variiable declaration needs to start with "mat"
-  auto str = extract(text, "mat").second;
+  auto tag1 = tag(text, "mat");
+  if (!tag1)
+    return nullopt;
+
+  auto str = tag1.value().second;
 
   // Remove following whitespace
   str = extract_whitespace(str).second;
 
   // Extract the name of the variable
   auto name_parse = extract_identifier(str);
-  str = name_parse.second;
+  if (!name_parse)
+    return nullopt;
+
+  str = name_parse.value().second;
 
   // Save name of the var for later
-  auto bind_name = name_parse.first;
+  auto bind_name = name_parse.value().first;
 
   str = extract_whitespace(str).second;
 
   // Now there needs to be a "="
-  str = extract(str, "=").second;
+  auto tag2 = tag(str, "=");
+  if (!tag2)
+    return nullopt;
+
+  str = tag2.value().second;
 
   str = extract_whitespace(str).second;
 
   // Parse an expresion that should be assigned to var
   auto expr_parse = Expr::Parse(str);
+  if (!expr_parse)
+    return nullopt;
 
-  auto bind_expr = expr_parse;
+  Expr bind_expr = expr_parse.value();
 
   // Create var
-  return BindDef(bind_name, bind_expr);
+  return optional(BindDef(bind_name, bind_expr));
 }
 
 BindDef::BindDef(const std::string &name, const Expr &expr)
@@ -170,3 +199,5 @@ BindDef::BindDef(const std::string &name, const Expr &expr)
 bool BindDef::operator==(const BindDef &other) const {
   return name_ == other.name_ && expr_ == other.expr_;
 }
+
+void BindDef::eval(Env &env) { env.store_binding(name_, this->expr_.eval()); }

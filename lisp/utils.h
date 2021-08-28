@@ -1,16 +1,26 @@
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
+#include <optional>
 #include <string>
 #include <utility>
 
+using std::nullopt;
+using std::optional;
 using std::string;
 using Str2 = std::pair<string, string>;
 
-static void err(string message) {
-  std::cerr << message << std::endl;
-  std::exit(1);
-}
+#define err(message, value)                                                    \
+  do {                                                                         \
+    std::cerr << message << value << std::endl;                                \
+    std::exit(1);                                                              \
+  } while (false)
+
+#define errmsg(message)                                                        \
+  do {                                                                         \
+    std::cerr << message << std::endl;                                         \
+    std::exit(1);                                                              \
+  } while (false)
 
 static Str2 take_whle(const string &expr, bool (*func)(char z)) {
   int i = 0;
@@ -35,10 +45,31 @@ static Str2 extract_whitespace(const std::string expr) {
   return take_whle(expr, is_whitespace);
 }
 
-static Str2 extract_operator(const std::string expr) {
+static optional<Str2> extract_operator(const std::string expr) {
   char op = expr[0];
   if (op == '+' | op == '-' | op == '*' | op == '/') {
-    return {expr.substr(0, 1), expr.substr(1)};
+    return optional((Str2){expr.substr(0, 1), expr.substr(1)});
   }
-  err("Nad operator");
+  return std::nullopt;
+}
+
+static bool is_alphanumeric(char c) { return std::isalpha(c); }
+
+static optional<Str2> tag(const string &text, const string &prefix) {
+  if (text.rfind(prefix, 0) == 0) { // pos=0 limits the search to the prefix
+    return optional(make_pair(prefix, text.substr(prefix.size())));
+  } else {
+    return nullopt;
+  }
+}
+
+static optional<Str2> extract_identifier(const string &text) {
+  // FIXME: First character in id can be an number using that we should not
+  // allow it
+  auto result = take_whle(text, is_alphanumeric);
+
+  if (result.first == "")
+    return nullopt;
+
+  return optional(result);
 }
