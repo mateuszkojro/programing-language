@@ -5,12 +5,24 @@ project(lisp VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_library(parser parser.cc env.cc)
+add_library(parser 
+        parser.cc
+        env.cc
+        BindDef.cc
+        Expr.cc
+        )
 target_compile_features(parser PRIVATE cxx_std_17)
 
 add_subdirectory(lib/Catch2)
 include_directories(lib/Catch2/single_include)
-add_executable(tests test/TestMain.cc test/TestParser.cc)
+
+add_executable(tests 
+        test/TestMain.cc 
+        test/TestParser.cc
+        test/TestExpr.cc
+        test/TestBind.cc
+        )
+
 target_link_libraries(tests PRIVATE 
         parser
         Catch2::Catch2

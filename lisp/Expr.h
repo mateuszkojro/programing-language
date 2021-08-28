@@ -12,12 +12,12 @@ using std::string;
 
 class Expr {
 public:
-  static optional<Expr> Parse(const string &expr);
+  static optional<Expr*> Parse(const string &expr);
   Expr() = default;
 
-  Value *eval() { assert(false); };
+  virtual Value *eval() = 0; // { assert(false); };
 
-  bool operator==(const Expr &other) const { assert(false); };
+  // virtual bool operator==(const Expr &other) const { assert(false); };
 
   ~Expr() = default;
 };
@@ -26,7 +26,7 @@ class ExprNumber : public Expr {
 public:
   ExprNumber(const Number &num);
 
-  Value *eval();
+  virtual Value *eval() override;
 
   bool operator==(const ExprNumber &other) const;
 
@@ -42,7 +42,7 @@ class ExprOperation : public Expr {
 public:
   ExprOperation(const Number &lhs, const Number &rhs, const Operator &op);
 
-  Value *eval();
+  virtual Value *eval() override;
 
   bool operator==(const ExprOperation &other) const;
 

@@ -17,7 +17,9 @@ ExprOperation::ExprOperation(const Number &lhs, const Number &rhs,
                              const Operator &op)
     : rhs_(rhs), lhs_(lhs), op_(op) {}
 
-Value *eval();
+Value *ExprNumber::eval(){
+  return new Number(value_);
+}
 
 bool ExprOperation::operator==(const ExprOperation &other) const {
   bool lhs_eq = this->lhs_ == other.lhs_;
@@ -55,7 +57,7 @@ std::ostream &operator<<(std::ostream &os, const ExprOperation &e) {
   return os;
 }
 
-optional<Expr> Expr::Parse(const string &expr) {
+optional<Expr*> Expr::Parse(const string &expr) {
 
   auto str = expr;
 
@@ -83,5 +85,5 @@ optional<Expr> Expr::Parse(const string &expr) {
   auto op = op_parse.value().first;
   auto rhs = num2_parse.value().first;
 
-  return ExprOperation(lhs, rhs, op);
+  return optional(new ExprOperation(lhs, rhs, op));
 }

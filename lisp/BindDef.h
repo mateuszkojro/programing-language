@@ -13,7 +13,7 @@ class BindDef {
 public:
   static optional<BindDef> Parse(const string &text);
 
-  BindDef(const string &name, const Expr &expr);
+  BindDef(const string &name, Expr* expr);
 
   void eval(Env &env);
 
@@ -21,7 +21,7 @@ public:
 
 private:
   string name_;
-  Expr expr_;
+  Expr* expr_;
 };
 
 

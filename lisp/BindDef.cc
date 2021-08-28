@@ -38,17 +38,17 @@ optional<BindDef> BindDef::Parse(const string &text) {
   if (!expr_parse)
     return nullopt;
 
-  Expr bind_expr = expr_parse.value();
+  Expr* bind_expr = expr_parse.value();
 
   // Create var
   return optional(BindDef(bind_name, bind_expr));
 }
 
-BindDef::BindDef(const std::string &name, const Expr &expr)
+BindDef::BindDef(const std::string &name,Expr* expr)
     : name_(name), expr_(expr) {}
 
 bool BindDef::operator==(const BindDef &other) const {
-  return name_ == other.name_ && expr_ == other.expr_;
+  return name_ == other.name_ && ((Number*)expr_->eval())->get_value() == ((Number*)other.expr_->eval())->get_value();
 }
 
-void BindDef::eval(Env &env) { env.store_binding(name_, this->expr_.eval()); }
+void BindDef::eval(Env &env) { env.store_binding(name_, this->expr_->eval()); }
