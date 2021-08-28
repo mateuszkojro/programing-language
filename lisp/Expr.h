@@ -1,6 +1,7 @@
 #ifndef EXPR_H
 #define EXPR_H
 
+#include <cassert>
 #include <optional>
 #include <string>
 
@@ -14,13 +15,12 @@ public:
   static optional<Expr> Parse(const string &expr);
   Expr() = default;
 
-  Value *eval() = delete;
+  Value *eval() { assert(false); };
 
-  bool operator==(const Expr &other) const = delete;
+  bool operator==(const Expr &other) const { assert(false); };
 
   ~Expr() = default;
 };
-
 
 class ExprNumber : public Expr {
 public:
@@ -37,7 +37,6 @@ public:
 private:
   Number value_;
 };
-
 
 class ExprOperation : public Expr {
 public:
