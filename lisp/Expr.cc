@@ -17,9 +17,7 @@ ExprOperation::ExprOperation(const Number &lhs, const Number &rhs,
                              const Operator &op)
     : rhs_(rhs), lhs_(lhs), op_(op) {}
 
-Value *ExprNumber::eval(){
-  return new Number(value_);
-}
+Value *ExprNumber::eval() { return new Number(value_); }
 
 bool ExprOperation::operator==(const ExprOperation &other) const {
   bool lhs_eq = this->lhs_ == other.lhs_;
@@ -57,7 +55,7 @@ std::ostream &operator<<(std::ostream &os, const ExprOperation &e) {
   return os;
 }
 
-optional<Expr*> Expr::Parse(const string &expr) {
+optional<Expr *> Expr::Parse(const string &expr) {
 
   auto str = expr;
 
@@ -70,20 +68,24 @@ optional<Expr*> Expr::Parse(const string &expr) {
   str = extract_whitespace(str).second;
 
   auto op_parse = Operator::Parse(str);
-  if (!op_parse)
-    return nullopt;
 
-  str = op_parse.value().second;
+  if (op_parse) {
 
-  str = extract_whitespace(str).second;
+    str = op_parse.value().second;
 
-  auto num2_parse = Number::Parse(str);
-  if (!num2_parse)
-    return nullopt;
+    str = extract_whitespace(str).second;
 
-  auto lhs = num1_parse.value().first;
-  auto op = op_parse.value().first;
-  auto rhs = num2_parse.value().first;
+    auto num2_parse = Number::Parse(str);
+    if (!num2_parse)
+      return nullopt;
 
-  return optional(new ExprOperation(lhs, rhs, op));
+    auto lhs = num1_parse.value().first;
+    auto op = op_parse.value().first;
+    auto rhs = num2_parse.value().first;
+
+    return optional(new ExprOperation(lhs, rhs, op));
+  } else {
+    // Could not parse equation we need to backtrack and parse number
+    return optional(new ExprNumber(num1_parse.value().first));
+  }
 }
