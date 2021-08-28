@@ -9,6 +9,7 @@ add_library(parser
         parser.cc
         env.cc
         BindDef.cc
+        BindingUsage.cc
         Expr.cc
         )
 target_compile_features(parser PRIVATE cxx_std_17)

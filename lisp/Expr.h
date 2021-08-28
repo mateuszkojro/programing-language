@@ -12,7 +12,7 @@ using std::string;
 
 class Expr {
 public:
-  static optional<Expr*> Parse(const string &expr);
+  static optional<pair<Expr*, string>> Parse(const string &expr);
   Expr() = default;
 
   virtual Value *eval() = 0; // { assert(false); };

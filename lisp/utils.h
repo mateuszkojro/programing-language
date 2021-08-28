@@ -10,6 +10,9 @@ using std::optional;
 using std::string;
 using Str2 = std::pair<string, string>;
 
+#ifndef UTILS_H
+#define UTILS_H
+
 #define err(message, value)                                                    \
   do {                                                                         \
     std::cerr << message << value << std::endl;                                \
@@ -63,13 +66,23 @@ static optional<Str2> tag(const string &text, const string &prefix) {
   }
 }
 
+static bool is_alphanumeric_or_digit(char c) {
+  return is_alphanumeric(c) || is_digit(c);
+}
+
 static optional<Str2> extract_identifier(const string &text) {
   // FIXME: First character in id can be an number using that we should not
   // allow it
-  auto result = take_whle(text, is_alphanumeric);
+  auto result = take_whle(text, is_alphanumeric_or_digit);
 
   if (result.first == "")
     return nullopt;
 
+  if (is_digit(result.first[0]))
+    return nullopt;
+
   return optional(result);
 }
+
+#endif
+

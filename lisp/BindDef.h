@@ -11,7 +11,7 @@ using std::optional;
 
 class BindDef {
 public:
-  static optional<BindDef> Parse(const string &text);
+  static optional<pair<BindDef, string>> Parse(const string &text);
 
   BindDef(const string &name, Expr* expr);
 

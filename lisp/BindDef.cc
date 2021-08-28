@@ -1,6 +1,7 @@
 #include "BindDef.h"
+#include <utility>
 
-optional<BindDef> BindDef::Parse(const string &text) {
+optional<pair<BindDef,string>> BindDef::Parse(const string &text) {
 
   // Variiable declaration needs to start with "mat"
   auto tag1 = tag(text, "mat");
@@ -10,7 +11,11 @@ optional<BindDef> BindDef::Parse(const string &text) {
   auto str = tag1.value().second;
 
   // Remove following whitespace
-  str = extract_whitespace(str).second;
+  auto whitespace1 = extract_whitespace(str);
+  // There needs to be a space between "mat" and var name
+  if (whitespace1.first == "")
+    return nullopt;
+  str = whitespace1.second;
 
   // Extract the name of the variable
   auto name_parse = extract_identifier(str);
@@ -38,17 +43,19 @@ optional<BindDef> BindDef::Parse(const string &text) {
   if (!expr_parse)
     return nullopt;
 
-  Expr* bind_expr = expr_parse.value();
+  Expr *bind_expr = expr_parse.value().first;
 
   // Create var
-  return optional(BindDef(bind_name, bind_expr));
+  return optional(std::make_pair(BindDef(bind_name, bind_expr),expr_parse.value().second));
 }
 
-BindDef::BindDef(const std::string &name,Expr* expr)
+BindDef::BindDef(const std::string &name, Expr *expr)
     : name_(name), expr_(expr) {}
 
 bool BindDef::operator==(const BindDef &other) const {
-  return name_ == other.name_ && ((Number*)expr_->eval())->get_value() == ((Number*)other.expr_->eval())->get_value();
+  return name_ == other.name_ &&
+         ((Number *)expr_->eval())->get_value() ==
+             ((Number *)other.expr_->eval())->get_value();
 }
 
 void BindDef::eval(Env &env) { env.store_binding(name_, this->expr_->eval()); }

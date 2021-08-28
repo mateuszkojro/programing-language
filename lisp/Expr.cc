@@ -1,4 +1,5 @@
 #include "Expr.h"
+#include <utility>
 
 ExprNumber::ExprNumber(const Number &num) : value_(num) {}
 
@@ -55,7 +56,7 @@ std::ostream &operator<<(std::ostream &os, const ExprOperation &e) {
   return os;
 }
 
-optional<Expr *> Expr::Parse(const string &expr) {
+optional<pair<Expr *, string>> Expr::Parse(const string &expr) {
 
   auto str = expr;
 
@@ -83,9 +84,11 @@ optional<Expr *> Expr::Parse(const string &expr) {
     auto op = op_parse.value().first;
     auto rhs = num2_parse.value().first;
 
-    return optional(new ExprOperation(lhs, rhs, op));
+    return optional(std::make_pair(new ExprOperation(lhs, rhs, op),
+                                   num2_parse.value().second));
   } else {
     // Could not parse equation we need to backtrack and parse number
-    return optional(new ExprNumber(num1_parse.value().first));
+    return optional(std::make_pair(new ExprNumber(num1_parse.value().first),
+                                   num1_parse.value().second));
   }
 }
