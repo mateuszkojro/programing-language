@@ -18,6 +18,8 @@ optional<pair<Block, string>> Block::parse(const string &text) {
   auto parse_statment = Statment::parse(str);
   while (parse_statment) {
 
+    // msg(str);
+
     str = parse_statment.value().second;
 
     statments.push_back(parse_statment.value().first);

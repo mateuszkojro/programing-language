@@ -17,3 +17,13 @@ TEST_CASE("Parsing block with one statment", "[Block]") {
   vector<Statment *> block = {&n};
   REQUIRE(Block::parse("{ 5 }").value().first == Block(block));
 }
+
+// TODO: For now assigment operations evaluate to the value that is being
+// assigned
+TEST_CASE("Parsing block with multiple statments", "[Block]") {
+  ExprOperation o(Number(5), Number(5), Operator(Operator::Add));
+  ExprNumber n(5);
+  vector<Statment *> block = {&n, &o, &n};
+  REQUIRE(Block::parse("{ mat x = 5  5 + 5  5 }").value().first ==
+          Block(block));
+}
