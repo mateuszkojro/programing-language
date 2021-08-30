@@ -2,19 +2,24 @@
 
 optional<pair<Block, string>> Block::parse(const string &text) {
 
-    
 
+
+    
 }
 
-Block::Block(const vector<Expr *> &exprs): exprs_(exprs) {}
+Block::Block(const vector<Statment *> &statments) : statments_(statments) {}
 
+
+// FIXME: what to do with those envs
 bool Block::operator==(const Block &other) const {
 
-  if (exprs_.size() != other.exprs_.size())
+  Env env;
+
+  if (statments_.size() != other.statments_.size())
     return false;
 
-  for (int i = 0; i < exprs_.size(); i++) {
-    if (exprs_[i]->eval() != other.exprs_[i]->eval())
+  for (int i = 0; i < statments_.size(); i++) {
+    if (statments_[i]->eval(env) != other.statments_[i]->eval(env))
       return false;
   }
 

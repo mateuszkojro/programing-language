@@ -5,18 +5,19 @@
 #include <optional>
 #include <string>
 
+#include "Statment.h"
 #include "parser.h"
 
 using std::optional;
 using std::string;
 
-class Expr {
+class Expr : public Statment {
 public:
-  static optional<pair<Expr*, string>> Parse(const string &expr);
+  static optional<pair<Expr *, string>> Parse(const string &expr);
   Expr() = default;
 
   virtual Value *eval() = 0; // { assert(false); };
-
+  virtual Value *eval(Env &env) = 0;
   // virtual bool operator==(const Expr &other) const { assert(false); };
 
   ~Expr() = default;
@@ -27,6 +28,7 @@ public:
   ExprNumber(const Number &num);
 
   virtual Value *eval() override;
+  virtual Value *eval(Env &env) override;
 
   bool operator==(const ExprNumber &other) const;
 
@@ -43,6 +45,7 @@ public:
   ExprOperation(const Number &lhs, const Number &rhs, const Operator &op);
 
   virtual Value *eval() override;
+  virtual Value *eval(Env &env) override;
 
   bool operator==(const ExprOperation &other) const;
 

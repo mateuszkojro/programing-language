@@ -4,6 +4,10 @@
 #include <string>
 #include <utility>
 
-TEST_CASE("Parsing empyt block", "[Block]") {
+TEST_CASE("Parsing empty block", "[Block]") {
+  REQUIRE(Block::parse("{}").value().first == Block({}));
+}
+
+TEST_CASE("Parsing empty block with whitespace", "[Block]") {
   REQUIRE(Block::parse("{}").value().first == Block({}));
 }

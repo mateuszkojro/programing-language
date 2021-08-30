@@ -6,23 +6,22 @@
 
 #include "Expr.h"
 
-using std::string;
 using std::optional;
+using std::string;
 
-class BindDef {
+class BindDef : public Statment {
 public:
   static optional<pair<BindDef, string>> Parse(const string &text);
 
-  BindDef(const string &name, Expr* expr);
+  BindDef(const string &name, Expr *expr);
 
-  void eval(Env &env);
+  Value* eval(Env &env) override;
 
   bool operator==(const BindDef &op) const;
 
 private:
   string name_;
-  Expr* expr_;
+  Expr *expr_;
 };
-
 
 #endif

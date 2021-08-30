@@ -11,6 +11,8 @@ add_library(parser
         BindDef.cc
         BindingUsage.cc
         Expr.cc
+        Block.cc
+        Statment.cc
         )
 target_compile_features(parser PRIVATE cxx_std_17)
 
@@ -22,6 +24,7 @@ add_executable(tests
         test/TestParser.cc
         test/TestExpr.cc
         test/TestBind.cc
+        test/TestBlock.cc
         )
 
 target_link_libraries(tests PRIVATE 

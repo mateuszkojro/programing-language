@@ -20,6 +20,8 @@ ExprOperation::ExprOperation(const Number &lhs, const Number &rhs,
 
 Value *ExprNumber::eval() { return new Number(value_); }
 
+Value *ExprNumber::eval(Env &env) { return this->eval(); }
+
 bool ExprOperation::operator==(const ExprOperation &other) const {
   bool lhs_eq = this->lhs_ == other.lhs_;
   bool rhs_eq = this->rhs_ == other.rhs_;
@@ -50,6 +52,8 @@ Value *ExprOperation::eval() {
   }
   return new Number(result);
 }
+
+Value *ExprOperation::eval(Env &env) { return this->eval(); }
 
 std::ostream &operator<<(std::ostream &os, const ExprOperation &e) {
   os << "Expr(" << e.lhs_ << "," << e.rhs_ << "," << e.op_ << ")";

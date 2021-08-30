@@ -1,7 +1,7 @@
 #include "BindDef.h"
 #include <utility>
 
-optional<pair<BindDef,string>> BindDef::Parse(const string &text) {
+optional<pair<BindDef, string>> BindDef::Parse(const string &text) {
 
   // Variiable declaration needs to start with "mat"
   auto tag1 = tag(text, "mat");
@@ -46,7 +46,8 @@ optional<pair<BindDef,string>> BindDef::Parse(const string &text) {
   Expr *bind_expr = expr_parse.value().first;
 
   // Create var
-  return optional(std::make_pair(BindDef(bind_name, bind_expr),expr_parse.value().second));
+  return optional(
+      std::make_pair(BindDef(bind_name, bind_expr), expr_parse.value().second));
 }
 
 BindDef::BindDef(const std::string &name, Expr *expr)
@@ -58,4 +59,8 @@ bool BindDef::operator==(const BindDef &other) const {
              ((Number *)other.expr_->eval())->get_value();
 }
 
-void BindDef::eval(Env &env) { env.store_binding(name_, this->expr_->eval()); }
+Value *BindDef::eval(Env &env) {
+  auto result = this->expr_->eval();
+  env.store_binding(name_, result);
+  return result;
+}
