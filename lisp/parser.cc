@@ -8,8 +8,6 @@
 #include "env.h"
 #include "parser.h"
 
-#define log(var) std::cerr << #var << "='" << var << "'" << std::endl;
-
 Number::Number(double number) { this->value_ = number; }
 optional<pair<Number, string>> Number::Parse(string number) {
   

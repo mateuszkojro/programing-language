@@ -13,6 +13,8 @@ using Str2 = std::pair<string, string>;
 #ifndef UTILS_H
 #define UTILS_H
 
+#define msg(var) std::cerr << #var << "='" << var << "'" << std::endl;
+
 #define err(message, value)                                                    \
   do {                                                                         \
     std::cerr << message << value << std::endl;                                \
