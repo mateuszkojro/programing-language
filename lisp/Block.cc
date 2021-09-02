@@ -13,6 +13,7 @@ optional<pair<Block, string>> Block::parse(const string &text) {
 
   str = extract_whitespace(str).second;
 
+
   vector<Statment *> statments;
 
   auto parse_statment = Statment::parse(str);
@@ -29,9 +30,12 @@ optional<pair<Block, string>> Block::parse(const string &text) {
     parse_statment = Statment::parse(str);
   }
 
+  msg(str);
+
   auto close_block = tag(str, "}");
   if (!close_block)
     return nullopt;
+
 
   return pair(Block(statments), str);
 }

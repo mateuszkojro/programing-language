@@ -54,13 +54,15 @@ BindDef::BindDef(const std::string &name, Expr *expr)
     : name_(name), expr_(expr) {}
 
 bool BindDef::operator==(const BindDef &other) const {
-  return name_ == other.name_ &&
-         ((Number *)expr_->eval())->get_value() ==
-             ((Number *)other.expr_->eval())->get_value();
+  std::cout << "Thats a problem" << std::endl;
+  return name_ == other.name_;
+  // &&
+  //        ((Number *)expr_ ==
+  //            ((Number *)other.expr_);
 }
 
 Value *BindDef::eval(Env &env) {
-  auto result = this->expr_->eval();
+  auto result = this->expr_->eval(env);
   env.store_binding(name_, result);
   return result;
 }

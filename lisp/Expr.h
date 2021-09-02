@@ -5,12 +5,17 @@
 #include <optional>
 #include <string>
 
+#include "BindingUsage.h"
 #include "Statment.h"
 #include "parser.h"
 
 using std::optional;
 using std::string;
 
+/**
+ * @brief Expr Base class for expressions
+ *
+ */
 class Expr : public Statment {
 public:
   static optional<pair<Expr *, string>> Parse(const string &expr);
@@ -22,7 +27,10 @@ public:
 
   ~Expr() = default;
 };
-
+/**
+ * @brief Literal expression for a number
+ *
+ */
 class ExprNumber : public Expr {
 public:
   ExprNumber(const Number &num);
@@ -40,6 +48,10 @@ private:
   Number value_;
 };
 
+/**
+ * @brief Numerical operation ex. 7 + 7
+ *
+ */
 class ExprOperation : public Expr {
 public:
   ExprOperation(const Number &lhs, const Number &rhs, const Operator &op);
@@ -57,6 +69,19 @@ private:
   Number lhs_;
   Number rhs_;
   Operator op_;
+};
+
+class ExprVariable : public Expr {
+public:
+  ExprVariable(BindingUsage *b);
+  virtual Value *eval() override;
+  virtual Value *eval(Env &env) override;
+  bool operator==(const ExprVariable &other) const;
+
+  ~ExprVariable() = default;
+
+private:
+  BindingUsage* variable_;
 };
 
 #endif

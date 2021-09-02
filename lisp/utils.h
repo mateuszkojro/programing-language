@@ -39,7 +39,7 @@ static bool is_digit(char c) {
 }
 
 static bool is_whitespace(char c) {
-  return std::isspace(static_cast<unsigned char>(c));
+  return std::isspace(static_cast<unsigned char>(c)) || c == '\n';
 }
 
 static Str2 extract_digits(const std::string expr) {
@@ -87,4 +87,3 @@ static optional<Str2> extract_identifier(const string &text) {
 }
 
 #endif
-

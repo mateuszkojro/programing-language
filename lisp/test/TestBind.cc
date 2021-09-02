@@ -1,6 +1,7 @@
 #include "../BindDef.h"
 #include "../BindingUsage.h"
 #include "../Expr.h"
+#include "../Null.h"
 #include "../env.h"
 #include <catch2/catch.hpp>
 #include <string>
@@ -47,17 +48,19 @@ TEST_CASE("Dont parse without var name", "[Parser]") {
 }
 
 TEST_CASE("Bind usgae", "[Parser]") {
-  REQUIRE(BindingUsage::parse("x").value().first == BindingUsage("x"));
+  auto bu = BindingUsage("x");
+  REQUIRE(*BindingUsage::parse("x").value().first == *(&bu));
 }
 
 TEST_CASE("Storing binding", "[Parser]") {
   Env env;
-  Number n(2);
-  env.store_binding("x", &n);
-  REQUIRE(*(Number *)BindingUsage("x").eval(env).value() == Number(2));
+  Number number(2);
+  env.store_binding("x", &number);
+  REQUIRE(BindingUsage("x").eval(env)->type_ == (&number)->type_);
 }
 
 TEST_CASE("Cannot read not existent var", "[Parser]") {
   Env env;
-  REQUIRE(BindingUsage("x").eval(env) == std::nullopt);
+  auto n = Null();
+  REQUIRE(BindingUsage("x").eval(env)->type_ == (&n)->type_);
 }

@@ -54,5 +54,8 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp"
+    },
+    "search.exclude": {
+        "**/lisp/lib/Catch2": true
     }
 }

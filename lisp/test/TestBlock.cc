@@ -27,3 +27,11 @@ TEST_CASE("Parsing block with multiple statments", "[Block]") {
   REQUIRE(Block::parse("{ mat x = 5  5 + 5  5 }").value().first ==
           Block(block));
 }
+
+TEST_CASE("Parsing block with assigning variable to variable", "[Fail]") {
+  ExprNumber a(5);
+  ExprNumber b(5);
+  vector<Statment *> block = {&a, &b, &b};
+  REQUIRE(Block::parse("{ mat a = 5  mat b = a  b}").value().first ==
+          Block(block));
+}

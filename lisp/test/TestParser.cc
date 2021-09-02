@@ -30,6 +30,14 @@ TEST_CASE("Extracting whitespace", "[Parser]") {
   REQUIRE(extract_whitespace(" 1+2") == Str2(" ", "1+2"));
 }
 
+TEST_CASE("Extracting whitespace extracts newline", "[Parser]") {
+  REQUIRE(extract_whitespace("\n1+2") == Str2("\n", "1+2"));
+}
+
+TEST_CASE("Extracting whitespace extracts multiple chars", "[Parser]") {
+  REQUIRE(extract_whitespace("\n 1+2") == Str2("\n ", "1+2"));
+}
+
 TEST_CASE("Extracting number", "[Parser]") {
   REQUIRE(extract_digits("1+2") == Str2("1", "+2"));
 }
