@@ -1,6 +1,23 @@
 cmake_minimum_required(VERSION 3.18.0)
 project(lisp VERSION 0.1.0)
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  message("Using Clang adsditional compiler options enabled")
+   SET(CMAKE_CXX_FLAGS  ${CMAKE_CXX_FLAGS} "-g -fsanitize=mebmory,null,undefined,aderss -Wall -Wpedantic -std=c++17 -Wno-unused")
+  # set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=*")
+  set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=modernize*")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # using GCC
+  # message("Using GCC sanitizers enabled")
+  # set(CMAKE_CXX_COMPILE_FEATURES "-fsanitize=all")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  # using Intel C++
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  # using Visual Studio C++
+endif()
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(CTest)
 enable_testing()
@@ -14,7 +31,7 @@ add_library(parser
         Block.cc
         Statment.cc
         )
-target_compile_features(parser PRIVATE cxx_std_17)
+# target_compile_features(parser PRIVATE cxx_std_17)
 
 add_subdirectory(lib/Catch2)
 include_directories(lib/Catch2/single_include)
@@ -31,7 +48,7 @@ target_link_libraries(tests PRIVATE
         parser
         Catch2::Catch2
         )
-target_compile_features(tests PRIVATE cxx_std_17)
+# target_compile_features(tests PRIVATE cxx_std_17)
 
 # target_include_directories(tests )
 add_test(NAME Catch2 COMMAND ./tests -s)
