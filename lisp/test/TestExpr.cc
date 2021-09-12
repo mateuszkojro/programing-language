@@ -4,19 +4,19 @@
 #include <utility>
 
 TEST_CASE("Parse eval multiply", "[Parser]") {
-  Number *value = (Number *)Expr::Parse("2*3").value().first->eval();
+  Number *value = (Number *)Expr::parse("2*3").value().first->eval();
   REQUIRE(value->get_value() == 6);
 }
 TEST_CASE("Parse eval divide", "[Parser]") {
-  Number *value = (Number *)Expr::Parse("2/2").value().first->eval();
+  Number *value = (Number *)Expr::parse("2/2").value().first->eval();
   REQUIRE(value->get_value() == 1.0);
 }
 TEST_CASE("Parse eval subtract", "[Parser]") {
-  Number *value = (Number *)Expr::Parse("2-2").value().first->eval();
+  Number *value = (Number *)Expr::parse("2-2").value().first->eval();
   REQUIRE(value->get_value() == 0.0);
 }
 TEST_CASE("Parse eval add", "[Parser]") {
-  Number *value = (Number *)Expr::Parse("2+3").value().first->eval();
+  Number *value = (Number *)Expr::parse("2+3").value().first->eval();
   REQUIRE(value->get_value() == 5.0);
 }
 
@@ -53,7 +53,7 @@ TEST_CASE("Number expr", "[Parser]"){
 }
 
 TEST_CASE("Parsing expression", "[Parser]") {
-  REQUIRE(*(ExprOperation *)Expr::Parse("1+2").value().first ==
+  REQUIRE(*(ExprOperation *)Expr::parse("1+2").value().first ==
           ExprOperation(Number(1), Number(2), Operator(Operator::Add)));
 }
 
