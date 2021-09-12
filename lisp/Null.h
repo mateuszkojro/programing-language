@@ -6,7 +6,7 @@
 
 class Null : public Value {
 public:
-  Null() = default;
+  Null(): Value(Value::Null) {}
   virtual ~Null() = default;
 };
 

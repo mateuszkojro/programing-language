@@ -56,11 +56,11 @@ TEST_CASE("Storing binding", "[Parser]") {
   Env env;
   Number number(2);
   env.store_binding("x", &number);
-  REQUIRE(BindingUsage("x").eval(env)->type_ == (&number)->type_);
+  REQUIRE(BindingUsage("x").eval(env)->get_type() == (&number)->get_type());
 }
 
 TEST_CASE("Cannot read not existent var", "[Parser]") {
   Env env;
   auto n = Null();
-  REQUIRE(BindingUsage("x").eval(env)->type_ == (&n)->type_);
+  REQUIRE(BindingUsage("x").eval(env)->get_type() == (&n)->get_type());
 }

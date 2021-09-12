@@ -17,6 +17,9 @@ using std::optional;
 using std::pair;
 using std::string;
 
+#ifndef PARSER_H
+#define PARSER_H
+
 class Number : public Value {
 public:
   Number(double number);
@@ -54,3 +57,5 @@ public:
 private:
   Type value_;
 };
+
+#endif // !PARSER_H

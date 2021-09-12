@@ -3,9 +3,14 @@
 
 class Value {
 public:
-  Value() : type_(Value::Number) {}
+  enum Type { Number, Null };
+
+  Value(Type type) : type_(type) {}
+  Type get_type() { return type_; }
   virtual ~Value() = default;
-  enum Type { Number } type_;
+
+private:
+  Type type_;
 };
 
 #endif
