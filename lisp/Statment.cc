@@ -4,18 +4,19 @@
 
 optional<pair<Statment *, string>> Statment::parse(const string &text) {
 
-  auto parse_binding = BindDef::Parse(text);
+  auto parse_binding = BindDef::parse(text);
   if (parse_binding) {
     auto result = parse_binding.value();
     return pair(new BindDef(result.first), result.second);
   }
 
-  auto parse_expr = Expr::Parse(text);
+  auto parse_expr = Expr::parse(text);
   if (parse_expr) {
     return parse_expr;
   }
 
   auto parse_binding_usage = BindingUsage::parse(text);
+  
   if (parse_binding_usage){
     return parse_binding_usage;
   }

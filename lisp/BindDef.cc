@@ -1,7 +1,7 @@
 #include "BindDef.h"
 #include <utility>
 
-optional<pair<BindDef, string>> BindDef::Parse(const string &text) {
+optional<pair<BindDef, string>> BindDef::parse(const string &text) {
 
   // Variiable declaration needs to start with "mat"
   auto tag1 = tag(text, "mat");
@@ -39,7 +39,7 @@ optional<pair<BindDef, string>> BindDef::Parse(const string &text) {
   str = extract_whitespace(str).second;
 
   // Parse an expresion that should be assigned to var
-  auto expr_parse = Expr::Parse(str);
+  auto expr_parse = Expr::parse(str);
   if (!expr_parse)
     return nullopt;
 

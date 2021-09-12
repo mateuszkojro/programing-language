@@ -3,7 +3,7 @@
 
 class Value {
 public:
-  Value() = default;
+  Value() : type_(Value::Number) {}
   virtual ~Value() = default;
   enum Type { Number } type_;
 };

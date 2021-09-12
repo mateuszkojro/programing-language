@@ -1,3 +1,4 @@
+#include "Statment.h"
 #include "Value.h"
 #include "catch2/catch.hpp"
 #include "env.h"
@@ -12,9 +13,9 @@
 #include <string>
 #include <utility>
 
-using std::string;
-using std::pair;
 using std::optional;
+using std::pair;
+using std::string;
 
 class Number : public Value {
 public:
@@ -53,4 +54,3 @@ public:
 private:
   Type value_;
 };
-

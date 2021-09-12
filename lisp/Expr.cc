@@ -1,10 +1,9 @@
 #include "Expr.h"
 #include "BindingUsage.h"
+#include "Value.h"
 #include <utility>
 
 ExprNumber::ExprNumber(const Number &num) : value_(num) {}
-
-Value *eval();
 
 bool ExprNumber::operator==(const ExprNumber &other) const {
   return value_ == other.value_;
@@ -17,7 +16,7 @@ std::ostream &operator<<(std::ostream &os, const ExprNumber &e) {
 
 ExprOperation::ExprOperation(const Number &lhs, const Number &rhs,
                              const Operator &op)
-    : rhs_(rhs), lhs_(lhs), op_(op) {}
+    : lhs_(lhs), rhs_(rhs), op_(op) {}
 
 Value *ExprNumber::eval() { return new Number(value_); }
 
@@ -74,20 +73,29 @@ bool ExprVariable::operator==(const ExprVariable &other) const {
   return *variable_ == *other.variable_;
 }
 
-optional<pair<Expr *, string>> Expr::Parse(const string &expr) {
+optional<pair<Expr *, string>> Expr::parse(const string &expr) {
 
   auto str = expr;
+  // Value value1;
 
-  auto num1_parse = Number::Parse(str);
-  if (num1_parse) {
+  // if (auto parsed_number = Number::Parse(str))
+  // {
+  //   value1 = parsed_number.value().first;
+  //   str = parsed_number.value().second;
+  // }
+  // else if (auto parsed_binding = BindingUsage::parse(str))
+  // {
+  //   value1 = parsed_binding.value().first;
+  //   str = parsed_binding.value().second;
+  // }
+
+  if (auto num1_parse = Number::Parse(str)) {
 
     str = num1_parse.value().second;
 
     str = extract_whitespace(str).second;
 
-    auto op_parse = Operator::Parse(str);
-
-    if (op_parse) {
+    if (auto op_parse = Operator::Parse(str)) {
 
       str = op_parse.value().second;
 
@@ -101,18 +109,24 @@ optional<pair<Expr *, string>> Expr::Parse(const string &expr) {
       auto op = op_parse.value().first;
       auto rhs = num2_parse.value().first;
 
-      return optional(std::make_pair(new ExprOperation(lhs, rhs, op),
-                                     num2_parse.value().second));
+      return make_pair(new ExprOperation(lhs, rhs, op), num2_parse->second);
+    } else {
+      // Could not parse equation we need to backtrack and parse number
+      return make_pair(new ExprNumber(num1_parse->first), num1_parse->second);
     }
 
-    // Could not parse equation we need to backtrack and parse number
-    return optional(std::make_pair(new ExprNumber(num1_parse.value().first),
-                                   num1_parse.value().second));
-  } else {
-    if (auto variable = BindingUsage::parse(str)) {
-      return optional(std::make_pair(new ExprVariable(variable.value().first),
-                                     variable.value().second));
-    }
+  } else if (auto variable = BindingUsage::parse(str)) {
+    auto [expr, str] = variable.value();
+    return make_pair(new ExprVariable(expr), str);
   }
+
   return nullopt;
 }
+
+ExprBlock::ExprBlock() {}
+
+Value *ExprBlock::eval() { assert(false && "This should not be called"); }
+
+Value *ExprBlock::ExprBlock::eval(Env &env) {}
+
+bool ExprBlock::operator==(const ExprVariable &other) const {}
