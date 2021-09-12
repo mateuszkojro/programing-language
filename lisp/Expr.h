@@ -2,6 +2,7 @@
 #define EXPR_H
 
 #include <cassert>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -11,6 +12,7 @@
 
 using std::optional;
 using std::string;
+using std::unique_ptr;
 
 /**
  * @brief Expr Base class for expressions
@@ -18,7 +20,7 @@ using std::string;
  */
 class Expr : public Statment {
 public:
-  static optional<pair<Expr *, string>> Parse(const string &expr);
+  static optional<pair<Expr *, string>> parse(const string &expr);
   Expr() = default;
 
   virtual Value *eval() = 0; // { assert(false); };
@@ -28,7 +30,7 @@ public:
   ~Expr() = default;
 };
 /**
- * @brief Literal expression for a number
+ * @brief Literal expression for a number ex. &
  *
  */
 class ExprNumber : public Expr {
@@ -71,6 +73,10 @@ private:
   Operator op_;
 };
 
+/**
+ * @brief usage of arledy existing variable
+ *
+ */
 class ExprVariable : public Expr {
 public:
   ExprVariable(BindingUsage *b);
@@ -81,7 +87,20 @@ public:
   ~ExprVariable() = default;
 
 private:
-  BindingUsage* variable_;
+  unique_ptr<BindingUsage> variable_;
+};
+
+class ExprBlock : public Expr {
+public:
+  ExprBlock();
+
+  virtual Value *eval() override;
+  virtual Value *eval(Env &env) override;
+  bool operator==(const ExprVariable &other) const;
+
+  ~ExprBlock() = default;
+
+private:
 };
 
 #endif
