@@ -18,8 +18,5 @@ bool BindingUsage::operator==(const BindingUsage &other) const {
   return name_ == other.name_;
 }
 Value *BindingUsage::eval(Env &env) {
-  if (auto value = env.get_binding_value(name_))
-    return value.value();
-  else
-    return new Null();
+    return env.get_binding_value(name_).value_or(new Null);
 }

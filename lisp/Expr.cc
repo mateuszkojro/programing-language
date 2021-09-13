@@ -125,8 +125,17 @@ optional<pair<Expr *, string>> Expr::parse(const string &expr) {
 
 ExprBlock::ExprBlock() {}
 
-Value *ExprBlock::eval() { assert(false && "This should not be called"); }
+Value *ExprBlock::eval() {
+  assert(false && "This should not be called");
+  return nullptr;
+}
 
-Value *ExprBlock::ExprBlock::eval(Env &env) {}
+Value *ExprBlock::ExprBlock::eval(Env &env) {
+  assert(false && "Not implemented");
+  return nullptr;
+}
 
-bool ExprBlock::operator==(const ExprVariable &other) const {}
+bool ExprBlock::operator==(const ExprVariable &other) const {
+  assert(false && "Not implemented");
+  return false;
+}

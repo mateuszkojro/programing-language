@@ -52,8 +52,8 @@ static Str2 extract_whitespace(const std::string expr) {
 
 static optional<Str2> extract_operator(const std::string expr) {
   char op = expr[0];
-  if (op == '+' | op == '-' | op == '*' | op == '/') {
-    return optional((Str2){expr.substr(0, 1), expr.substr(1)});
+  if (op == '+' || op == '-' || op == '*' || op == '/') {
+    return optional(make_pair(expr.substr(0, 1), expr.substr(1)));
   }
   return std::nullopt;
 }

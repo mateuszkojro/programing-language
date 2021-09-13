@@ -58,12 +58,15 @@ bool Block::operator==(const Block &other) const {
 
 Value *Block::eval(Env &env) {
   auto N = statments_.size();
-  // msg(N);
-  for (const auto &s : statments_) {
-    // std::cout << *(Number *)s->eval(env) << std::endl;
+
+  if (N <= 0)
+	return new Null;
+
+  // We need to evaluate all the statmemts in block to get the last value
+  for (const auto &s: statments_) {
+	s->eval(env);
   }
-  if (N > 0) {
-    return statments_[N - 1]->eval(env);
-  }
-  return new Null;
+
+  // That could be possibly null
+  return statments_[N - 1]->eval(env);
 }

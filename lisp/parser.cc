@@ -50,7 +50,7 @@ optional<std::pair<Operator, string>> Operator::Parse(const string &expr) {
 
   if (!result)
     return nullopt;
-  auto op = result.value().first;
+  auto& op = result.value().first;
 
   if (op == "+")
     return std::make_pair(Operator(Type::Add), result.value().second);
