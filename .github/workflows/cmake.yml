@@ -2,9 +2,9 @@ name: CMake
 
 on:
   push:
-    branches: [ lisp ]
+    branches: [ language ]
   pull_request:
-    branches: [ lisp ]
+    branches: [ language ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)

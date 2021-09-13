@@ -4,7 +4,7 @@ project(interpreter VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_subdirectory(lisp/)
+add_subdirectory(language/)
 
 add_executable(interpreter interpreter.cc)
 
