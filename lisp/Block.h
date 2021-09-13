@@ -18,6 +18,7 @@ public:
   ~Block() = default;
 
   bool operator==(const Block &other) const;
+  Value* eval(Env& env);
 
 private:
   vector<Statment*> statments_;

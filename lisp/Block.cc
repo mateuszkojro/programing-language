@@ -1,4 +1,5 @@
 #include "Block.h"
+#include "Null.h"
 #include "utils.h"
 #include <cmath>
 
@@ -13,13 +14,10 @@ optional<pair<Block, string>> Block::parse(const string &text) {
 
   str = extract_whitespace(str).second;
 
-
   vector<Statment *> statments;
 
   auto parse_statment = Statment::parse(str);
   while (parse_statment) {
-
-    // msg(str);
 
     str = parse_statment.value().second;
 
@@ -30,12 +28,9 @@ optional<pair<Block, string>> Block::parse(const string &text) {
     parse_statment = Statment::parse(str);
   }
 
-  msg(str);
-
   auto close_block = tag(str, "}");
   if (!close_block)
     return nullopt;
-
 
   return pair(Block(statments), str);
 }
@@ -59,4 +54,16 @@ bool Block::operator==(const Block &other) const {
   }
 
   return true;
+}
+
+Value *Block::eval(Env &env) {
+  auto N = statments_.size();
+  // msg(N);
+  for (const auto &s : statments_) {
+    // std::cout << *(Number *)s->eval(env) << std::endl;
+  }
+  if (N > 0) {
+    return statments_[N - 1]->eval(env);
+  }
+  return new Null;
 }
