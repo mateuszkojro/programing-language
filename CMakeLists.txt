@@ -4,10 +4,13 @@ project(interpreter VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 add_subdirectory(language/)
 
 add_executable(interpreter interpreter.cc)
-
+target_link_libraries(interpreter parser)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
