@@ -1,6 +1,5 @@
 #include "IStatment.h"
 #include "IValue.h"
-#include "catch2/catch.hpp"
 #include "env.h"
 #include "utils.h"
 #include <cassert>
@@ -56,6 +55,14 @@ public:
 
 private:
   Type value_;
+};
+
+class Parser {
+ public:
+	Parser();
+	int parse(const std::string& code);
+ private:
+  Env environment_;
 };
 
 #endif // !PARSER_H

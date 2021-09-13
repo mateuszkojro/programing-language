@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 
+#include "Null.h"
 #include "env.h"
 #include "parser.h"
 
@@ -13,16 +14,16 @@ optional<pair<Number, string>> Number::Parse(string number) {
 
   auto result = extract_digits(number);
   if (result.first == "")
-    return nullopt;
+	return nullopt;
 
   try {
-    return std::make_pair(Number(std::stod(result.first)), result.second);
+	return std::make_pair(Number(std::stod(result.first)), result.second);
   } catch (const std::invalid_argument &e) {
-    std::cerr << "Malformed number: " << result.first << std::endl;
-    return nullopt;
+	std::cerr << "Malformed number: " << result.first << std::endl;
+	return nullopt;
   } catch (const std::out_of_range &e) {
-    std::cerr << "Number too large" << std::endl;
-    return nullopt;
+	std::cerr << "Number too large" << std::endl;
+	return nullopt;
   }
 }
 
@@ -49,20 +50,20 @@ optional<std::pair<Operator, string>> Operator::Parse(const string &expr) {
   auto result = extract_operator(expr);
 
   if (!result)
-    return nullopt;
-  auto& op = result.value().first;
+	return nullopt;
+  auto &op = result.value().first;
 
   if (op == "+")
-    return std::make_pair(Operator(Type::Add), result.value().second);
+	return std::make_pair(Operator(Type::Add), result.value().second);
   else if (op == "-")
-    return std::make_pair(Operator(Type::Subtract), result.value().second);
+	return std::make_pair(Operator(Type::Subtract), result.value().second);
   else if (op == "*")
-    return std::make_pair(Operator(Type::Multiply), result.value().second);
+	return std::make_pair(Operator(Type::Multiply), result.value().second);
   else if (op == "/")
-    return std::make_pair(Operator(Type::Divide), result.value().second);
+	return std::make_pair(Operator(Type::Divide), result.value().second);
 
   else
-    return nullopt;
+	return nullopt;
 }
 
 bool Operator::operator==(const Operator &other) const {
@@ -75,4 +76,24 @@ bool Operator::operator==(const Operator::Type &other) const {
 std::ostream &operator<<(std::ostream &os, const Operator &n) {
   os << "Number(" << n.value_ << ")";
   return os;
+}
+Parser::Parser() {
+  environment_ = Env();
+}
+int Parser::parse(const string &code) {
+
+  if (auto result = IStatment::parse(code)) {
+	auto evaluated = result->first->eval(environment_);
+	switch (evaluated->get_type()) {
+	  case IValue::Number:
+		std::cout << *(Number *)evaluated << std::endl;
+		break;
+	  case IValue::Null:
+		//		std::cout << *(Null*)evaluated << std::endl;
+		std::cout << "Null" << std::endl;
+		break;
+	}
+  }
+
+  return 0;
 }
