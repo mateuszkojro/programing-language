@@ -2,11 +2,11 @@
 #define NULL_H
 
 #include "BindDef.h"
-#include "Value.h"
+#include "IValue.h"
 
-class Null : public Value {
+class Null : public IValue {
 public:
-  Null(): Value(Value::Null) {}
+  Null(): IValue(IValue::Null) {}
   virtual ~Null() = default;
 };
 

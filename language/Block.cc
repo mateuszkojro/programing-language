@@ -14,9 +14,9 @@ optional<pair<Block, string>> Block::parse(const string &text) {
 
   str = extract_whitespace(str).second;
 
-  vector<Statment *> statments;
+  vector<IStatment *> statments;
 
-  auto parse_statment = Statment::parse(str);
+  auto parse_statment = IStatment::parse(str);
   while (parse_statment) {
 
     str = parse_statment.value().second;
@@ -25,7 +25,7 @@ optional<pair<Block, string>> Block::parse(const string &text) {
 
     str = extract_whitespace(str).second;
 
-    parse_statment = Statment::parse(str);
+    parse_statment = IStatment::parse(str);
   }
 
   auto close_block = tag(str, "}");
@@ -35,7 +35,7 @@ optional<pair<Block, string>> Block::parse(const string &text) {
   return pair(Block(statments), str);
 }
 
-Block::Block(const vector<Statment *> &statments) : statments_(statments) {}
+Block::Block(const vector<IStatment *> &statments) : statments_(statments) {}
 
 // FIXME: what to do with those envs
 bool Block::operator==(const Block &other) const {
@@ -56,7 +56,7 @@ bool Block::operator==(const Block &other) const {
   return true;
 }
 
-Value *Block::eval(Env &env) {
+IValue *Block::eval(Env &env) {
   auto N = statments_.size();
 
   if (N <= 0)

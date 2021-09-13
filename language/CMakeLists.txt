@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.18.0)
-project(lisp VERSION 0.1.0)
+project(language VERSION 0.1.0)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   message("Using Clang additional compiler options enabled")
@@ -27,7 +27,7 @@ add_library(parser
         BindingUsage.cc
         Expr.cc
         Block.cc
-        Statment.cc
+        IStatment.cc
         )
 # target_compile_features(parser PRIVATE cxx_std_17)
 

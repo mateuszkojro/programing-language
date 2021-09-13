@@ -1,13 +1,13 @@
 #ifndef VALUE_H
 #define VALUE_H
 
-class Value {
+class IValue {
 public:
   enum Type { Number, Null };
 
-  Value(Type type) : type_(type) {}
+  IValue(Type type) : type_(type) {}
   Type get_type() { return type_; }
-  virtual ~Value() = default;
+  virtual ~IValue() = default;
 
 private:
   Type type_;

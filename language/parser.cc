@@ -8,7 +8,7 @@
 #include "env.h"
 #include "parser.h"
 
-Number::Number(double number) : Value(Value::Number), value_(number) {}
+Number::Number(double number) : IValue(IValue::Number), value_(number) {}
 optional<pair<Number, string>> Number::Parse(string number) {
 
   auto result = extract_digits(number);

@@ -1,5 +1,5 @@
-#include "Statment.h"
-#include "Value.h"
+#include "IStatment.h"
+#include "IValue.h"
 #include "catch2/catch.hpp"
 #include "env.h"
 #include "utils.h"
@@ -20,7 +20,7 @@ using std::string;
 #ifndef PARSER_H
 #define PARSER_H
 
-class Number : public Value {
+class Number : public IValue {
 public:
   Number(double number);
   static optional<pair<Number, string>> Parse(string number);

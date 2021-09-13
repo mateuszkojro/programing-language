@@ -10,14 +10,14 @@ using std::optional;
 using std::pair;
 using std::string;
 
-class Statment {
-public:
-  static optional<pair<Statment *, string>> parse(const string &text);
-  Statment() = default;
+class IStatment {
+ public:
+  static optional<pair<IStatment *, string>> parse(const string &text);
+  IStatment() = default;
 
-  virtual Value* eval(Env& env) = 0;
+  virtual IValue *eval(Env &env) = 0;
 
-  virtual ~Statment() = default;
+  virtual ~IStatment() = default;
 };
 
 #endif

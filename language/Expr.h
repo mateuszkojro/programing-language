@@ -7,7 +7,7 @@
 #include <string>
 
 #include "BindingUsage.h"
-#include "Statment.h"
+#include "IStatment.h"
 #include "parser.h"
 
 using std::optional;
@@ -15,30 +15,30 @@ using std::string;
 using std::unique_ptr;
 
 /**
- * @brief Expr Base class for expressions
+ * @brief IExpr Base class for expressions
  *
  */
-class Expr : public Statment {
+class IExpr : public IStatment {
 public:
-  static optional<pair<Expr *, string>> parse(const string &expr);
-  Expr() = default;
+  static optional<pair<IExpr *, string>> parse(const string &expr);
+  IExpr() = default;
 
-  virtual Value *eval() = 0; // { assert(false); };
-  virtual Value *eval(Env &env) = 0;
-  // virtual bool operator==(const Expr &other) const { assert(false); };
+  virtual IValue *eval() = 0; // { assert(false); };
+  virtual IValue *eval(Env &env) = 0;
+  // virtual bool operator==(const IExpr &other) const { assert(false); };
 
-  ~Expr() = default;
+  ~IExpr() = default;
 };
 /**
  * @brief Literal expression for a number ex. &
  *
  */
-class ExprNumber : public Expr {
+class ExprNumber : public IExpr {
 public:
   ExprNumber(const Number &num);
 
-  virtual Value *eval() override;
-  virtual Value *eval(Env &env) override;
+  virtual IValue *eval() override;
+  virtual IValue *eval(Env &env) override;
 
   bool operator==(const ExprNumber &other) const;
 
@@ -54,12 +54,12 @@ private:
  * @brief Numerical operation ex. 7 + 7
  *
  */
-class ExprOperation : public Expr {
+class ExprOperation : public IExpr {
 public:
   ExprOperation(const Number &lhs, const Number &rhs, const Operator &op);
 
-  virtual Value *eval() override;
-  virtual Value *eval(Env &env) override;
+  virtual IValue *eval() override;
+  virtual IValue *eval(Env &env) override;
 
   bool operator==(const ExprOperation &other) const;
 
@@ -77,11 +77,11 @@ private:
  * @brief usage of arledy existing variable
  *
  */
-class ExprVariable : public Expr {
+class ExprVariable : public IExpr {
 public:
   ExprVariable(BindingUsage *b);
-  virtual Value *eval() override;
-  virtual Value *eval(Env &env) override;
+  virtual IValue *eval() override;
+  virtual IValue *eval(Env &env) override;
   bool operator==(const ExprVariable &other) const;
 
   ~ExprVariable() = default;
@@ -90,12 +90,12 @@ private:
   unique_ptr<BindingUsage> variable_;
 };
 
-class ExprBlock : public Expr {
+class ExprBlock : public IExpr {
 public:
   ExprBlock();
 
-  virtual Value *eval() override;
-  virtual Value *eval(Env &env) override;
+  virtual IValue *eval() override;
+  virtual IValue *eval(Env &env) override;
   bool operator==(const ExprVariable &other) const;
 
   ~ExprBlock() = default;

@@ -17,6 +17,6 @@ optional<pair<BindingUsage *, string>> BindingUsage::parse(string text) {
 bool BindingUsage::operator==(const BindingUsage &other) const {
   return name_ == other.name_;
 }
-Value *BindingUsage::eval(Env &env) {
+IValue *BindingUsage::eval(Env &env) {
     return env.get_binding_value(name_).value_or(new Null);
 }

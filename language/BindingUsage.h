@@ -1,16 +1,16 @@
 #ifndef BINDING_USAGE_H
 #define BINDING_USAGE_H
 
-#include "Statment.h"
+#include "IStatment.h"
+#include "env.h"
 #include "utils.h"
 #include <string>
 #include <utility>
-#include "env.h"
 
 using std::pair;
 using std::string;
 
-class BindingUsage : public Statment {
+class BindingUsage : public IStatment {
 public:
   BindingUsage(const string &name);
   ~BindingUsage() = default;
@@ -18,7 +18,7 @@ public:
   static optional<pair<BindingUsage*, string>> parse(string text);
   bool operator==(const BindingUsage& other) const;
 
-  Value* eval(Env& env) override;
+  IValue * eval(Env& env) override;
 
 private:
   string name_;

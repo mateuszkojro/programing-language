@@ -1,8 +1,8 @@
-#include "Statment.h"
+#include "IStatment.h"
 #include "BindDef.h"
 #include "BindingUsage.h"
 
-optional<pair<Statment *, string>> Statment::parse(const string &text) {
+optional<pair<IStatment *, string>> IStatment::parse(const string &text) {
 
   auto parse_binding = BindDef::parse(text);
   if (parse_binding) {
@@ -10,7 +10,7 @@ optional<pair<Statment *, string>> Statment::parse(const string &text) {
     return pair(new BindDef(result.first), result.second);
   }
 
-  auto parse_expr = Expr::parse(text);
+  auto parse_expr = IExpr::parse(text);
   if (parse_expr) {
     return parse_expr;
   }

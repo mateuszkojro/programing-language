@@ -14,7 +14,7 @@ TEST_CASE("Parsing empty block with whitespace", "[Block]") {
 
 TEST_CASE("Parsing block with one statment", "[Block]") {
   ExprNumber n(5);
-  vector<Statment *> block = {&n};
+  vector<IStatment *> block = {&n};
   REQUIRE(Block::parse("{ 5 }")->first == Block(block));
 }
 
@@ -23,14 +23,14 @@ TEST_CASE("Parsing block with one statment", "[Block]") {
 TEST_CASE("Parsing block with multiple statments", "[Block]") {
   ExprOperation o(Number(5), Number(5), Operator(Operator::Add));
   ExprNumber n(5);
-  vector<Statment *> block = {&n, &o, &n};
+  vector<IStatment *> block = {&n, &o, &n};
   REQUIRE(Block::parse("{ mat x = 5  5 + 5  5 }")->first == Block(block));
 }
 
 TEST_CASE("Parsing block with assigning variable to variable", "[Block]") {
   ExprNumber a(5);
   ExprNumber b(5);
-  vector<Statment *> block = {&a, &b, &b};
+  vector<IStatment *> block = {&a, &b, &b};
   REQUIRE(Block::parse("{ mat a = 5  mat b = a  b}")->first == Block(block));
 }
 

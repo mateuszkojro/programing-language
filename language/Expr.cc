@@ -1,6 +1,6 @@
 #include "Expr.h"
 #include "BindingUsage.h"
-#include "Value.h"
+#include "IValue.h"
 #include <utility>
 
 ExprNumber::ExprNumber(const Number &num) : value_(num) {}
@@ -10,7 +10,7 @@ bool ExprNumber::operator==(const ExprNumber &other) const {
 }
 
 std::ostream &operator<<(std::ostream &os, const ExprNumber &e) {
-  os << "Expr(" << e.value_ << ")";
+  os << "IExpr(" << e.value_ << ")";
   return os;
 }
 
@@ -18,9 +18,9 @@ ExprOperation::ExprOperation(const Number &lhs, const Number &rhs,
                              const Operator &op)
     : lhs_(lhs), rhs_(rhs), op_(op) {}
 
-Value *ExprNumber::eval() { return new Number(value_); }
+IValue *ExprNumber::eval() { return new Number(value_); }
 
-Value *ExprNumber::eval(Env &env) { return this->eval(); }
+IValue *ExprNumber::eval(Env &env) { return this->eval(); }
 
 bool ExprOperation::operator==(const ExprOperation &other) const {
   bool lhs_eq = this->lhs_ == other.lhs_;
@@ -29,7 +29,7 @@ bool ExprOperation::operator==(const ExprOperation &other) const {
   return lhs_eq && rhs_eq && op_eq;
 }
 
-Value *ExprOperation::eval() {
+IValue *ExprOperation::eval() {
   double result;
 
   switch (op_.type()) {
@@ -53,30 +53,30 @@ Value *ExprOperation::eval() {
   return new Number(result);
 }
 
-Value *ExprOperation::eval(Env &env) { return this->eval(); }
+IValue *ExprOperation::eval(Env &env) { return this->eval(); }
 
 std::ostream &operator<<(std::ostream &os, const ExprOperation &e) {
-  os << "Expr(" << e.lhs_ << "," << e.rhs_ << "," << e.op_ << ")";
+  os << "IExpr(" << e.lhs_ << "," << e.rhs_ << "," << e.op_ << ")";
   return os;
 }
 
 ExprVariable::ExprVariable(BindingUsage *b) : variable_(b) {}
 
-Value *ExprVariable::eval() {
+IValue *ExprVariable::eval() {
   std::cout << "using var without contex" << std::endl;
   return nullptr;
 }
 
-Value *ExprVariable::eval(Env &env) { return variable_->eval(env); }
+IValue *ExprVariable::eval(Env &env) { return variable_->eval(env); }
 
 bool ExprVariable::operator==(const ExprVariable &other) const {
   return *variable_ == *other.variable_;
 }
 
-optional<pair<Expr *, string>> Expr::parse(const string &expr) {
+optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
 
   auto str = expr;
-  // Value value1;
+  // IValue value1;
 
   // if (auto parsed_number = Number::Parse(str))
   // {
@@ -125,12 +125,12 @@ optional<pair<Expr *, string>> Expr::parse(const string &expr) {
 
 ExprBlock::ExprBlock() {}
 
-Value *ExprBlock::eval() {
+IValue *ExprBlock::eval() {
   assert(false && "This should not be called");
   return nullptr;
 }
 
-Value *ExprBlock::ExprBlock::eval(Env &env) {
+IValue *ExprBlock::ExprBlock::eval(Env &env) {
   assert(false && "Not implemented");
   return nullptr;
 }

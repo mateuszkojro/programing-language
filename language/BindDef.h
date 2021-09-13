@@ -9,19 +9,19 @@
 using std::optional;
 using std::string;
 
-class BindDef : public Statment {
+class BindDef : public IStatment {
 public:
   static optional<pair<BindDef, string>> parse(const string &text);
 
-  BindDef(const string &name, Expr *expr);
+  BindDef(const string &name, IExpr *expr);
 
-  Value* eval(Env &env) override;
+  IValue * eval(Env &env) override;
 
   bool operator==(const BindDef &op) const;
 
 private:
   string name_;
-  Expr *expr_;
+  IExpr *expr_;
 };
 
 #endif

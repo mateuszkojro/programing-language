@@ -39,18 +39,18 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   str = extract_whitespace(str).second;
 
   // Parse an expresion that should be assigned to var
-  auto expr_parse = Expr::parse(str);
+  auto expr_parse = IExpr::parse(str);
   if (!expr_parse)
     return nullopt;
 
-  Expr *bind_expr = expr_parse.value().first;
+  IExpr *bind_expr = expr_parse.value().first;
 
   // Create var
   return optional(
       std::make_pair(BindDef(bind_name, bind_expr), expr_parse.value().second));
 }
 
-BindDef::BindDef(const std::string &name, Expr *expr)
+BindDef::BindDef(const std::string &name, IExpr *expr)
     : name_(name), expr_(expr) {}
 
 bool BindDef::operator==(const BindDef &other) const {
@@ -61,7 +61,7 @@ bool BindDef::operator==(const BindDef &other) const {
   //            ((Number *)other.expr_);
 }
 
-Value *BindDef::eval(Env &env) {
+IValue *BindDef::eval(Env &env) {
   auto result = this->expr_->eval(env);
   env.store_binding(name_, result);
   return result;
