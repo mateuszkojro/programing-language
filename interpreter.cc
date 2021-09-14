@@ -25,7 +25,7 @@ int repl() {
   Parser parser;
 
   while (true) {
-	std::cout << "=>";
+	std::cout << "=> ";
 	std::cout.flush();
 	std::string line;
 	std::getline(std::cin, line);

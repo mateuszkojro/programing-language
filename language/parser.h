@@ -19,27 +19,33 @@ using std::string;
 #ifndef PARSER_H
 #define PARSER_H
 
-class Number : public IValue {
-public:
+class Number : public IValue, public IStatment {
+ public:
   Number(double number);
-  static optional<pair<Number, string>> Parse(string number);
+  static optional<pair<Number *, string>> Parse(string number);
 
   bool operator==(const Number &other) const;
   bool operator!=(const Number &other) const;
 
   double get_value() const;
 
+  IValue *eval(Env &env) override;
+
   ~Number() = default;
 
   friend std::ostream &operator<<(std::ostream &os, const Number &n);
 
-private:
+ private:
   double value_;
 };
 
 class Operator {
-public:
-  enum Type { Add, Subtract, Multiply, Divide };
+ public:
+  enum Type { Add,
+			  Subtract,
+			  Multiply,
+			  Divide,
+			  Eq };
 
   static optional<pair<Operator, string>> Parse(const string &op);
   Operator(Type t);
@@ -53,16 +59,17 @@ public:
 
   friend std::ostream &operator<<(std::ostream &os, const Operator &n);
 
-private:
+ private:
   Type value_;
 };
 
 class Parser {
  public:
-	Parser();
-	int parse(const std::string& code);
+  Parser();
+  int parse(const std::string &code);
+
  private:
   Env environment_;
 };
 
-#endif // !PARSER_H
+#endif// !PARSER_H

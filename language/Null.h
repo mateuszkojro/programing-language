@@ -5,9 +5,9 @@
 #include "IValue.h"
 
 class Null : public IValue {
-public:
-  Null(): IValue(IValue::Null) {}
+ public:
+  Null() : IValue(IValue::Type::Null) {}
   virtual ~Null() = default;
 };
 
-#endif // !NULL_H
+#endif// !NULL_H

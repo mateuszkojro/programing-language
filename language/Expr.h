@@ -19,11 +19,11 @@ using std::unique_ptr;
  *
  */
 class IExpr : public IStatment {
-public:
+ public:
   static optional<pair<IExpr *, string>> parse(const string &expr);
   IExpr() = default;
 
-  virtual IValue *eval() = 0; // { assert(false); };
+  virtual IValue *eval() = 0;// { assert(false); };
   virtual IValue *eval(Env &env) = 0;
   // virtual bool operator==(const IExpr &other) const { assert(false); };
 
@@ -34,7 +34,7 @@ public:
  *
  */
 class ExprNumber : public IExpr {
-public:
+ public:
   ExprNumber(const Number &num);
 
   virtual IValue *eval() override;
@@ -46,7 +46,7 @@ public:
 
   friend std::ostream &operator<<(std::ostream &os, const ExprNumber &);
 
-private:
+ private:
   Number value_;
 };
 
@@ -54,9 +54,28 @@ private:
  * @brief Numerical operation ex. 7 + 7
  *
  */
+//class ExprOperationOld : public IExpr {
+// public:
+//  ExprOperationOld(const Number &lhs, const Number &rhs, const Operator &op);
+//
+//  virtual IValue *eval() override;
+//  virtual IValue *eval(Env &env) override;
+//
+//  bool operator==(const ExprOperation &other) const;
+//
+//  ~ExprOperationOld() = default;
+//
+//  friend std::ostream &operator<<(std::ostream &os, const ExprOperation &);
+//
+// private:
+//  Number lhs_;
+//  Number rhs_;
+//  Operator op_;
+//};
+
 class ExprOperation : public IExpr {
-public:
-  ExprOperation(const Number &lhs, const Number &rhs, const Operator &op);
+ public:
+  ExprOperation(IStatment *lhs, IStatment *rhs, const Operator &op);
 
   virtual IValue *eval() override;
   virtual IValue *eval(Env &env) override;
@@ -67,9 +86,9 @@ public:
 
   friend std::ostream &operator<<(std::ostream &os, const ExprOperation &);
 
-private:
-  Number lhs_;
-  Number rhs_;
+ private:
+  IStatment *lhs_;
+  IStatment *rhs_;
   Operator op_;
 };
 
@@ -78,7 +97,7 @@ private:
  *
  */
 class ExprVariable : public IExpr {
-public:
+ public:
   ExprVariable(BindingUsage *b);
   virtual IValue *eval() override;
   virtual IValue *eval(Env &env) override;
@@ -86,12 +105,12 @@ public:
 
   ~ExprVariable() = default;
 
-private:
+ private:
   unique_ptr<BindingUsage> variable_;
 };
 
 class ExprBlock : public IExpr {
-public:
+ public:
   ExprBlock();
 
   virtual IValue *eval() override;
@@ -100,7 +119,7 @@ public:
 
   ~ExprBlock() = default;
 
-private:
+ private:
 };
 
 #endif

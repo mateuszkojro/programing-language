@@ -8,7 +8,10 @@
 #include <utility>
 
 TEST_CASE("Parsinng binding operation", "[Parser]") {
-  auto expr = ExprOperation(Number(2), Number(4), Operator(Operator::Divide));
+  Number n1(2);
+  Number n2(4);
+
+  auto expr = ExprOperation(&n1, &n2, Operator(Operator::Divide));
   REQUIRE(BindDef::parse("mat x = 2 / 4").value().first == BindDef("x", &expr));
 }
 
@@ -18,11 +21,11 @@ TEST_CASE("Parsinng binding number", "[Parser]") {
 }
 
 TEST_CASE("Parse numbers in var name", "[Parser]") {
-  auto expr = ExprOperation(Number(2), Number(4), Operator(Operator::Divide));
-  REQUIRE(BindDef::parse("mat x12 = 2 / 4").value().first ==
-          BindDef("x12", &expr));
-  REQUIRE(BindDef::parse("mat x12x = 2 / 4").value().first ==
-          BindDef("x12x", &expr));
+  Number n1(2);
+  Number n2(4);
+  auto expr = ExprOperation(&n1, &n2, Operator(Operator::Divide));
+  REQUIRE(BindDef::parse("mat x12 = 2 / 4").value().first == BindDef("x12", &expr));
+  REQUIRE(BindDef::parse("mat x12x = 2 / 4").value().first == BindDef("x12x", &expr));
 }
 
 TEST_CASE("Dont parse numbers at the start ov var name", "[Parser]") {
