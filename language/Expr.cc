@@ -3,6 +3,7 @@
 #include "Block.h"
 #include "IValue.h"
 #include "Null.h"
+#include "utils.h"
 #include <utility>
 
 ExprNumber::ExprNumber(const Number &num) : value_(num) {}
@@ -67,6 +68,7 @@ IValue *ExprOperation::eval(Env &env) {
 	}
 	case Operator::Eq: {
 	  result = (bool)(lhs_num->get_value() == rhs_num->get_value());
+	  break;
 	}
 	default:
 	  return new Null;
@@ -146,6 +148,12 @@ optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
 	}
 	// There is no operator - it's a simple assigment
 	else {
+	  str = extract_whitespace(str).second;
+	  if (auto ident = tag(str, "=")) {
+		str = extract_whitespace(ident->second).second;
+		auto value2 = IExpr::parse(str);
+		return std::make_pair(value2->first, str);
+	  }
 	  return std::make_pair(new ExprVariable(value1), str);
 	}
 	// Parsing failed
