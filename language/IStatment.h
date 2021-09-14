@@ -17,7 +17,7 @@ class IStatment {
   static optional<pair<IStatment *, string>> parse(const string &text);
   IStatment() = default;
 
-  virtual IValue *eval(Env &env) = 0;
+  virtual std::unique_ptr<IValue> eval(Env &env) = 0;
 
   virtual ~IStatment() = default;
 };

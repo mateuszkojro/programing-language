@@ -40,8 +40,8 @@ std::ostream &operator<<(std::ostream &os, const Number &n) {
   os << "Number(" << n.value_ << ")";
   return os;
 }
-IValue *Number::eval(Env &env) {
-  return new Number(*this);
+std::unique_ptr<IValue> Number::eval(Env &env) {
+  return std::make_unique<Number>(*this);
 }
 
 Operator::Operator(Type t) { value_ = t; }
@@ -90,7 +90,7 @@ int Parser::parse(const string &code) {
 	auto evaluated = result->first->eval(environment_);
 	switch (evaluated->get_type()) {
 	  case IValue::Type::Number:
-		std::cout << *(Number *)evaluated << std::endl;
+		std::cout << *(Number *)evaluated.get() << std::endl;
 		break;
 	  case IValue::Type::Null:
 		//		std::cout << *(Null*)evaluated << std::endl;

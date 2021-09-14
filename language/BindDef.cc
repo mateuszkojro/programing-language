@@ -1,4 +1,5 @@
 #include "BindDef.h"
+#include "Null.h"
 #include <utility>
 
 optional<pair<BindDef, string>> BindDef::parse(const string &text) {
@@ -6,7 +7,7 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   // Variiable declaration needs to start with "mat"
   auto tag1 = tag(text, "mat");
   if (!tag1)
-    return nullopt;
+	return nullopt;
 
   auto str = tag1.value().second;
 
@@ -14,13 +15,13 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   auto whitespace1 = extract_whitespace(str);
   // There needs to be a space between "mat" and var name
   if (whitespace1.first == "")
-    return nullopt;
+	return nullopt;
   str = whitespace1.second;
 
   // Extract the name of the variable
   auto name_parse = extract_identifier(str);
   if (!name_parse)
-    return nullopt;
+	return nullopt;
 
   str = name_parse.value().second;
 
@@ -32,7 +33,7 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   // Now there needs to be a "="
   auto tag2 = tag(str, "=");
   if (!tag2)
-    return nullopt;
+	return nullopt;
 
   str = tag2.value().second;
 
@@ -41,17 +42,17 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   // Parse an expresion that should be assigned to var
   auto expr_parse = IExpr::parse(str);
   if (!expr_parse)
-    return nullopt;
+	return nullopt;
 
   IExpr *bind_expr = expr_parse.value().first;
 
   // Create var
   return optional(
-      std::make_pair(BindDef(bind_name, bind_expr), expr_parse.value().second));
+	  std::make_pair(BindDef(bind_name, bind_expr), expr_parse.value().second));
 }
 
-BindDef::BindDef(const std::string &name, IExpr *expr)
-    : name_(name), expr_(expr) {}
+BindDef::BindDef(std::string name, IExpr *expr)
+	: name_(std::move(name)), expr_(expr) {}
 
 bool BindDef::operator==(const BindDef &other) const {
   std::cout << "Thats a problem" << std::endl;
@@ -61,8 +62,9 @@ bool BindDef::operator==(const BindDef &other) const {
   //            ((Number *)other.expr_);
 }
 
-IValue *BindDef::eval(Env &env) {
+std::unique_ptr<IValue> BindDef::eval(Env &env) {
   auto result = this->expr_->eval(env);
-  env.store_binding(name_, result);
-  return result;
+  env.store_binding(name_, std::move(result));
+  return std::make_unique<Null>();
+  //  return result;
 }

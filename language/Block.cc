@@ -46,21 +46,21 @@ bool Block::operator==(const Block &other) const {
 	return false;
 
   for (int i = 0; i < statments_.size(); i++) {
-	Number *n1 = (Number *)statments_[i]->eval(env);
-	Number *n2 = (Number *)other.statments_[i]->eval(env);
+	Number n1 = *(Number *)statments_[i]->eval(env).get();
+	Number n2 = *(Number *)other.statments_[i]->eval(env).get();
 
-	if (n1->get_value() != n2->get_value())
+	if (n1.get_value() != n2.get_value())
 	  return false;
   }
 
   return true;
 }
 
-IValue *Block::eval(Env &env) {
+std::unique_ptr<IValue> Block::eval(Env &env) {
   auto N = statments_.size();
 
   if (N <= 0)
-	return new Null;
+	return std::make_unique<Null>();
 
   // We need to evaluate all the statmemts in block to get the last value
   for (const auto &s : statments_) {
@@ -69,8 +69,4 @@ IValue *Block::eval(Env &env) {
 
   // That could be possibly null
   return statments_[N - 1]->eval(env);
-}
-IValue *Block::eval() {
-  assert(false && "This should never be called");
-  return nullptr;
 }

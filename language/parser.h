@@ -29,7 +29,7 @@ class Number : public IValue, public IStatment {
 
   double get_value() const;
 
-  IValue *eval(Env &env) override;
+  std::unique_ptr<IValue> eval(Env &env) override;
 
   ~Number() = default;
 

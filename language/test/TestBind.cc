@@ -57,9 +57,8 @@ TEST_CASE("Bind usgae", "[Parser]") {
 
 TEST_CASE("Storing binding", "[Parser]") {
   Env env;
-  Number number(2);
-  env.store_binding("x", &number);
-  REQUIRE(BindingUsage("x").eval(env)->get_type() == (&number)->get_type());
+  env.store_binding("x", std::make_unique<Number>(2));
+  REQUIRE(BindingUsage("x").eval(env)->get_type() == std::make_unique<Number>(2)->get_type());
 }
 
 TEST_CASE("Cannot read not existent var", "[Parser]") {

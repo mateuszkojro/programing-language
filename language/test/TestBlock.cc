@@ -37,12 +37,12 @@ TEST_CASE("Parsing block with assigning variable to variable", "[Block]") {
 TEST_CASE("Blocks evaluate to last expression if last expression returns value",
 		  "[Block]") {
   Env env;
-  REQUIRE(*(Number *)Block::parse("{5}")->first->eval(env) == Number(5));
+  REQUIRE(*(Number *)Block::parse("{5}")->first->eval(env).get() == Number(5));
 }
 
 TEST_CASE("Blocks evaluate to last expression if last expression returns value "
 		  "and is a variable",
 		  "[Block]") {
   Env env;
-  REQUIRE(*(Number *)Block::parse("{mat a = 1 a}")->first->eval(env) == Number(1));
+  REQUIRE(*(Number *)Block::parse("{mat a = 1 a}")->first->eval(env).get() == Number(1));
 }

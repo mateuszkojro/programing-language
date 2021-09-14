@@ -1,7 +1,5 @@
 #include "Expr.h"
-#include "BindingUsage.h"
 #include "Block.h"
-#include "IValue.h"
 #include "Null.h"
 #include "utils.h"
 #include <utility>
@@ -10,6 +8,10 @@ ExprNumber::ExprNumber(const Number &num) : value_(num) {}
 
 bool ExprNumber::operator==(const ExprNumber &other) const {
   return value_ == other.value_;
+}
+
+unique_ptr<IValue> ExprNumber::eval(Env &env) {
+  return std::make_unique<IValue>(value_);
 }
 
 std::ostream &operator<<(std::ostream &os, const ExprNumber &e) {
@@ -21,10 +23,6 @@ ExprOperation::ExprOperation(IStatment *lhs, IStatment *rhs,
 							 const Operator &op)
 	: lhs_(lhs), rhs_(rhs), op_(op) {}
 
-IValue *ExprNumber::eval() { return new Number(value_); }
-
-IValue *ExprNumber::eval(Env &env) { return this->eval(); }
-
 bool ExprOperation::operator==(const ExprOperation &other) const {
   bool lhs_eq = this->lhs_ == other.lhs_;
   bool rhs_eq = this->rhs_ == other.rhs_;
@@ -32,22 +30,17 @@ bool ExprOperation::operator==(const ExprOperation &other) const {
   return lhs_eq && rhs_eq && op_eq;
 }
 
-IValue *ExprOperation::eval() {
-  assert(false && "Should always call with env");
-  return nullptr;
-}
-
-IValue *ExprOperation::eval(Env &env) {
+std::unique_ptr<IValue> ExprOperation::eval(Env &env) {
   double result;
 
   auto lhs_val = lhs_->eval(env);
   auto rhs_val = rhs_->eval(env);
 
   if (rhs_val->get_type() == IValue::Type::Null || lhs_val->get_type() == IValue::Type::Null)
-	return new Null;
+	return std::make_unique<Null>();
 
-  auto lhs_num = (Number *)lhs_val;
-  auto rhs_num = (Number *)rhs_val;
+  auto lhs_num = (Number *)lhs_val.get();
+  auto rhs_num = (Number *)rhs_val.get();
 
   switch (op_.type()) {
 	case Operator::Add: {
@@ -71,9 +64,9 @@ IValue *ExprOperation::eval(Env &env) {
 	  break;
 	}
 	default:
-	  return new Null;
+	  return std::make_unique<Null>();
   }
-  return new Number(result);
+  return std::make_unique<Number>(result);
 }
 
 std::ostream &operator<<(std::ostream &os, const ExprOperation &e) {
@@ -83,12 +76,7 @@ std::ostream &operator<<(std::ostream &os, const ExprOperation &e) {
 
 ExprVariable::ExprVariable(BindingUsage *b) : variable_(b) {}
 
-IValue *ExprVariable::eval() {
-  std::cout << "using var without contex" << std::endl;
-  return nullptr;
-}
-
-IValue *ExprVariable::eval(Env &env) { return variable_->eval(env); }
+std::unique_ptr<IValue> ExprVariable::eval(Env &env) { return variable_->eval(env); }
 
 bool ExprVariable::operator==(const ExprVariable &other) const {
   return *variable_ == *other.variable_;
@@ -194,20 +182,4 @@ optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
   //  }
   //
   //  return nullopt;
-}
-ExprBlock::ExprBlock() {}
-
-IValue *ExprBlock::eval() {
-  assert(false && "This should not be called");
-  return nullptr;
-}
-
-IValue *ExprBlock::ExprBlock::eval(Env &env) {
-  assert(false && "Not implemented");
-  return nullptr;
-}
-
-bool ExprBlock::operator==(const ExprVariable &other) const {
-  assert(false && "Not implemented");
-  return false;
 }

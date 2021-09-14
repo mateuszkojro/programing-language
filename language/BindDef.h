@@ -3,6 +3,7 @@
 
 #include <optional>
 #include <string>
+#include <memory>
 
 #include "Expr.h"
 
@@ -10,16 +11,16 @@ using std::optional;
 using std::string;
 
 class BindDef : public IStatment {
-public:
+ public:
   static optional<pair<BindDef, string>> parse(const string &text);
 
-  BindDef(const string &name, IExpr *expr);
+  BindDef(string name, IExpr *expr);
 
-  IValue * eval(Env &env) override;
+  std::unique_ptr<IValue> eval(Env &env) override;
 
   bool operator==(const BindDef &op) const;
 
-private:
+ private:
   string name_;
   IExpr *expr_;
 };

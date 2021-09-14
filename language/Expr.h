@@ -23,11 +23,11 @@ class IExpr : public IStatment {
   static optional<pair<IExpr *, string>> parse(const string &expr);
   IExpr() = default;
 
-  virtual IValue *eval() = 0;// { assert(false); };
-  virtual IValue *eval(Env &env) = 0;
+  //  virtual IValue *eval() = 0;// { assert(false); };
+  std::unique_ptr<IValue> eval(Env &env) override = 0;
   // virtual bool operator==(const IExpr &other) const { assert(false); };
 
-  ~IExpr() = default;
+  ~IExpr() override = default;
 };
 /**
  * @brief Literal expression for a number ex. &
@@ -35,14 +35,14 @@ class IExpr : public IStatment {
  */
 class ExprNumber : public IExpr {
  public:
-  ExprNumber(const Number &num);
+  explicit ExprNumber(const Number &num);
 
-  virtual IValue *eval() override;
-  virtual IValue *eval(Env &env) override;
+  //  virtual IValue *eval() override;
+  std::unique_ptr<IValue> eval(Env &env) override;
 
   bool operator==(const ExprNumber &other) const;
 
-  ~ExprNumber() = default;
+  ~ExprNumber() override = default;
 
   friend std::ostream &operator<<(std::ostream &os, const ExprNumber &);
 
@@ -77,12 +77,12 @@ class ExprOperation : public IExpr {
  public:
   ExprOperation(IStatment *lhs, IStatment *rhs, const Operator &op);
 
-  virtual IValue *eval() override;
-  virtual IValue *eval(Env &env) override;
+  //  virtual IValue *eval() override;
+  virtual std::unique_ptr<IValue> eval(Env &env) override;
 
   bool operator==(const ExprOperation &other) const;
 
-  ~ExprOperation() = default;
+  ~ExprOperation() override = default;
 
   friend std::ostream &operator<<(std::ostream &os, const ExprOperation &);
 
@@ -98,28 +98,15 @@ class ExprOperation : public IExpr {
  */
 class ExprVariable : public IExpr {
  public:
-  ExprVariable(BindingUsage *b);
-  virtual IValue *eval() override;
-  virtual IValue *eval(Env &env) override;
+  explicit ExprVariable(BindingUsage *b);
+  //  virtual IValue *eval() override;
+  virtual std::unique_ptr<IValue> eval(Env &env) override;
   bool operator==(const ExprVariable &other) const;
 
-  ~ExprVariable() = default;
+  ~ExprVariable() override = default;
 
  private:
   unique_ptr<BindingUsage> variable_;
-};
-
-class ExprBlock : public IExpr {
- public:
-  ExprBlock();
-
-  virtual IValue *eval() override;
-  virtual IValue *eval(Env &env) override;
-  bool operator==(const ExprVariable &other) const;
-
-  ~ExprBlock() = default;
-
- private:
 };
 
 #endif

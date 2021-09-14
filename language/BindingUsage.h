@@ -11,16 +11,16 @@ using std::pair;
 using std::string;
 
 class BindingUsage : public IStatment {
-public:
-  BindingUsage(const string &name);
+ public:
+  BindingUsage(string name);
   ~BindingUsage() = default;
 
-  static optional<pair<BindingUsage*, string>> parse(string text);
-  bool operator==(const BindingUsage& other) const;
+  static optional<pair<BindingUsage *, string>> parse(string text);
+  bool operator==(const BindingUsage &other) const;
 
-  IValue * eval(Env& env) override;
+  std::unique_ptr<IValue> eval(Env &env) override;
 
-private:
+ private:
   string name_;
 };
 

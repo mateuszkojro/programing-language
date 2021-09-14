@@ -18,8 +18,8 @@ class Block : public IExpr {
   ~Block() = default;
 
   bool operator==(const Block &other) const;
-  IValue *eval() override;
-  IValue *eval(Env &env) override;
+  //  IValue *eval() override;
+  std::unique_ptr<IValue> eval(Env &env) override;
 
  private:
   vector<IStatment *> statments_;
