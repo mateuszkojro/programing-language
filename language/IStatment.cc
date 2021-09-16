@@ -5,6 +5,7 @@
 #include "Conditional.h"
 #include "FuncCall.h"
 #include "FuncDef.h"
+#include "Loop.h"
 
 optional<pair<IStatment *, string>> IStatment::parse(const string &text) {
 
@@ -15,6 +16,10 @@ optional<pair<IStatment *, string>> IStatment::parse(const string &text) {
 	auto result = parse_binding.value();
 	return pair(new BindDef(result.first), result.second);
   }
+
+  auto parse_loop = Loop::parse(str);
+  if (parse_loop)
+	return parse_loop;
 
   auto parse_if = Conditional::parse(str);
   if (parse_if)

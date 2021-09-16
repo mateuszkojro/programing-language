@@ -79,6 +79,10 @@ IValue *Block::eval(Env &outer_scope) {
 	s->eval(inner_scope);
   }
 
+  for (auto [key, val] : outer_scope.get_bindings()) {
+	outer_scope.store_binding(key, inner_scope.get_binding_value(key).value());
+  }
+
   // That could be possibly null
   return statments_[N - 1]->eval(inner_scope);
 }
