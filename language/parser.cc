@@ -12,7 +12,7 @@
 Number::Number(double number) : IValue(IValue::Number), value_(number) {}
 optional<pair<Number, string>> Number::Parse(string number) {
 
-//  std::cout << "Depreciated: should call lowercase parse" << std::endl;
+  //  std::cout << "Depreciated: should call lowercase parse" << std::endl;
 
   auto result = extract_digits(number);
   if (result.first.empty())
@@ -31,10 +31,9 @@ optional<pair<Number, string>> Number::Parse(string number) {
 
 optional<pair<Number *, string>> Number::parse(string number) {
   if (auto parsed_number = Parse(number))
-	return std::make_pair(new Number(parsed_number->first),parsed_number->second);
+	return std::make_pair(new Number(parsed_number->first), parsed_number->second);
   return std::nullopt;
 }
-
 
 double Number::value() const { return value_; }
 
@@ -70,7 +69,18 @@ optional<std::pair<Operator, string>> Operator::Parse(const string &expr) {
 	return std::make_pair(Operator(Type::Multiply), result.value().second);
   else if (op == "/")
 	return std::make_pair(Operator(Type::Divide), result.value().second);
-
+  else if (op == "<")
+	return std::make_pair(Operator(Type::Less), result.value().second);
+  else if (op == ">")
+	return std::make_pair(Operator(Type::More), result.value().second);
+  else if (op == "==")
+	return std::make_pair(Operator(Type::Eq), result.value().second);
+  else if (op == "!=")
+	return std::make_pair(Operator(Type::Neq), result.value().second);
+  else if (op == "%")
+	return std::make_pair(Operator(Type::Mod), result.value().second);
+  else if (op == "//")
+	return std::make_pair(Operator(Type::IntDivide), result.value().second);
   else
 	return nullopt;
 }

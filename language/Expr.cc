@@ -59,6 +59,30 @@ IValue *ExprOperation::eval(Env &env) {
 	  result = lhs_->eval(env)->value() / rhs_->eval(env)->value();
 	  break;
 	}
+	case Operator::Mod: {
+	  result = (int64_t)lhs_->eval(env)->value() % (int64_t)rhs_->eval(env)->value();
+	  break;
+	}
+	case Operator::IntDivide: {
+	  result = (int64_t)lhs_->eval(env)->value() / (int64_t)rhs_->eval(env)->value();
+	  break;
+	}
+	case Operator::Eq: {
+	  result = compare_double(lhs_->eval(env)->value(), rhs_->eval(env)->value());
+	  break;
+	}
+	case Operator::Neq: {
+	  result = !compare_double(lhs_->eval(env)->value(), rhs_->eval(env)->value());
+	  break;
+	}
+	case Operator::More: {
+	  result = lhs_->eval(env)->value() > rhs_->eval(env)->value();
+	  break;
+	}
+	case Operator::Less: {
+	  result = lhs_->eval(env)->value() < rhs_->eval(env)->value();
+	  break;
+	}
   }
   return new Number(result);
 }

@@ -33,7 +33,7 @@ class Number : public IValue, public IStatment {
   double get_value() const { return value(); }
 
   IValue *eval(Env &env) {
-//	assert(false && "Should not be called temp hack");
+	//	assert(false && "Should not be called temp hack");
 	return this;
   }
 
@@ -50,7 +50,17 @@ class Operator {
   enum Type { Add,
 			  Subtract,
 			  Multiply,
-			  Divide };
+			  Divide,
+			  IntDivide,
+			  Eq,
+			  Less,
+			  More,
+			  Neq,
+			  Incr,
+			  Decr,
+			  Pow,
+			  Mod,
+  };
 
   static optional<pair<Operator, string>> Parse(const string &op);
   Operator(Type t);

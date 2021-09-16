@@ -68,13 +68,11 @@ std::optional<std::pair<IStatment *, std::string>> Conditional::parse(const stri
 IValue *Conditional::eval(Env &env) {
   auto condition = condition_->eval(env);
 
-  auto false_case = false_case_ ? false_case_->eval(env) : new Null;
-
   if (condition->get_type() == IValue::Type::Null)
-	return false_case;
+	return false_case_ ? false_case_->eval(env) : new Null;
 
   if (compare_double(condition->value(), 0))
-	return false_case;
+	return false_case_ ? false_case_->eval(env) : new Null;
 
   return true_case_->eval(env);
 }
