@@ -86,4 +86,9 @@ static optional<Str2> extract_identifier(const string &text) {
   return optional(result);
 }
 
+static bool compare_double(double a, double b) {
+  int N = 10;
+  return std::abs(a - b) < std::numeric_limits<double>::epsilon() * N;
+};
+
 #endif

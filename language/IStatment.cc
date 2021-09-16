@@ -2,6 +2,7 @@
 #include "BindDef.h"
 #include "BindingUsage.h"
 #include "Block.h"
+#include "Conditional.h"
 #include "FuncCall.h"
 #include "FuncDef.h"
 
@@ -14,6 +15,10 @@ optional<pair<IStatment *, string>> IStatment::parse(const string &text) {
 	auto result = parse_binding.value();
 	return pair(new BindDef(result.first), result.second);
   }
+
+  auto parse_if = Conditional::parse(str);
+  if (parse_if)
+	return parse_if;
 
   auto parse_func_call = FuncCall::parse(str);
   if (parse_func_call) { return parse_func_call; }
@@ -33,7 +38,6 @@ optional<pair<IStatment *, string>> IStatment::parse(const string &text) {
 
   auto parse_block = Block::parse(str);
   if (parse_block) { return parse_block; }
-
 
   return nullopt;
 }
