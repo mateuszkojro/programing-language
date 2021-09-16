@@ -12,11 +12,10 @@ optional<pair<IStatment *, string>> IStatment::parse(const string &text) {
 
   auto parse_expr = IExpr::parse(text);
   if (parse_expr) {
-    return parse_expr;
+	return parse_expr;
   }
 
   auto parse_binding_usage = BindingUsage::parse(text);
-  
   if (parse_binding_usage){
     return parse_binding_usage;
   }
