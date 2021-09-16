@@ -1,3 +1,4 @@
+#include "IStatment.h"
 #include "IValue.h"
 #include <optional>
 #include <string>
@@ -6,16 +7,22 @@
 #ifndef ENV_H
 #define ENV_H
 
-using std::string;
 using std::optional;
+using std::string;
+
+class FuncDef;
 
 class Env {
-public:
+ public:
   void store_binding(const string &name, IValue *val);
-  optional<IValue *> get_binding_value(const string& name);
+  void store_function(const string &name, FuncDef *val);
+  //  void store_definition(const string &name, IStatment *val);
+  optional<IValue *> get_binding_value(const string &name);
+  optional<FuncDef *> get_function_def(const string &name);
 
-private:
+ private:
   std::unordered_map<string, IValue *> bindings_;
+  std::unordered_map<string, FuncDef *> functions_;
 };
 
 #endif

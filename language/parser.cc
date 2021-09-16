@@ -12,7 +12,7 @@
 Number::Number(double number) : IValue(IValue::Number), value_(number) {}
 optional<pair<Number, string>> Number::Parse(string number) {
 
-  std::cout << "Depreciated: should call lowercase parse" << std::endl;
+//  std::cout << "Depreciated: should call lowercase parse" << std::endl;
 
   auto result = extract_digits(number);
   if (result.first.empty())

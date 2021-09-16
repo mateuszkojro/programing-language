@@ -28,7 +28,7 @@ add_library(parser
         Expr.cc
         Block.cc
         IStatment.cc
-        )
+        FuncDef.cc FuncDef.h FuncCall.cc FuncCall.h)
 # target_compile_features(parser PRIVATE cxx_std_17)
 
 add_subdirectory(lib/Catch2)
