@@ -15,22 +15,22 @@ using Str2 = std::pair<string, string>;
 
 #define msg(var) std::cerr << #var << "='" << var << "'" << std::endl;
 
-#define err(message, value)                                                    \
-  do {                                                                         \
-    std::cerr << message << value << std::endl;                                \
-    std::exit(1);                                                              \
+#define err(message, value)                     \
+  do {                                          \
+	std::cerr << message << value << std::endl; \
+	std::exit(1);                               \
   } while (false)
 
-#define errmsg(message)                                                        \
-  do {                                                                         \
-    std::cerr << message << std::endl;                                         \
-    std::exit(1);                                                              \
+#define errmsg(message)                \
+  do {                                 \
+	std::cerr << message << std::endl; \
+	std::exit(1);                      \
   } while (false)
 
 static Str2 take_whle(const string &expr, bool (*func)(char z)) {
   int i = 0;
   while (func(expr[i]))
-    i++;
+	i++;
   return Str2(expr.substr(0, i), expr.substr(i));
 }
 
@@ -43,7 +43,7 @@ static bool is_whitespace(char c) {
 }
 
 static Str2 extract_digits(const std::string expr) {
-  return take_whle(expr, is_digit);
+  return take_whle(expr, [](char znak) { return is_digit(znak) || znak == '.' || znak == '-'; });
 }
 
 static Str2 extract_whitespace(const std::string expr) {
@@ -53,7 +53,7 @@ static Str2 extract_whitespace(const std::string expr) {
 static optional<Str2> extract_operator(const std::string expr) {
   char op = expr[0];
   if (op == '+' || op == '-' || op == '*' || op == '/') {
-    return optional(make_pair(expr.substr(0, 1), expr.substr(1)));
+	return optional(make_pair(expr.substr(0, 1), expr.substr(1)));
   }
   return std::nullopt;
 }
@@ -61,10 +61,10 @@ static optional<Str2> extract_operator(const std::string expr) {
 static bool is_alphanumeric(char c) { return std::isalpha(c); }
 
 static optional<Str2> tag(const string &text, const string &prefix) {
-  if (text.rfind(prefix, 0) == 0) { // pos=0 limits the search to the prefix
-    return optional(make_pair(prefix, text.substr(prefix.size())));
+  if (text.rfind(prefix, 0) == 0) {// pos=0 limits the search to the prefix
+	return optional(make_pair(prefix, text.substr(prefix.size())));
   } else {
-    return nullopt;
+	return nullopt;
   }
 }
 
@@ -78,10 +78,10 @@ static optional<Str2> extract_identifier(const string &text) {
   auto result = take_whle(text, is_alphanumeric_or_digit);
 
   if (result.first == "")
-    return nullopt;
+	return nullopt;
 
   if (is_digit(result.first[0]))
-    return nullopt;
+	return nullopt;
 
   return optional(result);
 }

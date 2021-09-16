@@ -12,7 +12,7 @@ using std::string;
 
 class IStatment {
  public:
-  static optional<pair<IStatment *, string>> parse(const string &text);
+  static optional<pair<IStatment *, string>> parse(const string &str);
   IStatment() = default;
 
   virtual IValue *eval(Env &env) = 0;
