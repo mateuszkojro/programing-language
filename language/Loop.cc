@@ -49,13 +49,11 @@ std::optional<std::pair<IStatment *, std::string>> Loop::parse(const string &tex
 Loop::Loop(IStatment *condition, Block *block) : condition_(condition), block_(block) {}
 
 IValue *Loop::eval(Env &env) {
-  IValue* condition = condition_->eval(env);
+  IValue *condition = condition_->eval(env);
   IValue *result_value = nullptr;
   while (!(condition->get_type() == IValue::Type::Null) && !(condition->value() == 0)) {
 	result_value = block_->eval(env);// TODO memory leak
-	msg(result_value->value());
 	condition = condition_->eval(env);
-	msg(condition->value());
   }
 
   return result_value ? result_value : new Null;

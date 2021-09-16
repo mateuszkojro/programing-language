@@ -20,7 +20,7 @@ class FuncDef : public IStatment {
 
   IValue *eval(Env &env) override;
 
-  std::vector<std::string> get_arg_names() { return args_;}
+  std::vector<std::string> get_arg_names() { return args_; }
   Block *get_func_body() { return body_; }
 
  private:

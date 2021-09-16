@@ -12,11 +12,11 @@ class FuncCall : public IStatment {
   static std::optional<std::pair<FuncCall *, std::string>> parse(const std::string &text);
   IValue *eval(Env &env) override;
 
-  FuncCall(std::string func_name, std::vector<IStatment*> passed_names);
+  FuncCall(std::string func_name, std::vector<IStatment *> passed_names);
 
  private:
   std::string func_name_;
-  std::vector<IStatment*> args_;
+  std::vector<IStatment *> args_;
 };
 
 #endif//INTERPRETER_LANGUAGE_FUNCCALL_H_
