@@ -5,13 +5,13 @@
 
 #include "parser.h"
 
-optional<pair<Block*, string>> Block::parse(const string &text) {
+optional<pair<Block *, string>> Block::parse(const string &text) {
 
   auto str = extract_whitespace(text).second;
 
   auto open_block = tag(str, "{");
   if (!open_block)
-    return nullopt;
+	return nullopt;
 
   str = open_block.value().second;
 
@@ -22,20 +22,26 @@ optional<pair<Block*, string>> Block::parse(const string &text) {
   auto parse_statment = IStatment::parse(str);
   while (parse_statment) {
 
-    str = parse_statment.value().second;
+	str = parse_statment.value().second;
 
-    statments.push_back(parse_statment.value().first);
+	statments.push_back(parse_statment.value().first);
 
-    str = extract_whitespace(str).second;
+	str = extract_whitespace(str).second;
 
-    parse_statment = IStatment::parse(str);
+	parse_statment = IStatment::parse(str);
   }
 
   auto close_block = tag(str, "}");
   if (!close_block)
-    return nullopt;
+	return nullopt;
 
   return pair(new Block(statments), close_block->second);
+}
+
+optional<pair<Block, string>> Block::Parse(const string &text) {
+  if (auto result = parse(text))
+	auto [value, str] = result.value();
+  return std::nullopt;
 }
 
 Block::Block(const vector<IStatment *> &statments) : statments_(statments) {}
@@ -46,14 +52,14 @@ bool Block::operator==(const Block &other) const {
   Env env;
 
   if (statments_.size() != other.statments_.size())
-    return false;
+	return false;
 
   for (int i = 0; i < statments_.size(); i++) {
-    Number *n1 = (Number *)statments_[i]->eval(env);
-    Number *n2 = (Number *)other.statments_[i]->eval(env);
+	Number *n1 = (Number *)statments_[i]->eval(env);
+	Number *n2 = (Number *)other.statments_[i]->eval(env);
 
-    if (n1->get_value() != n2->get_value())
-      return false;
+	if (n1->get_value() != n2->get_value())
+	  return false;
   }
 
   return true;
@@ -69,7 +75,7 @@ IValue *Block::eval(Env &outer_scope) {
 	return new Null;
 
   // We need to evaluate all the statmemts in block to get the last value
-  for (const auto &s: statments_) {
+  for (const auto &s : statments_) {
 	s->eval(inner_scope);
   }
 
