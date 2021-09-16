@@ -5,12 +5,15 @@
 
 #include "parser.h"
 
-optional<pair<Block, string>> Block::parse(const string &text) {
-  auto open_block = tag(text, "{");
+optional<pair<Block*, string>> Block::parse(const string &text) {
+
+  auto str = extract_whitespace(text).second;
+
+  auto open_block = tag(str, "{");
   if (!open_block)
     return nullopt;
 
-  string str = open_block.value().second;
+  str = open_block.value().second;
 
   str = extract_whitespace(str).second;
 
@@ -32,7 +35,7 @@ optional<pair<Block, string>> Block::parse(const string &text) {
   if (!close_block)
     return nullopt;
 
-  return pair(Block(statments), str);
+  return pair(new Block(statments), close_block->second);
 }
 
 Block::Block(const vector<IStatment *> &statments) : statments_(statments) {}
@@ -56,7 +59,10 @@ bool Block::operator==(const Block &other) const {
   return true;
 }
 
-IValue *Block::eval(Env &env) {
+IValue *Block::eval(Env &outer_scope) {
+
+  Env inner_scope(outer_scope);
+
   auto N = statments_.size();
 
   if (N <= 0)
@@ -64,9 +70,9 @@ IValue *Block::eval(Env &env) {
 
   // We need to evaluate all the statmemts in block to get the last value
   for (const auto &s: statments_) {
-	s->eval(env);
+	s->eval(inner_scope);
   }
 
   // That could be possibly null
-  return statments_[N - 1]->eval(env);
+  return statments_[N - 1]->eval(inner_scope);
 }
