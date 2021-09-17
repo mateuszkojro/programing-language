@@ -3,6 +3,7 @@
 #include "Null.h"
 #include "env.h"
 #include "utils.h"
+#include "ErrorStatment.h"
 
 BindingUsage::BindingUsage(string name) : name_(std::move(name)) {}
 
@@ -37,7 +38,7 @@ IValue *BindingUsage::eval(Env &env) {
 
   auto bind_val = env.get_binding_value(name_);
   if (!bind_val)
-	return new Null;
+	return new ErrorStatment("Variable does not exist: " + name_);
 
   if (!new_value_)
 	return bind_val.value();
