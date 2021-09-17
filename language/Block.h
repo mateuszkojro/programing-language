@@ -11,17 +11,48 @@ using std::pair;
 using std::string;
 using std::vector;
 
+/***
+ * @brief Code blocks - scopes
+ * Always evaluate to the last statment in them
+ * for example:
+ * @code
+ * {1 2 4}
+ * @endcode
+ * evaluates to 4
+ *
+ * Blocs can be ussd both as a separate construct:
+ * @code
+ * x = { mat x = 0 x }
+ * @endcode
+ * and part of other language constructs (if statments, while loops, function definitions)
+ * @code
+ * if (1) {10}
+ * @endcode
+ */
 class Block : public IStatment {
  public:
   static optional<pair<Block *, string>> parse(const string &text);
-  static optional<pair<Block, string>> Parse(const string &text);
-  Block(const vector<IStatment *> &exprs);
-  ~Block() = default;
 
+  /***
+   * @deprecated For consistency parse should be used instead
+   */
+  static optional<pair<Block, string>> Parse(const string &text);
+
+  explicit Block(const vector<IStatment *> &exprs);
+  ~Block() override = default;
   bool operator==(const Block &other) const;
-  IValue *eval(Env &inner_scope);
+
+  /***
+   * @brief Evaluates all statment in block in current scope
+   * @param env Scope to evaluate block in
+   * @return Evaluation of the last statment in the block
+   */
+  IValue *eval(Env &env) override;
 
  private:
+  /***
+   * @brief List of statments in the block
+   */
   vector<IStatment *> statments_;
 };
 

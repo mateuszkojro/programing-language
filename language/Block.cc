@@ -13,7 +13,7 @@ optional<pair<Block *, string>> Block::parse(const string &text) {
   if (!open_block)
 	return nullopt;
 
-  str = open_block.value().second;
+  str = open_block->second;
 
   str = extract_whitespace(str).second;
 
@@ -24,7 +24,7 @@ optional<pair<Block *, string>> Block::parse(const string &text) {
 
 	str = parse_statment.value().second;
 
-	statments.push_back(parse_statment.value().first);
+	statments.push_back(parse_statment->first);
 
 	str = extract_whitespace(str).second;
 
@@ -39,6 +39,7 @@ optional<pair<Block *, string>> Block::parse(const string &text) {
 }
 
 optional<pair<Block, string>> Block::Parse(const string &text) {
+  DEPR("Derpiciated you should use parse with lowercase 'P' instead");
   if (auto result = parse(text))
 	auto [value, str] = result.value();
   return std::nullopt;
@@ -46,8 +47,9 @@ optional<pair<Block, string>> Block::Parse(const string &text) {
 
 Block::Block(const vector<IStatment *> &statments) : statments_(statments) {}
 
-// FIXME: what to do with those envs
 bool Block::operator==(const Block &other) const {
+
+  FIXME("Comparison might not be correct because it creates its own environment");
 
   Env env;
 
@@ -55,8 +57,8 @@ bool Block::operator==(const Block &other) const {
 	return false;
 
   for (int i = 0; i < statments_.size(); i++) {
-	Number *n1 = (Number *)statments_[i]->eval(env);
-	Number *n2 = (Number *)other.statments_[i]->eval(env);
+	auto *n1 = (Number *)statments_[i]->eval(env);
+	auto *n2 = (Number *)other.statments_[i]->eval(env);
 
 	if (n1->get_value() != n2->get_value())
 	  return false;
@@ -79,6 +81,7 @@ IValue *Block::eval(Env &outer_scope) {
 	s->eval(inner_scope);
   }
 
+  // Copy changes to variables from the outer scope
   for (auto [key, val] : outer_scope.get_bindings()) {
 	outer_scope.store_binding(key, inner_scope.get_binding_value(key).value());
   }
