@@ -9,7 +9,7 @@ IValue *ErrorStatment::eval(Env &env) {
 }
 double ErrorStatment::value() const {
   assert(false && "Trying to extract value from the error");
-  return 0;
+  return NAN;
 }
 std::string ErrorStatment::error() {
   return error_message_;

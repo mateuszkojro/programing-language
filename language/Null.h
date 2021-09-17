@@ -9,7 +9,7 @@ class Null : public IValue {
   Null() : IValue(IValue::Null) {}
   double value() const override {
 	assert(false && "Tried to get value from null");
-	return 0;
+	return NAN;
   }
   virtual ~Null() = default;
 };

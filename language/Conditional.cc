@@ -74,5 +74,8 @@ IValue *Conditional::eval(Env &env) {
   if (compare_double(condition->value(), 0))
 	return false_case_ ? false_case_->eval(env) : new Null;
 
+  if (condition->value() == NAN)
+	return false_case_ ? false_case_->eval(env) : new Null;
+
   return true_case_->eval(env);
 }

@@ -3,12 +3,14 @@
 //
 
 #include "FuncCall.h"
+#include "ErrorStatment.h"
 #include "FuncDef.h"
 #include "Null.h"
+
 IValue *FuncCall::eval(Env &env) {
   auto function = env.get_function_def(func_name_);
   if (!function)
-	return new Null;
+	return new ErrorStatment("Function does not exit: " + func_name_);
 
   Env inner_scope(env);
   auto inner_names = function.value()->get_arg_names();

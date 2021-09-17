@@ -51,7 +51,8 @@ Loop::Loop(IStatment *condition, Block *block) : condition_(condition), block_(b
 IValue *Loop::eval(Env &env) {
   IValue *condition = condition_->eval(env);
   IValue *result_value = nullptr;
-  while (!(condition->get_type() == IValue::Type::Null) && !(condition->value() == 0)) {
+  while (!(condition->get_type() == IValue::Type::Null) && !(compare_double(condition->value(), 0)) && !(condition->value() == NAN)) {
+	FIXME("Memory leak");
 	result_value = block_->eval(env);// TODO memory leak
 	condition = condition_->eval(env);
   }
