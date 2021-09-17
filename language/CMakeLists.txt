@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18.0)
+cmake_minimum_required(VERSION 3.0.0)
 project(language VERSION 0.1.0)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
