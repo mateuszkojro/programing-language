@@ -22,7 +22,8 @@ Parser interpret_file(const std::string &filepath, Parser parser = Parser()) {
 }
 
 Parser repl(Parser parser = Parser()) {
-
+  std::cout << "=== Unnamed programing languge ===" << std::endl;
+  std::cout << "Compiled with " << COMPILER << " on " << __DATE__ << " " << __TIME__ << std::endl;
   while (true) {
 	std::cout << "=> ";
 	std::cout.flush();
@@ -30,6 +31,9 @@ Parser repl(Parser parser = Parser()) {
 	std::getline(std::cin, line);
 
 	if (line == "$q")
+	  return parser;
+
+	if (line == "%load")
 	  return parser;
 
 	parser.parse(line);

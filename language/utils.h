@@ -28,14 +28,23 @@ using Str2 = std::pair<string, string>;
 	std::exit(1);                        \
   } while (false)
 
-#define FIXME(msg) std::cout << "=== FIXME ===\n"                                 \
-							 << __FILE__ << __FUNCTION__ << __LINE__ << std::endl \
-							 << (msg) << std::endl
+static std::string debug_header(const std::string &title,
+								const std::string &file,
+								const std::string &function,
+								int line) {
+  std::ostringstream ss;
+  ss << title << std::endl
+	 << "[ " << file << ":" << line << " ] " << function << std::endl;
+  return ss.str();
+}
 
-#define DEPR(msg) std::cout << "=== DEPR ===\n"                                  \
-							<< __FILE__ << __FUNCTION__ << __LINE__ << std::endl \
-                                                                                 \
-							<< (msg) << std::endl
+#define FIXME(msg) std::cout << std::endl                                                                             \
+							 << debug_header("=== FIXME ===", __FILE__, __FUNCTION__, __LINE__) << (msg) << std::endl \
+							 << std::endl
+
+#define DEPR(msg) std::cout << std::endl                                                                            \
+							<< debug_header("=== DEPR ===", __FILE__, __FUNCTION__, __LINE__) << (msg) << std::endl \
+							<< std::endl
 
 static std::string ver_string(std::string name, int a, int b, int c) {
   std::ostringstream ss;
@@ -57,7 +66,6 @@ static std::string ver_string(std::string name, int a, int b, int c) {
 #ifndef COMPILER
 #define COMPILER ver_string("Unknown", 0, 0, 0)
 #endif
-
 
 static Str2 take_whle(const string &expr, bool (*func)(char z)) {
   int i = 0;
