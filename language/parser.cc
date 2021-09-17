@@ -1,4 +1,3 @@
-#include <cassert>
 #include <iostream>
 #include <optional>
 #include <stdexcept>
@@ -7,13 +6,11 @@
 
 #include "ErrorStatment.h"
 #include "Null.h"
-#include "env.h"
-#include "parser.h"
 
 Number::Number(double number) : IValue(IValue::Number), value_(number) {}
-optional<pair<Number, string>> Number::Parse(string number) {
+optional<pair<Number, string>> Number::Parse(const string &number) {
 
-  //  std::cout << "Depreciated: should call lowercase parse" << std::endl;
+  DEPR("Lowercase Parse should be called");
 
   auto result = extract_digits(number);
   if (result.first.empty())
@@ -22,15 +19,19 @@ optional<pair<Number, string>> Number::Parse(string number) {
   try {
 	return std::make_pair(Number(std::stod(result.first)), result.second);
   } catch (const std::invalid_argument &e) {
-	std::cerr << "Malformed number: " << result.first << std::endl;
+
+	WARN("Parsed malformed number");
+
 	return nullopt;
   } catch (const std::out_of_range &e) {
-	std::cerr << "Number too large" << std::endl;
+
+	WARN("Parsed number is too big");
+
 	return nullopt;
   }
 }
 
-optional<pair<Number *, string>> Number::parse(string number) {
+optional<pair<Number *, string>> Number::parse(const string &number) {
   if (auto parsed_number = Parse(number))
 	return std::make_pair(new Number(parsed_number->first), parsed_number->second);
   return std::nullopt;
@@ -94,27 +95,27 @@ bool Operator::operator==(const Operator::Type &other) const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Operator &n) {
-  os << "Number(" << n.value_ << ")";
+  os << "Operator(" << (int)n.value_ << ")";
   return os;
 }
-Parser::Parser() {
+Interpreter::Interpreter() {
   environment_ = Env();
 }
-int Parser::parse(const string &code) {
+int Interpreter::parse(const string &code) {
 
   if (auto result = IStatment::parse(code)) {
 	auto evaluated = result->first->eval(environment_);
 	switch (evaluated->get_type()) {
 	  case IValue::Number:
-		std::cout << *(Number *)evaluated << std::endl;
+		std::cout << evaluated->value() << std::endl;
 		break;
 	  case IValue::Null:
-		//		std::cout << *(Null*)evaluated << std::endl;
 		std::cout << "Null" << std::endl;
 		break;
 	  case IValue::Error:
-		ErrorStatment *err = (ErrorStatment *)evaluated;
+		auto *err = (ErrorStatment *)evaluated;
 		std::cout << "Error(" << err->error() << ")" << std::endl;
+		break;
 	}
   }
 

@@ -5,7 +5,7 @@
 
 #include "language/parser.h"
 
-Parser interpret_file(const std::string &filepath, Parser parser = Parser()) {
+Interpreter interpret_file(const std::string &filepath, Interpreter parser = Interpreter()) {
 
   std::fstream file;
 
@@ -21,7 +21,7 @@ Parser interpret_file(const std::string &filepath, Parser parser = Parser()) {
   return parser;
 }
 
-Parser repl(Parser parser = Parser()) {
+Interpreter repl(Interpreter parser = Interpreter()) {
   std::cout << "=== Unnamed programing languge ===" << std::endl;
   std::cout << "Compiled with " << COMPILER << " on " << __DATE__ << " " << __TIME__ << std::endl;
   while (true) {
