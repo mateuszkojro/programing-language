@@ -1,9 +1,9 @@
 #include "FuncCall.h"
 
-#include <utility>
 #include "ErrorStatment.h"
 #include "FuncDef.h"
 #include "Null.h"
+#include <utility>
 
 IValue *FuncCall::eval(Env &env) {
   auto function = env.get_function_def(func_name_);
@@ -12,6 +12,10 @@ IValue *FuncCall::eval(Env &env) {
 
   Env inner_scope(env);
   auto inner_names = function.value()->get_arg_names();
+
+  if (inner_names.size() != args_.size())
+	return new ErrorStatment("Number of passed arguments: " + std::to_string(args_.size()) + " is not equal to number of expected arguments: " + std::to_string(inner_names.size()));
+
   for (int i = 0; i < args_.size(); i++) {
 	inner_scope.store_binding(inner_names[i], args_[i]->eval(env));
   }
