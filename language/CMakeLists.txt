@@ -28,7 +28,12 @@ add_library(parser
         Expr.cc
         Block.cc
         IStatment.cc
-        FuncDef.cc FuncDef.h FuncCall.cc FuncCall.h Conditional.cc Conditional.h Loop.cc Loop.h Matrix.cc Matrix.h)
+        FuncDef.cc FuncDef.h
+        FuncCall.cc FuncCall.h
+        Conditional.cc Conditional.h
+        Loop.cc Loop.h
+        Matrix.cc Matrix.h
+        ErrorStatment.cc ErrorStatment.h)
 # target_compile_features(parser PRIVATE cxx_std_17)
 
 add_subdirectory(lib/Catch2)
