@@ -51,6 +51,8 @@ class Env {
    */
   std::unordered_map<string, IValue *> &get_bindings() { return bindings_; };
 
+  ~Env();
+
  private:
   /**
    * @brief Bindings variable name -> value

@@ -22,3 +22,11 @@ optional<FuncDef *> Env::get_function_def(const string &name) {
 	return std::nullopt;
   return functions_[name];
 }
+Env::~Env() {
+  for (auto [key, value] : bindings_) {
+	delete value;
+  }
+  for (auto [key, value] : functions_) {
+	delete value;
+  }
+}
