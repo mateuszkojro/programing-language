@@ -4,14 +4,23 @@
 #include "BindDef.h"
 #include "IValue.h"
 
+/**
+ * @brief Null value
+ */
 class Null : public IValue {
  public:
   Null() : IValue(IValue::Null) {}
+
+  /**
+   * @brief Always evaluated to NaN
+   * @return NaN
+   */
   double value() const override {
-	assert(false && "Tried to get value from null");
+	FIXME("Value of Null is implicitly NaN");
 	return NAN;
   }
-  virtual ~Null() = default;
+
+  ~Null() override = default;
 };
 
 #endif// !NULL_H
