@@ -11,7 +11,7 @@ using std::pair;
 using std::string;
 using std::vector;
 
-/***
+/**
  * @brief Code blocks - scopes
  * Always evaluate to the last statment in them
  * for example:
@@ -33,7 +33,7 @@ class Block : public IStatment {
  public:
   static optional<pair<Block *, string>> parse(const string &text);
 
-  /***
+  /**
    * @deprecated For consistency parse should be used instead
    */
   static optional<pair<Block, string>> Parse(const string &text);
@@ -42,7 +42,7 @@ class Block : public IStatment {
   ~Block() override = default;
   bool operator==(const Block &other) const;
 
-  /***
+  /**
    * @brief Evaluates all statment in block in current scope
    * @param env Scope to evaluate block in
    * @return Evaluation of the last statment in the block
@@ -50,7 +50,7 @@ class Block : public IStatment {
   IValue *eval(Env &env) override;
 
  private:
-  /***
+  /**
    * @brief List of statments in the block
    */
   vector<IStatment *> statments_;

@@ -8,7 +8,7 @@
 using std::pair;
 using std::string;
 
-/***
+/**
  * @brief Variable binding usage
  * Value can be assigned to variable
  * @code
@@ -30,7 +30,7 @@ class BindingUsage : public IStatment {
 
   bool operator==(const BindingUsage &other) const;
 
-  /***
+  /**
    * @brief Evaluates variable in scope and returns updated value of the variable
    * @param env Current scope
    * @return Evaluation in current scope
@@ -38,11 +38,11 @@ class BindingUsage : public IStatment {
   IValue *eval(Env &env) override;
 
  private:
-  /***
+  /**
    * @brief Variable name
    */
   string name_;
-  /***
+  /**
    * @brief If not null evaluated will be assigned to variable in scope
    */
   IStatment *new_value_ = nullptr;

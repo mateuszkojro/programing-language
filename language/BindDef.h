@@ -10,7 +10,7 @@
 using std::optional;
 using std::string;
 
-/***
+/**
  * @brief Variable binding statment
  * @code
  * mat x = 123
@@ -26,7 +26,7 @@ class BindDef : public IStatment {
 
   bool operator==(const BindDef &op) const;
 
-  /***
+  /**
    * @brief Evaluation of Binding stores te value of the binding in current scope and
    * return the evaluated value
    * @param env Current scope
@@ -39,7 +39,7 @@ class BindDef : public IStatment {
    * @brief Variable name
    */
   string name_;
-  /***
+  /**
    * @brief Expression that will be evaluated to get variabe value
    */
   IExpr *expr_;
