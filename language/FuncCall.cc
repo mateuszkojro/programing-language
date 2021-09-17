@@ -1,8 +1,6 @@
-//
-// Created by mateu on 9/16/2021.
-//
-
 #include "FuncCall.h"
+
+#include <utility>
 #include "ErrorStatment.h"
 #include "FuncDef.h"
 #include "Null.h"
@@ -60,4 +58,4 @@ std::optional<std::pair<FuncCall *, std::string>> FuncCall::parse(const string &
 
   return std::make_pair(new FuncCall(extracted_name->first, args), str);
 }
-FuncCall::FuncCall(std::string func_name, std::vector<IStatment *> args) : func_name_(func_name), args_(args) {}
+FuncCall::FuncCall(std::string func_name, std::vector<IStatment *> args) : func_name_(std::move(func_name)), args_(std::move(args)) {}

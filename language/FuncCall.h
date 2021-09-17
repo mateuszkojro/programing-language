@@ -8,15 +8,32 @@
 #include "IStatment.h"
 #include <vector>
 
+/**
+ * @brief
+ */
 class FuncCall : public IStatment {
  public:
   static std::optional<std::pair<FuncCall *, std::string>> parse(const std::string &text);
-  IValue *eval(Env &env) override;
 
   FuncCall(std::string func_name, std::vector<IStatment *> passed_names);
 
+  /**
+   * @brief Function will be called with the argument passed
+   * @param env Outer scope
+   * @return Value returned from the function
+   */
+  IValue *eval(Env &env) override;
+
+
  private:
+  /**
+   * @brief Name of a function to be called
+   */
   std::string func_name_;
+
+  /**
+   * @brief Statment that will be evaluated and passed to a function
+   */
   std::vector<IStatment *> args_;
 };
 
