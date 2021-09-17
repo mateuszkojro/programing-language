@@ -22,25 +22,25 @@ TEST_CASE("Parse eval add", "[Interpreter]") {
 
 TEST_CASE("Eval divide", "[Interpreter]") {
   Number *value =
-      (Number *)ExprOperation(Number(2), Number(2), Operator(Operator::Divide))
+      (Number *)ExprOperation(Number(2), Number(2), Operator(Operator::Type::Divide))
           .eval();
   REQUIRE(value->get_value() == 1);
 }
 TEST_CASE("Eval multiply", "[Interpreter]") {
   Number *value = (Number *)ExprOperation(Number(2), Number(3),
-                                          Operator(Operator::Multiply))
+                                          Operator(Operator::Type::Multiply))
                       .eval();
   REQUIRE(value->get_value() == 6);
 }
 TEST_CASE("Eval subtract", "[Interpreter]") {
   Number *value = (Number *)ExprOperation(Number(2), Number(3),
-                                          Operator(Operator::Subtract))
+                                          Operator(Operator::Type::Subtract))
                       .eval();
   REQUIRE(value->get_value() == -1);
 }
 TEST_CASE("Eval add", "[Interpreter]") {
   Number *value =
-      (Number *)ExprOperation(Number(2), Number(3), Operator(Operator::Add))
+      (Number *)ExprOperation(Number(2), Number(3), Operator(Operator::Type::Add))
           .eval();
   REQUIRE(value->get_value() == 5);
 }
@@ -54,6 +54,6 @@ TEST_CASE("Number expr", "[Interpreter]"){
 
 TEST_CASE("Parsing expression", "[Interpreter]") {
   REQUIRE(*(ExprOperation *)IExpr::parse("1+2").value().first ==
-          ExprOperation(Number(1), Number(2), Operator(Operator::Add)));
+          ExprOperation(Number(1), Number(2), Operator(Operator::Type::Add)));
 }
 

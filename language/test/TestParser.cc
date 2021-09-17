@@ -12,19 +12,19 @@ TEST_CASE("Parsing numbers is correct", "[Interpreter]") {
 
 TEST_CASE("Parsing multiply", "[Interpreter]") {
   REQUIRE(Operator::Parse("*") ==
-          optional(make_pair(Operator(Operator::Multiply), (string) "")));
+          optional(make_pair(Operator(Operator::Type::Multiply), (string) "")));
 }
 TEST_CASE("Parsing divide", "[Interpreter]") {
   REQUIRE(Operator::Parse("/") ==
-          optional(make_pair(Operator(Operator::Divide), (string) "")));
+          optional(make_pair(Operator(Operator::Type::Divide), (string) "")));
 }
 TEST_CASE("Parsing subtract", "[Interpreter]") {
   REQUIRE(Operator::Parse("-") ==
-          optional(make_pair(Operator(Operator::Subtract), (string) "")));
+          optional(make_pair(Operator(Operator::Type::Subtract), (string) "")));
 }
 TEST_CASE("Parsing add", "[Interpreter]") {
   REQUIRE(Operator::Parse("+") ==
-          optional(make_pair(Operator(Operator::Add), (string) "")));
+          optional(make_pair(Operator(Operator::Type::Add), (string) "")));
 }
 TEST_CASE("Extracting whitespace", "[Interpreter]") {
   REQUIRE(extract_whitespace(" 1+2") == Str2(" ", "1+2"));

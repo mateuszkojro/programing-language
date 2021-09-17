@@ -8,7 +8,7 @@
 #include <utility>
 
 TEST_CASE("Parsinng binding operation", "[Interpreter]") {
-  auto expr = ExprOperation(Number(2), Number(4), Operator(Operator::Divide));
+  auto expr = ExprOperation(Number(2), Number(4), Operator(Operator::Type::Divide));
   REQUIRE(BindDef::parse("mat x = 2 / 4").value().first == BindDef("x", &expr));
 }
 
@@ -18,7 +18,7 @@ TEST_CASE("Parsinng binding number", "[Interpreter]") {
 }
 
 TEST_CASE("Parse numbers in var name", "[Interpreter]") {
-  auto expr = ExprOperation(Number(2), Number(4), Operator(Operator::Divide));
+  auto expr = ExprOperation(Number(2), Number(4), Operator(Operator::Type::Divide));
   REQUIRE(BindDef::parse("mat x12 = 2 / 4").value().first ==
           BindDef("x12", &expr));
   REQUIRE(BindDef::parse("mat x12x = 2 / 4").value().first ==
