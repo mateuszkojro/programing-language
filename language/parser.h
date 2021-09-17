@@ -47,7 +47,7 @@ class Number : public IValue, public IStatment {
 
 class Operator {
  public:
-  enum Type { Add,
+  enum class Type { Add,
 			  Subtract,
 			  Multiply,
 			  Divide,

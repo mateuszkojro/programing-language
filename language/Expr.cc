@@ -2,6 +2,7 @@
 #include "BindingUsage.h"
 #include "Block.h"
 #include "IValue.h"
+#include "Null.h"
 #include <utility>
 
 ExprNumber::ExprNumber(const Number &num) : value_(num) {}
@@ -43,46 +44,48 @@ IValue *ExprOperation::eval(Env &env) {
   double result;
 
   switch (op_.type()) {
-	case Operator::Add: {
+	case Operator::Type::Add: {
 	  result = lhs_->eval(env)->value() + rhs_->eval(env)->value();
 	  break;
 	}
-	case Operator::Subtract: {
+	case Operator::Type::Subtract: {
 	  result = lhs_->eval(env)->value() - rhs_->eval(env)->value();
 	  break;
 	}
-	case Operator::Multiply: {
+	case Operator::Type::Multiply: {
 	  result = lhs_->eval(env)->value() * rhs_->eval(env)->value();
 	  break;
 	}
-	case Operator::Divide: {
+	case Operator::Type::Divide: {
 	  result = lhs_->eval(env)->value() / rhs_->eval(env)->value();
 	  break;
 	}
-	case Operator::Mod: {
+	case Operator::Type::Mod: {
 	  result = (int64_t)lhs_->eval(env)->value() % (int64_t)rhs_->eval(env)->value();
 	  break;
 	}
-	case Operator::IntDivide: {
+	case Operator::Type::IntDivide: {
 	  result = (int64_t)lhs_->eval(env)->value() / (int64_t)rhs_->eval(env)->value();
 	  break;
 	}
-	case Operator::Eq: {
+	case Operator::Type::Eq: {
 	  result = compare_double(lhs_->eval(env)->value(), rhs_->eval(env)->value());
 	  break;
 	}
-	case Operator::Neq: {
+	case Operator::Type::Neq: {
 	  result = !compare_double(lhs_->eval(env)->value(), rhs_->eval(env)->value());
 	  break;
 	}
-	case Operator::More: {
+	case Operator::Type::More: {
 	  result = lhs_->eval(env)->value() > rhs_->eval(env)->value();
 	  break;
 	}
-	case Operator::Less: {
+	case Operator::Type::Less : {
 	  result = lhs_->eval(env)->value() < rhs_->eval(env)->value();
 	  break;
 	}
+	default:
+	  return new Null;
   }
   return new Number(result);
 }
