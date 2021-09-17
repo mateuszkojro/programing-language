@@ -6,11 +6,14 @@
 #include "parser.h"
 
 optional<pair<Block *, string>> Block::parse(const string &text) {
-  auto open_block = tag(text, "{");
+
+  auto str = extract_whitespace(text).second;
+
+  auto open_block = tag(str, "{");
   if (!open_block)
 	return nullopt;
 
-  string str = open_block.value().second;
+  str = open_block.value().second;
 
   str = extract_whitespace(str).second;
 
@@ -32,7 +35,13 @@ optional<pair<Block *, string>> Block::parse(const string &text) {
   if (!close_block)
 	return nullopt;
 
-  return pair(new Block(statments), str);
+  return pair(new Block(statments), close_block->second);
+}
+
+optional<pair<Block, string>> Block::Parse(const string &text) {
+  if (auto result = parse(text))
+	auto [value, str] = result.value();
+  return std::nullopt;
 }
 
 Block::Block(const vector<IStatment *> &statments) : statments_(statments) {}
@@ -56,7 +65,10 @@ bool Block::operator==(const Block &other) const {
   return true;
 }
 
-IValue *Block::eval(Env &env) {
+IValue *Block::eval(Env &outer_scope) {
+
+  Env inner_scope(outer_scope);
+
   auto N = statments_.size();
 
   if (N <= 0)
@@ -64,13 +76,13 @@ IValue *Block::eval(Env &env) {
 
   // We need to evaluate all the statmemts in block to get the last value
   for (const auto &s : statments_) {
-	s->eval(env);
+	s->eval(inner_scope);
+  }
+
+  for (auto [key, val] : outer_scope.get_bindings()) {
+	outer_scope.store_binding(key, inner_scope.get_binding_value(key).value());
   }
 
   // That could be possibly null
-  return statments_[N - 1]->eval(env);
-}
-IValue *Block::eval() {
-  assert(false && "This should never be called");
-  return nullptr;
+  return statments_[N - 1]->eval(inner_scope);
 }

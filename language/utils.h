@@ -43,7 +43,7 @@ static bool is_whitespace(char c) {
 }
 
 static Str2 extract_digits(const std::string expr) {
-  return take_whle(expr, is_digit);
+  return take_whle(expr, [](char znak) { return is_digit(znak) || znak == '.' || znak == '-'; });
 }
 
 static Str2 extract_whitespace(const std::string expr) {
@@ -51,13 +51,13 @@ static Str2 extract_whitespace(const std::string expr) {
 }
 
 static optional<Str2> extract_operator(const std::string expr) {
-  char op = expr[0];
-  if (op == '+' || op == '-' || op == '*' || op == '/') {
-	return make_pair(expr.substr(0, 1), expr.substr(1));
+  auto char2 = expr.substr(0, 2);
+  if (char2 == "==" || char2 == "!=" || char2 == "//") {
+	return optional(make_pair(char2, expr.substr(2)));
   }
-  std::string char2 = expr.substr(0, 2);
-  if (char2 == "==") {
-	return make_pair(char2, expr.substr(2));
+  char op = expr[0];
+  if (op == '+' || op == '-' || op == '*' || op == '/' || op == '>' || op == '<' || op == '%') {
+	return optional(make_pair(expr.substr(0, 1), expr.substr(1)));
   }
   return std::nullopt;
 }
@@ -89,5 +89,10 @@ static optional<Str2> extract_identifier(const string &text) {
 
   return optional(result);
 }
+
+static bool compare_double(double a, double b) {
+  int N = 10;
+  return std::abs(a - b) < std::numeric_limits<double>::epsilon() * N;
+};
 
 #endif

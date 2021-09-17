@@ -22,14 +22,20 @@ using std::string;
 class Number : public IValue, public IStatment {
  public:
   Number(double number);
-  static optional<pair<Number *, string>> Parse(string number);
+  static optional<pair<Number, string>> Parse(string number);
+  static optional<pair<Number *, string>> parse(string number);
 
   bool operator==(const Number &other) const;
   bool operator!=(const Number &other) const;
 
-  double get_value() const;
+  double value() const;
 
-  IValue *eval(Env &env) override;
+  double get_value() const { return value(); }
+
+  IValue *eval(Env &env) {
+	//	assert(false && "Should not be called temp hack");
+	return this;
+  }
 
   ~Number() = default;
 
@@ -45,7 +51,16 @@ class Operator {
 			  Subtract,
 			  Multiply,
 			  Divide,
-			  Eq };
+			  IntDivide,
+			  Eq,
+			  Less,
+			  More,
+			  Neq,
+			  Incr,
+			  Decr,
+			  Pow,
+			  Mod,
+  };
 
   static optional<pair<Operator, string>> Parse(const string &op);
   Operator(Type t);

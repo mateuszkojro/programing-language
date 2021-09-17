@@ -54,29 +54,10 @@ class ExprNumber : public IExpr {
  * @brief Numerical operation ex. 7 + 7
  *
  */
-//class ExprOperationOld : public IExpr {
-// public:
-//  ExprOperationOld(const Number &lhs, const Number &rhs, const Operator &op);
-//
-//  virtual IValue *eval() override;
-//  virtual IValue *eval(Env &env) override;
-//
-//  bool operator==(const ExprOperation &other) const;
-//
-//  ~ExprOperationOld() = default;
-//
-//  friend std::ostream &operator<<(std::ostream &os, const ExprOperation &);
-//
-// private:
-//  Number lhs_;
-//  Number rhs_;
-//  Operator op_;
-//};
-
 class ExprOperation : public IExpr {
  public:
   ExprOperation(IStatment *lhs, IStatment *rhs, const Operator &op);
-
+  ExprOperation(Number lhs, Number rhs, const Operator &op);
   virtual IValue *eval() override;
   virtual IValue *eval(Env &env) override;
 

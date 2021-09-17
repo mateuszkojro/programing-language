@@ -6,7 +6,11 @@
 
 class Null : public IValue {
  public:
-  Null() : IValue(IValue::Type::Null) {}
+  Null() : IValue(IValue::Null) {}
+  double value() const override {
+	assert(false && "Tried to get value from null");
+	return 0;
+  }
   virtual ~Null() = default;
 };
 

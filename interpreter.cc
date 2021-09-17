@@ -5,24 +5,23 @@
 
 #include "language/parser.h"
 
-int interpret_file(const std::string &filepath) {
+Parser interpret_file(const std::string &filepath, Parser parser = Parser()) {
 
   std::fstream file;
 
   file.open(filepath, std::ios::out);
 
-  Parser parser;
-
+  std::string whole_file;
   while (file.good()) {
 	std::string line;
 	std::getline(std::cin, line);
-	parser.parse(line);
+	whole_file.append(line);
   }
-  return 0;
+  parser.parse(whole_file);
+  return parser;
 }
 
-int repl() {
-  Parser parser;
+Parser repl(Parser parser = Parser()) {
 
   while (true) {
 	std::cout << "=> ";
@@ -31,7 +30,7 @@ int repl() {
 	std::getline(std::cin, line);
 
 	if (line == "$q")
-	  return 0;
+	  return parser;
 
 	parser.parse(line);
   }
@@ -39,8 +38,17 @@ int repl() {
 
 int main(int argc, char **argv) {
 
-  if (argc == 2)
-	return interpret_file(argv[1]);
+  if (argc == 2) {
+	interpret_file(argv[1]);
+	return 0;
+  }
 
-  return repl();
+  if (argc == 3)
+	if (argv[1] == "-l") {
+	  repl(interpret_file(argv[2]));
+	  return 0;
+	}
+
+  repl();
+  return 0;
 }

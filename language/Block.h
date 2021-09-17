@@ -1,7 +1,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H value
 
-#include "Expr.h"
+#include "IStatment.h"
 #include <optional>
 #include <string>
 #include <vector>
@@ -11,15 +11,15 @@ using std::pair;
 using std::string;
 using std::vector;
 
-class Block : public IExpr {
+class Block : public IStatment {
  public:
   static optional<pair<Block *, string>> parse(const string &text);
+  static optional<pair<Block, string>> Parse(const string &text);
   Block(const vector<IStatment *> &exprs);
   ~Block() = default;
 
   bool operator==(const Block &other) const;
-  IValue *eval() override;
-  IValue *eval(Env &env) override;
+  IValue *eval(Env &inner_scope);
 
  private:
   vector<IStatment *> statments_;

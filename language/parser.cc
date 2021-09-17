@@ -9,15 +9,17 @@
 #include "env.h"
 #include "parser.h"
 
-Number::Number(double number) : IValue(IValue::Type::Number), value_(number) {}
-optional<pair<Number *, string>> Number::Parse(string number) {
+Number::Number(double number) : IValue(IValue::Number), value_(number) {}
+optional<pair<Number, string>> Number::Parse(string number) {
+
+  //  std::cout << "Depreciated: should call lowercase parse" << std::endl;
 
   auto result = extract_digits(number);
-  if (result.first == "")
+  if (result.first.empty())
 	return nullopt;
 
   try {
-	return std::make_pair(new Number(std::stod(result.first)), result.second);
+	return std::make_pair(Number(std::stod(result.first)), result.second);
   } catch (const std::invalid_argument &e) {
 	std::cerr << "Malformed number: " << result.first << std::endl;
 	return nullopt;
@@ -27,7 +29,13 @@ optional<pair<Number *, string>> Number::Parse(string number) {
   }
 }
 
-double Number::get_value() const { return value_; }
+optional<pair<Number *, string>> Number::parse(string number) {
+  if (auto parsed_number = Parse(number))
+	return std::make_pair(new Number(parsed_number->first), parsed_number->second);
+  return std::nullopt;
+}
+
+double Number::value() const { return value_; }
 
 bool Number::operator==(const Number &other) const {
   return this->value_ == other.value_;
@@ -39,9 +47,6 @@ bool Number::operator!=(const Number &other) const {
 std::ostream &operator<<(std::ostream &os, const Number &n) {
   os << "Number(" << n.value_ << ")";
   return os;
-}
-IValue *Number::eval(Env &env) {
-  return new Number(*this);
 }
 
 Operator::Operator(Type t) { value_ = t; }
@@ -64,8 +69,18 @@ optional<std::pair<Operator, string>> Operator::Parse(const string &expr) {
 	return std::make_pair(Operator(Type::Multiply), result.value().second);
   else if (op == "/")
 	return std::make_pair(Operator(Type::Divide), result.value().second);
+  else if (op == "<")
+	return std::make_pair(Operator(Type::Less), result.value().second);
+  else if (op == ">")
+	return std::make_pair(Operator(Type::More), result.value().second);
   else if (op == "==")
 	return std::make_pair(Operator(Type::Eq), result.value().second);
+  else if (op == "!=")
+	return std::make_pair(Operator(Type::Neq), result.value().second);
+  else if (op == "%")
+	return std::make_pair(Operator(Type::Mod), result.value().second);
+  else if (op == "//")
+	return std::make_pair(Operator(Type::IntDivide), result.value().second);
   else
 	return nullopt;
 }
@@ -89,16 +104,13 @@ int Parser::parse(const string &code) {
   if (auto result = IStatment::parse(code)) {
 	auto evaluated = result->first->eval(environment_);
 	switch (evaluated->get_type()) {
-	  case IValue::Type::Number:
+	  case IValue::Number:
 		std::cout << *(Number *)evaluated << std::endl;
 		break;
-	  case IValue::Type::Null:
+	  case IValue::Null:
 		//		std::cout << *(Null*)evaluated << std::endl;
 		std::cout << "Null" << std::endl;
 		break;
-	  default:
-		std::cout << "Unhandled input" << std::endl;
-		assert(false && "Unhandled enumeration");
 	}
   }
 
