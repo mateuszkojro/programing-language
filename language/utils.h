@@ -46,6 +46,10 @@ static std::string debug_header(const std::string &title,
 							<< debug_header("=== DEPR ===", __FILE__, __FUNCTION__, __LINE__) << (msg) << std::endl \
 							<< std::endl
 
+#define WARN(msg) std::cout << std::endl                                                                               \
+							<< debug_header("=== WARNING ===", __FILE__, __FUNCTION__, __LINE__) << (msg) << std::endl \
+							<< std::endl
+
 static std::string ver_string(std::string name, int a, int b, int c) {
   std::ostringstream ss;
   ss << name << " " << a << '.' << b << '.' << c;
