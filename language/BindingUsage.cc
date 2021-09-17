@@ -1,10 +1,10 @@
 #include "BindingUsage.h"
+
 #include "Null.h"
+#include "env.h"
+#include "utils.h"
 
-#include <string>
-#include <utility>
-
-BindingUsage::BindingUsage(const string &name) : name_(name) {}
+BindingUsage::BindingUsage(string name) : name_(std::move(name)) {}
 
 optional<pair<BindingUsage *, string>> BindingUsage::parse(const string &text) {
   auto parse_name = extract_identifier(text);
@@ -47,4 +47,4 @@ IValue *BindingUsage::eval(Env &env) {
 
   return new_eval;
 }
-BindingUsage::BindingUsage(const string &name, IStatment *new_value) : name_(name), new_value_(new_value) {}
+BindingUsage::BindingUsage(string name, IStatment *new_value) : name_(std::move(name)), new_value_(new_value) {}
