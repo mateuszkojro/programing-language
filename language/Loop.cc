@@ -57,3 +57,8 @@ IValue *Loop::eval(Env &env) {
 
   return result_value ? result_value : new Null;
 }
+
+Loop::~Loop() {
+  delete this->block_;
+  delete this->condition_;
+}

@@ -63,3 +63,8 @@ std::optional<std::pair<FuncCall *, std::string>> FuncCall::parse(const string &
   return std::make_pair(new FuncCall(extracted_name->first, args), str);
 }
 FuncCall::FuncCall(std::string func_name, std::vector<IStatment *> args) : func_name_(std::move(func_name)), args_(std::move(args)) {}
+FuncCall::~FuncCall() {
+  for (auto statment : this->args_) {
+	delete statment;
+  }
+}

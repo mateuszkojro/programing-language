@@ -24,6 +24,7 @@ class FuncCall : public IStatment {
    */
   IValue *eval(Env &env) override;
 
+  virtual ~FuncCall();
 
  private:
   /**

@@ -39,7 +39,11 @@ class Block : public IStatment {
   static optional<pair<Block, string>> Parse(const string &text);
 
   explicit Block(const vector<IStatment *> &exprs);
-  ~Block() override = default;
+  ~Block() override {
+	for (auto statment : statments_) {
+	  delete statment;
+	}
+  };
   bool operator==(const Block &other) const;
 
   /**

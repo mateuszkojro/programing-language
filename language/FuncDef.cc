@@ -56,3 +56,7 @@ IValue *FuncDef::eval(Env &env) {
   env.store_function(name_, this);
   return new class Null;
 }
+
+FuncDef::~FuncDef() {
+  delete this->body_;
+}

@@ -102,7 +102,10 @@ class ExprOperation : public IExpr {
 
   bool operator==(const ExprOperation &other) const;
 
-  ~ExprOperation() override = default;
+  ~ExprOperation() override {
+	delete lhs_;
+	delete rhs_;
+  };
 
   friend std::ostream &operator<<(std::ostream &os, const ExprOperation &);
 

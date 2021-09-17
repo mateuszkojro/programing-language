@@ -24,6 +24,8 @@ class Conditional : public IStatment {
    */
   IValue *eval(Env &env) override;
 
+  virtual ~Conditional();
+
  private:
   /**
    * @brief Condition on wich depends the choice of the path (every value other than NaN, 0, and Null is positive)

@@ -1,4 +1,5 @@
 #include "env.h"
+#include "utils.h"
 #include <string>
 
 void Env::store_binding(const string &name, IValue *val) {
@@ -23,10 +24,11 @@ optional<FuncDef *> Env::get_function_def(const string &name) {
   return functions_[name];
 }
 Env::~Env() {
-  for (auto [key, value] : bindings_) {
-	delete value;
-  }
-  for (auto [key, value] : functions_) {
-	delete value;
-  }
+  FIXME("There is a memory leak here that is being solved in next version using shared ptrs");
+//  for (auto [key, value] : bindings_) {
+//	delete value;
+//  }
+//  for (auto [key, value] : functions_) {
+//	delete value;
+//  }
 }

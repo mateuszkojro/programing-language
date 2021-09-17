@@ -34,6 +34,7 @@ class FuncDef : public IStatment {
    * @return Pointer to function body block
    */
   Block *get_func_body() { return body_; }
+  virtual ~FuncDef();
 
  private:
   /**

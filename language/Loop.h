@@ -30,6 +30,9 @@ class Loop : public IStatment {
    * @brief Block of statments that will be executed while Condition is true
    */
   Block *block_;
+
+ public:
+  virtual ~Loop();
 };
 
 #endif//INTERPRETER_LANGUAGE_LOOP_H_

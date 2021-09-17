@@ -81,3 +81,9 @@ IValue *Conditional::eval(Env &env) {
 
   return true_case_->eval(env);
 }
+
+Conditional::~Conditional() {
+  delete this->false_case_;
+  delete this->true_case_;
+  delete this->condition_;
+}

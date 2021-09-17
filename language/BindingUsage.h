@@ -1,5 +1,6 @@
 #ifndef BINDING_USAGE_H
 #define BINDING_USAGE_H
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -26,7 +27,7 @@ class BindingUsage : public IStatment {
   explicit BindingUsage(string name);
   BindingUsage(string name, IStatment *new_value);
 
-  ~BindingUsage() override = default;
+  ~BindingUsage() override { delete new_value_; };
 
   bool operator==(const BindingUsage &other) const;
 
