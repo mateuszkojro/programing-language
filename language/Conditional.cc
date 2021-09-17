@@ -5,6 +5,7 @@
 #include "Conditional.h"
 #include "Null.h"
 #include "utils.h"
+#include <cmath>
 
 Conditional::Conditional(IStatment *condition, Block *true_Case, Block *false_case)
 	: condition_(condition),

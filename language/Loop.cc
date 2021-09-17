@@ -1,6 +1,7 @@
 #include "Loop.h"
 #include "Null.h"
 #include "utils.h"
+#include <cmath>
 
 std::optional<std::pair<IStatment *, std::string>> Loop::parse(const string &text) {
   auto str = extract_whitespace(text).second;

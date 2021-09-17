@@ -1,4 +1,5 @@
 #include "ErrorStatment.h"
+#include <cmath>
 
 IValue *ErrorStatment::eval(Env &env) {
   return this;

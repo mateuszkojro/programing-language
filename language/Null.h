@@ -3,6 +3,7 @@
 
 #include "BindDef.h"
 #include "IValue.h"
+#include <cmath>
 
 /**
  * @brief Null value
