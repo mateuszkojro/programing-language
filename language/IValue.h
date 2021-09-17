@@ -5,7 +5,8 @@ class IValue {
  public:
   enum Type { Number,
 			  Null,
-			  FuncDef };
+			  Error,
+  };
 
   IValue(Type type) : type_(type) {}
   Type get_type() { return type_; }

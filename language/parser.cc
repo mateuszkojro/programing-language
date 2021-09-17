@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 
+#include "ErrorStatment.h"
 #include "Null.h"
 #include "env.h"
 #include "parser.h"
@@ -111,6 +112,9 @@ int Parser::parse(const string &code) {
 		//		std::cout << *(Null*)evaluated << std::endl;
 		std::cout << "Null" << std::endl;
 		break;
+	  case IValue::Error:
+		ErrorStatment *err = (ErrorStatment *)evaluated;
+		std::cout << "Error(" << err->error() << ")" << std::endl;
 	}
   }
 

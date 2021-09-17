@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <optional>
+#include <sstream>
 #include <string>
 #include <utility>
 
@@ -13,27 +14,50 @@ using Str2 = std::pair<string, string>;
 #ifndef UTILS_H
 #define UTILS_H
 
-#define msg(var) std::cerr << #var << "='" << var << "'" << std::endl;
+#define msg(var) std::cerr << #var << "='" << (var) << "'" << std::endl;
 
-#define err(message, value)                     \
-  do {                                          \
-	std::cerr << message << value << std::endl; \
-	std::exit(1);                               \
+#define err(message, value)                         \
+  do {                                              \
+	std::cerr << (message) << (value) << std::endl; \
+	std::exit(1);                                   \
   } while (false)
 
-#define errmsg(message)                \
-  do {                                 \
-	std::cerr << message << std::endl; \
-	std::exit(1);                      \
+#define errmsg(message)                  \
+  do {                                   \
+	std::cerr << (message) << std::endl; \
+	std::exit(1);                        \
   } while (false)
 
-#define FIXME(msg) std::cout << "=== FIXME ===\n"                                      \
-							 << __FILE_NAME__ << __FUNCTION__ << __LINE__ << std::endl \
-							 << msg << std::endl
+#define FIXME(msg) std::cout << "=== FIXME ===\n"                                 \
+							 << __FILE__ << __FUNCTION__ << __LINE__ << std::endl \
+							 << (msg) << std::endl
 
-#define DEPR(msg) std::cout << "=== DEPR ===\n"                                       \
-							<< __FILE_NAME__ << __FUNCTION__ << __LINE__ << std::endl \
-							<< msg << std::endl
+#define DEPR(msg) std::cout << "=== DEPR ===\n"                                  \
+							<< __FILE__ << __FUNCTION__ << __LINE__ << std::endl \
+                                                                                 \
+							<< (msg) << std::endl
+
+static std::string ver_string(std::string name, int a, int b, int c) {
+  std::ostringstream ss;
+  ss << name << " " << a << '.' << b << '.' << c;
+  return ss.str();
+}
+#ifdef _MSC_VER
+#define COMPILER ver_string("MSVC", _MSC_VER, 0, 0)
+#endif
+
+#ifdef __clang__
+#define COMPILER ver_string("Clang++", __clang_major__, __clang_minor__, __clang_patchlevel__)
+#endif
+
+#ifdef __GNUC__
+#define COMPILER ver_string("g++", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
+#endif
+
+#ifndef COMPILER
+#define COMPILER ver_string("Unknown", 0, 0, 0)
+#endif
+
 
 static Str2 take_whle(const string &expr, bool (*func)(char z)) {
   int i = 0;
