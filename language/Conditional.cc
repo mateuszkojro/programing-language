@@ -65,6 +65,7 @@ std::optional<std::pair<IStatment *, std::string>> Conditional::parse(const stri
 
   return std::make_pair(new Conditional(condition->first, true_block->first, false_block->first), str);
 }
+
 IValue *Conditional::eval(Env &env) {
   auto condition = condition_->eval(env);
 
