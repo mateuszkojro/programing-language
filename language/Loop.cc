@@ -1,7 +1,3 @@
-//
-// Created by mateu on 9/16/2021.
-//
-
 #include "Loop.h"
 #include "Null.h"
 #include "utils.h"
@@ -46,6 +42,7 @@ std::optional<std::pair<IStatment *, std::string>> Loop::parse(const string &tex
 
   return std::make_pair(new Loop(condition->first, true_block->first), str);
 }
+
 Loop::Loop(IStatment *condition, Block *block) : condition_(condition), block_(block) {}
 
 IValue *Loop::eval(Env &env) {
@@ -53,7 +50,7 @@ IValue *Loop::eval(Env &env) {
   IValue *result_value = nullptr;
   while (!(condition->get_type() == IValue::Type::Null) && !(compare_double(condition->value(), 0)) && !(condition->value() == NAN)) {
 	FIXME("Memory leak");
-	result_value = block_->eval(env);// TODO memory leak
+	result_value = block_->eval(env);
 	condition = condition_->eval(env);
   }
 
