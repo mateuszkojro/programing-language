@@ -16,91 +16,140 @@ using std::unique_ptr;
 
 /**
  * @brief IExpr Base class for expressions
- *
  */
 class IExpr : public IStatment {
  public:
   static optional<pair<IExpr *, string>> parse(const string &expr);
   IExpr() = default;
 
-  virtual IValue *eval() = 0;// { assert(false); };
-  virtual IValue *eval(Env &env) = 0;
-  // virtual bool operator==(const IExpr &other) const { assert(false); };
+  /**
+   * @deprecated Should not be used (Mostly there is no sense in evaluating without scope)
+   * @brief Evaluate expression
+   * @return Value
+   */
+  virtual IValue *eval() = 0;
 
-  ~IExpr() = default;
+  /**
+   * @brief Evaluates expression in given scope
+   * @param env Current scope
+   * @return Evaluated expression
+   */
+  IValue *eval(Env &env) override = 0;
+
+  ~IExpr() override = default;
 };
+
 /**
- * @brief Literal expression for a number ex. &
- *
+ * @deprecated Simple Number should be used
+ * @brief Literal numeric expression
  */
 class ExprNumber : public IExpr {
  public:
-  ExprNumber(const Number &num);
+  explicit ExprNumber(const Number &num);
 
-  virtual IValue *eval() override;
-  virtual IValue *eval(Env &env) override;
+  /**
+   * @deprecated Mostly not usefull will be removed
+   * @brief Evaluates to a number that is conatined
+   * @return Contained Number
+   */
+  IValue *eval() override;
+
+  /**
+   * @brief Evaluates to a number that is conatined
+   * @param env Ignored
+   * @return Contained Number
+   */
+  IValue *eval(Env &env) override;
 
   bool operator==(const ExprNumber &other) const;
 
-  ~ExprNumber() = default;
+  ~ExprNumber() override = default;
 
   friend std::ostream &operator<<(std::ostream &os, const ExprNumber &);
 
  private:
+  /**
+   * @brief Numberic value
+   */
   Number value_;
 };
 
 /**
- * @brief Numerical operation ex. 7 + 7
- *
+ * @brief Mathematical operation (+, -, ==, ...)
  */
 class ExprOperation : public IExpr {
  public:
   ExprOperation(IStatment *lhs, IStatment *rhs, const Operator &op);
-  ExprOperation(Number lhs, Number rhs, const Operator &op);
-  virtual IValue *eval() override;
-  virtual IValue *eval(Env &env) override;
+
+  /**
+   * @deprecated For consistency and extendability sake other constructor should be used
+   */
+  ExprOperation(const Number &lhs, const Number &rhs, const Operator &op);
+
+  /**
+   * @deprecated Mostly not usefull will be removed
+   * @brief Evaluates to operation performed on two operands
+   * @return Evaluated value
+   */
+  IValue *eval() override;
+
+  /**
+   * @brief Evaluates to operation performed on two operands
+   * @param env Scope in wich Statments will be evaluated
+   * @return Evaluated value
+   */
+  IValue *eval(Env &env) override;
 
   bool operator==(const ExprOperation &other) const;
 
-  ~ExprOperation() = default;
+  ~ExprOperation() override = default;
 
   friend std::ostream &operator<<(std::ostream &os, const ExprOperation &);
 
  private:
+  /**
+   * @brief Statment on the left hand side of equation
+   */
   IStatment *lhs_;
+
+  /**
+   * @brief Statment on the right hand side of equation
+   */
   IStatment *rhs_;
+
+  /**
+   * @brief Operator that will be aplied betwwen evaluated statments
+   */
   Operator op_;
 };
 
 /**
- * @brief usage of arledy existing variable
- *
+ * @brief Usage of existing variable
  */
 class ExprVariable : public IExpr {
  public:
-  ExprVariable(BindingUsage *b);
-  virtual IValue *eval() override;
-  virtual IValue *eval(Env &env) override;
+  explicit ExprVariable(BindingUsage *b);
+
+  /**
+   * @deprecated Evaluating variable has no sense without scope
+   */
+  IValue *eval() override;
+
+  /**
+   * @brief Evaluates to value of the variable in scopr
+   * @param env Curremt scope
+   * @return Value of the variable
+   */
+  IValue *eval(Env &env) override;
   bool operator==(const ExprVariable &other) const;
 
-  ~ExprVariable() = default;
+  ~ExprVariable() override = default;
 
  private:
+  /**
+   * @brief variable
+   */
   unique_ptr<BindingUsage> variable_;
-};
-
-class ExprBlock : public IExpr {
- public:
-  ExprBlock();
-
-  virtual IValue *eval() override;
-  virtual IValue *eval(Env &env) override;
-  bool operator==(const ExprVariable &other) const;
-
-  ~ExprBlock() = default;
-
- private:
 };
 
 #endif

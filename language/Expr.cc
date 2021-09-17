@@ -1,7 +1,5 @@
 #include "Expr.h"
-#include "BindingUsage.h"
 #include "Block.h"
-#include "IValue.h"
 #include "Null.h"
 #include <utility>
 
@@ -20,7 +18,7 @@ ExprOperation::ExprOperation(IStatment *lhs, IStatment *rhs,
 							 const Operator &op)
 	: lhs_(lhs), rhs_(rhs), op_(op) {}
 
-ExprOperation::ExprOperation(Number lhs, Number rhs,
+ExprOperation::ExprOperation(const Number &lhs, const Number &rhs,
 							 const Operator &op)
 	: lhs_(new Number(lhs)), rhs_(new Number(rhs)), op_(op) {}
 
@@ -80,7 +78,7 @@ IValue *ExprOperation::eval(Env &env) {
 	  result = lhs_->eval(env)->value() > rhs_->eval(env)->value();
 	  break;
 	}
-	case Operator::Type::Less : {
+	case Operator::Type::Less: {
 	  result = lhs_->eval(env)->value() < rhs_->eval(env)->value();
 	  break;
 	}
@@ -98,7 +96,7 @@ std::ostream &operator<<(std::ostream &os, const ExprOperation &e) {
 ExprVariable::ExprVariable(BindingUsage *b) : variable_(b) {}
 
 IValue *ExprVariable::eval() {
-  std::cout << "using var without contex" << std::endl;
+  FIXME("Using variable without environment");
   return nullptr;
 }
 
@@ -158,62 +156,7 @@ optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
 	else {
 	  return std::make_pair(new ExprVariable(value1), str);
 	}
-	// Parsing failed
   }
+	// Parsing failed
   return std::nullopt;
-
-  // If its a block parse it like a block
-  //  if (auto parsed_block = Block::parse(str)) {
-  //	return std::make_pair(parsed_block->first, parsed_block->second);
-  //  }
-  //
-  //  if (auto num1_parse = Number::Parse(str)) {
-  //
-  //	str = num1_parse.value().second;
-  //
-  //	str = extract_whitespace(str).second;
-  //
-  //	if (auto op_parse = Operator::Parse(str)) {
-  //
-  //	  str = op_parse.value().second;
-  //
-  //	  str = extract_whitespace(str).second;
-  //
-  //	  auto num2_parse = Number::Parse(str);
-  //	  if (!num2_parse)
-  //		return nullopt;
-  //
-  //	  auto lhs = num1_parse.value().first;
-  //	  auto op = op_parse.value().first;
-  //	  auto rhs = num2_parse.value().first;
-  //
-  //	  return make_pair(new ExprOperation(lhs, rhs, op), num2_parse->second);
-  //	} else {
-  //	  // Could not parse equation we need to backtrack and parse number
-  //	  return make_pair(new ExprNumber(num1_parse->first), num1_parse->second);
-  //	}
-  //
-  //  } else if (auto variable = BindingUsage::parse(str)) {
-  //	auto [expr, str] = variable.value();
-  //	return make_pair(new ExprVariable(expr), str);
-  //  }
-  //
-  //  return nullopt;
-}
-
-ExprBlock::ExprBlock() {}
-
-IValue *ExprBlock::eval() {
-  assert(false && "This should not be called");
-  return nullptr;
-}
-
-IValue *ExprBlock::ExprBlock::eval(Env &env) {
-  assert(false && "Not implemented");
-  return nullptr;
-}
-
-bool ExprBlock::operator==(const ExprVariable &other) const {
-  assert(false && "Not implemented");
-  return false;
 }
