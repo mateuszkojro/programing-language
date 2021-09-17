@@ -45,7 +45,7 @@ class IExpr : public IStatment {
  */
 class ExprNumber : public IExpr {
  public:
-  explicit ExprNumber(const Number &num);
+  explicit ExprNumber(Number num);
 
   /**
    * @deprecated Mostly not usefull will be removed

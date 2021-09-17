@@ -3,7 +3,7 @@
 #include "Null.h"
 #include <utility>
 
-ExprNumber::ExprNumber(const Number &num) : value_(num) {}
+ExprNumber::ExprNumber(Number num) : value_(num) {}
 
 bool ExprNumber::operator==(const ExprNumber &other) const {
   return value_ == other.value_;
@@ -129,7 +129,7 @@ optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
 	}
 	// There is no operator - it's a simple assigment
 	else {
-	  return std::make_pair(new ExprNumber(value1->value()), str);
+	  return std::make_pair(new ExprNumber(Number(value1->value())), str);
 	}
   }
   // First value is a variable
