@@ -37,6 +37,13 @@ static std::string debug_header(const std::string &title,
 	 << "[ " << file << ":" << line << " ] " << function << std::endl;
   return ss.str();
 }
+#ifdef NDEBUG
+
+#define FIXME(msg) {};
+#define DEPR(msg) {};
+#define WARN(msg) {};
+
+#else
 
 #define FIXME(msg) std::cout << std::endl                                                                             \
 							 << debug_header("=== FIXME ===", __FILE__, __FUNCTION__, __LINE__) << (msg) << std::endl \
@@ -49,6 +56,7 @@ static std::string debug_header(const std::string &title,
 #define WARN(msg) std::cout << std::endl                                                                               \
 							<< debug_header("=== WARNING ===", __FILE__, __FUNCTION__, __LINE__) << (msg) << std::endl \
 							<< std::endl
+#endif
 
 static std::string ver_string(std::string name, int a, int b, int c) {
   std::ostringstream ss;
