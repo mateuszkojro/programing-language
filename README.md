@@ -10,12 +10,26 @@ To download source:
 git clone --recursive https://github.com/mateuszkojro/programing-language
 ```
 
-Project is based on `CMake`
+Project is based on `CMake` so the steps are standard:
 
-## Interpreter:
+### 1. Configuring
+
+```bash
+cd ./programing-language
+cmake -B build
+```
+
+### 2. Compiling
+
+```bash
+make -C build/
+```
+
+### 3. Running
+
 On Windows
 ```bash
-./interpreter
+./interpreter.exe
 ```
 and on Linux:
 ```bash
