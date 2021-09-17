@@ -1,14 +1,18 @@
 #ifndef STATMENT_H
 #define STATMENT_H
 
+#include "IValue.h"
 #include <optional>
 #include <string>
 
-#include "env.h"
+//#include "env.h"
+
 
 using std::optional;
 using std::pair;
 using std::string;
+
+class Env;
 
 class IStatment {
  public:
