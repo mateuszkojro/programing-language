@@ -1,7 +1,3 @@
-//
-// Created by mateu on 9/16/2021.
-//
-
 #include "FuncDef.h"
 #include "Null.h"
 #include "utils.h"
@@ -55,6 +51,7 @@ std::optional<std::pair<FuncDef *, std::string>> FuncDef::parse(const string &te
   str = extract_func_body->second;
   return std::make_pair(new FuncDef(extract_func_name->first, arg_names, extract_func_body->first), str);
 }
+
 IValue *FuncDef::eval(Env &env) {
   env.store_function(name_, this);
   return new class Null;
