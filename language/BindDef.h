@@ -3,6 +3,7 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "Expr.h"
 
@@ -13,11 +14,13 @@ class BindDef : public IStatment {
  public:
   static optional<pair<BindDef, string>> parse(const string &text);
 
-  BindDef(const string &name, IExpr *expr);
-
-  IValue *eval(Env &env) override;
+  BindDef() = delete;
+  BindDef(string name, IExpr *expr);
+  ~BindDef() override = default;
 
   bool operator==(const BindDef &op) const;
+
+  IValue *eval(Env &env) override;
 
  private:
   string name_;

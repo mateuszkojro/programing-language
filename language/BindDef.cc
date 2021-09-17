@@ -1,5 +1,4 @@
 #include "BindDef.h"
-#include <utility>
 
 optional<pair<BindDef, string>> BindDef::parse(const string &text) {
 
@@ -8,12 +7,12 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   if (!tag1)
 	return nullopt;
 
-  auto str = tag1.value().second;
+  auto str = tag1->second;
 
   // Remove following whitespace
   auto whitespace1 = extract_whitespace(str);
   // There needs to be a space between "mat" and var name
-  if (whitespace1.first == "")
+  if (whitespace1.first.empty())
 	return nullopt;
   str = whitespace1.second;
 
@@ -25,7 +24,7 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   str = name_parse.value().second;
 
   // Save name of the var for later
-  auto bind_name = name_parse.value().first;
+  auto bind_name = name_parse->first;
 
   str = extract_whitespace(str).second;
 
@@ -34,7 +33,7 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   if (!tag2)
 	return nullopt;
 
-  str = tag2.value().second;
+  str = tag2->second;
 
   str = extract_whitespace(str).second;
 
@@ -43,26 +42,24 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   if (!expr_parse)
 	return nullopt;
 
-  IExpr *bind_expr = expr_parse.value().first;
+  IExpr *bind_expr = expr_parse->first;
 
   // Create var
-  return optional(
-	  std::make_pair(BindDef(bind_name, bind_expr), expr_parse.value().second));
+  return std::make_pair(BindDef(bind_name, bind_expr), expr_parse->second);
 }
 
-BindDef::BindDef(const std::string &name, IExpr *expr)
-	: name_(name), expr_(expr) {}
+BindDef::BindDef(std::string name, IExpr *expr)
+	: name_(std::move(name)), expr_(expr) {}
 
 bool BindDef::operator==(const BindDef &other) const {
-  std::cout << "Thats a problem" << std::endl;
+  FIXME("Comparing variables with just the name");
   return name_ == other.name_;
-  // &&
-  //        ((Number *)expr_ ==
-  //            ((Number *)other.expr_);
 }
 
 IValue *BindDef::eval(Env &env) {
+  // We need to eval variable in current contex
   auto result = this->expr_->eval(env);
+  // And assign ist value
   env.store_binding(name_, result);
   return result;
 }
