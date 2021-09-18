@@ -33,6 +33,7 @@ class BindDef : public IStatment {
    * @return Evaluated IValue
    */
   IValue* eval(Env& env) override;
+  BindDef* clone() override;
 
  private:
   /***

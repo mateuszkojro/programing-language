@@ -30,10 +30,13 @@ Env::~Env() {
   FIXME(
 	  "There is a memory leak here that is being solved in next version using "
 	  "shared ptrs");
-  //  for (auto [key, value] : bindings_) {
-  //	delete value;
-  //  }
-  //  for (auto [key, value] : functions_) {
-  //	delete value;
-  //  }
+//  for (auto [key, value] : bindings_) { delete value; }
+//  for (auto [key, value] : functions_) { delete value; }
+}
+
+Env::Env(const Env& other) {
+  for (auto [key, value] : other.bindings_) { bindings_[key] = value->clone(); }
+  for (auto [key, value] : other.functions_) {
+	functions_[key] = value->clone()->clone();
+  }
 }

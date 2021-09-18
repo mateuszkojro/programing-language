@@ -28,6 +28,7 @@ class IStatment {
    * @return Object of the class deriving IValue
    */
   virtual IValue* eval(Env& env) = 0;
+  virtual IStatment* clone() = 0;
 
   virtual ~IStatment() = default;
 };

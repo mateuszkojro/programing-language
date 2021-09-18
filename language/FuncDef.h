@@ -23,6 +23,7 @@ class FuncDef : public IStatment {
    * @return Always null
    */
   IValue* eval(Env& env) override;
+  FuncDef* clone() override;
 
   /**
    * @brief Getter for names of the arguments used in function body

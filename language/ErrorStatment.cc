@@ -10,3 +10,5 @@ double ErrorStatment::value() const {
 }
 
 std::string ErrorStatment::error() { return error_message_; }
+
+ErrorStatment* ErrorStatment::clone() { return new ErrorStatment(*this); }

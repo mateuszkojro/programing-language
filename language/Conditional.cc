@@ -92,3 +92,4 @@ Conditional::~Conditional() {
   delete this->true_case_;
   delete this->condition_;
 }
+Conditional* Conditional::clone() { return new Conditional(*this); }

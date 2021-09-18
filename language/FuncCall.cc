@@ -72,3 +72,4 @@ FuncCall::FuncCall(std::string func_name, std::vector<IStatment*> args)
 FuncCall::~FuncCall() {
   for (auto statment : this->args_) { delete statment; }
 }
+FuncCall* FuncCall::clone() { return new FuncCall(*this); }

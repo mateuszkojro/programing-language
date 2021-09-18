@@ -89,3 +89,4 @@ IValue* Block::eval(Env& outer_scope) {
   // That could be possibly null
   return statments_[N - 1]->eval(inner_scope);
 }
+Block* Block::clone() { return new Block(*this); }

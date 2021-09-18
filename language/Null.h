@@ -21,6 +21,7 @@ class Null : public IValue {
 	FIXME("Value of Null is implicitly NaN");
 	return NAN;
   }
+  Null* clone() override { return new Null(*this); }
 
   ~Null() override = default;
 };

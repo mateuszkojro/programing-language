@@ -25,6 +25,7 @@ class FuncCall : public IStatment {
    * @return Value returned from the function
    */
   IValue* eval(Env& env) override;
+  FuncCall* clone() override;
 
   virtual ~FuncCall();
 

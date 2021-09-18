@@ -51,3 +51,4 @@ IValue* BindingUsage::eval(Env& env) {
 }
 BindingUsage::BindingUsage(string name, IStatment* new_value)
 	: name_(std::move(name)), new_value_(new_value) {}
+BindingUsage* BindingUsage::clone() { return new BindingUsage(*this); }

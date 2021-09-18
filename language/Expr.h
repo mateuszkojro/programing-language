@@ -61,6 +61,7 @@ class ExprNumber : public IExpr {
    * @return Contained Number
    */
   IValue* eval(Env& env) override;
+  ExprNumber* clone() override;
 
   bool operator==(const ExprNumber& other) const;
 
@@ -101,6 +102,7 @@ class ExprOperation : public IExpr {
    * @return Evaluated value
    */
   IValue* eval(Env& env) override;
+  ExprOperation* clone() override;
 
   bool operator==(const ExprOperation& other) const;
 
@@ -146,6 +148,8 @@ class ExprVariable : public IExpr {
    * @return Value of the variable
    */
   IValue* eval(Env& env) override;
+  ExprVariable* clone() override;
+
   bool operator==(const ExprVariable& other) const;
 
   ~ExprVariable() override = default;
@@ -154,7 +158,7 @@ class ExprVariable : public IExpr {
   /**
    * @brief variable
    */
-  unique_ptr<BindingUsage> variable_;
+  BindingUsage* variable_;
 };
 
 #endif

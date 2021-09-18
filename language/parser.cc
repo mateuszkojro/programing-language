@@ -6,6 +6,7 @@
 
 #include "ErrorStatment.h"
 #include "Null.h"
+#include "parser.h"
 
 Number::Number(double number) : IValue(IValue::Number), value_(number) {}
 optional<pair<Number, string>> Number::Parse(const string& number) {
@@ -51,6 +52,7 @@ std::ostream& operator<<(std::ostream& os, const Number& n) {
   os << "Number(" << n.value_ << ")";
   return os;
 }
+Number* Number::clone() { return new Number(*this); }
 
 Operator::Operator(Type t) { value_ = t; }
 

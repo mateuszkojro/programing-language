@@ -29,8 +29,8 @@ class IValue {
    * changed to matrix
    * @return Either numeric value or NaN if not correct
    */
-  [[nodiscard]] virtual double value() const = 0;
-
+  virtual double value() const = 0;
+  virtual IValue* clone() = 0;
   virtual ~IValue() = default;
 
  private:

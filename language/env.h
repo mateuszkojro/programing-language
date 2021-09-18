@@ -7,11 +7,12 @@
 
 #include "IStatment.h"
 #include "IValue.h"
+#include "FuncDef.h"
 
 using std::optional;
 using std::string;
 
-class FuncDef;
+//class FuncDef;
 /**
  * @brief Representation of enviroment / scope in the languge
  * (contains maps of function names -> function definitions and variable names
@@ -19,6 +20,10 @@ class FuncDef;
  */
 class Env {
  public:
+  Env() = default;
+
+  Env(const Env& other);
+
   /**
    * @brief Store variable name with coresponding value
    * @param name Name of a variable

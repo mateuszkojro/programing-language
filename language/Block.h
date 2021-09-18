@@ -52,6 +52,7 @@ class Block : public IStatment {
    * @return Evaluation of the last statment in the block
    */
   IValue* eval(Env& env) override;
+  Block* clone() override;
 
  private:
   /**

@@ -56,6 +56,8 @@ class Number : public IValue, public IStatment {
    */
   IValue* eval(Env& env) override { return this; }
 
+  Number* clone() override;
+
   ~Number() override = default;
 
   friend std::ostream& operator<<(std::ostream& os, const Number& n);

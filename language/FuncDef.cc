@@ -64,3 +64,4 @@ IValue* FuncDef::eval(Env& env) {
 }
 
 FuncDef::~FuncDef() { delete this->body_; }
+FuncDef* FuncDef::clone() { return new FuncDef(*this); }

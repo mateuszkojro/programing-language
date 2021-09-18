@@ -26,6 +26,7 @@ class Conditional : public IStatment {
    * path does not exist
    */
   IValue* eval(Env& env) override;
+  Conditional* clone() override;
 
   virtual ~Conditional();
 

@@ -66,3 +66,4 @@ IValue* BindDef::eval(Env& env) {
   env.store_binding(name_, result);
   return result;
 }
+BindDef* BindDef::clone() { return new BindDef(*this); }

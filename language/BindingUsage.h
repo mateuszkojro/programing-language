@@ -38,6 +38,7 @@ class BindingUsage : public IStatment {
    * @return Evaluation in current scope
    */
   IValue* eval(Env& env) override;
+  BindingUsage* clone() override;
 
  private:
   /**

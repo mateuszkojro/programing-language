@@ -21,6 +21,7 @@ class ErrorStatment : public IStatment, public IValue {
    * @return Itself
    */
   IValue* eval(Env& env) override;
+  ErrorStatment* clone() override;
 
   /**
    * @brief Value of error is NaN

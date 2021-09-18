@@ -21,6 +21,7 @@ class Loop : public IStatment {
    * block
    */
   IValue* eval(Env& env) override;
+  Loop* clone() override;
 
  private:
   /**

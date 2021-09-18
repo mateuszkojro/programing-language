@@ -68,3 +68,4 @@ Loop::~Loop() {
   delete this->block_;
   delete this->condition_;
 }
+Loop* Loop::clone() { return new Loop(*this); }

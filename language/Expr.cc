@@ -28,6 +28,8 @@ IValue* ExprNumber::eval() { return new Number(value_); }
 
 IValue* ExprNumber::eval(Env& env) { return this->eval(); }
 
+ExprNumber* ExprNumber::clone() { return new ExprNumber(*this); }
+
 bool ExprOperation::operator==(const ExprOperation& other) const {
   bool lhs_eq = this->lhs_ == other.lhs_;
   bool rhs_eq = this->rhs_ == other.rhs_;
@@ -97,6 +99,7 @@ std::ostream& operator<<(std::ostream& os, const ExprOperation& e) {
   os << "IExpr(" << e.lhs_ << "," << e.rhs_ << "," << e.op_ << ")";
   return os;
 }
+ExprOperation* ExprOperation::clone() { return new ExprOperation(*this); }
 
 ExprVariable::ExprVariable(BindingUsage* b) : variable_(b) {}
 
@@ -110,6 +113,7 @@ IValue* ExprVariable::eval(Env& env) { return variable_->eval(env); }
 bool ExprVariable::operator==(const ExprVariable& other) const {
   return *variable_ == *other.variable_;
 }
+ExprVariable* ExprVariable::clone() { return new ExprVariable(*this); }
 
 optional<pair<IExpr*, string>> IExpr::parse(const string& expr) {
 
