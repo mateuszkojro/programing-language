@@ -22,13 +22,13 @@ class BindDef : public IStatment {
 
   BindDef() = delete;
   BindDef(string name, IExpr *expr);
-  ~BindDef() override = default; // FIXME We need pass using ptr
+  ~BindDef() override = default;// FIXME We need pass using ptr
 
   bool operator==(const BindDef &op) const;
 
   /**
-   * @brief Evaluation of Binding stores te value of the binding in current scope and
-   * return the evaluated value
+   * @brief Evaluation of Binding stores te value of the binding in current
+   * scope and return the evaluated value
    * @param env Current scope
    * @return Evaluated IValue
    */

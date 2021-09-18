@@ -1,9 +1,9 @@
 #include "BindingUsage.h"
 
+#include "ErrorStatment.h"
 #include "Null.h"
 #include "env.h"
 #include "utils.h"
-#include "ErrorStatment.h"
 
 BindingUsage::BindingUsage(string name) : name_(std::move(name)) {}
 
@@ -29,7 +29,8 @@ optional<pair<BindingUsage *, string>> BindingUsage::parse(const string &text) {
 
   str = parseed_statment->second;
 
-  return std::make_pair(new BindingUsage(parse_name->first, parseed_statment->first), str);
+  return std::make_pair(
+	  new BindingUsage(parse_name->first, parseed_statment->first), str);
 }
 bool BindingUsage::operator==(const BindingUsage &other) const {
   return name_ == other.name_;
@@ -48,4 +49,5 @@ IValue *BindingUsage::eval(Env &env) {
 
   return new_eval;
 }
-BindingUsage::BindingUsage(string name, IStatment *new_value) : name_(std::move(name)), new_value_(new_value) {}
+BindingUsage::BindingUsage(string name, IStatment *new_value)
+	: name_(std::move(name)), new_value_(new_value) {}

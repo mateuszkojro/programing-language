@@ -1,11 +1,12 @@
 #ifndef ENV_H
 #define ENV_H
 
-#include "IStatment.h"
-#include "IValue.h"
 #include <optional>
 #include <string>
 #include <unordered_map>
+
+#include "IStatment.h"
+#include "IValue.h"
 
 using std::optional;
 using std::string;
@@ -13,7 +14,8 @@ using std::string;
 class FuncDef;
 /**
  * @brief Representation of enviroment / scope in the languge
- * (contains maps of function names -> function definitions and variable names -> variable definitions)
+ * (contains maps of function names -> function definitions and variable names
+ * -> variable definitions)
  */
 class Env {
  public:

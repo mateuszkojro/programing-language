@@ -9,14 +9,16 @@
  */
 class Loop : public IStatment {
  public:
-  static std::optional<std::pair<IStatment *, std::string>> parse(const std::string &text);
+  static std::optional<std::pair<IStatment *, std::string>> parse(
+	  const std::string &text);
 
   Loop(IStatment *condition, Block *bloc);
 
   /**
    * @brief Evaluates all statments in block as long as condition is true
    * @param env Scope in wich the loop should be evaluated
-   * @return Last value in the block during the last evaluation of the loop block
+   * @return Last value in the block during the last evaluation of the loop
+   * block
    */
   IValue *eval(Env &env) override;
 
@@ -35,4 +37,4 @@ class Loop : public IStatment {
   virtual ~Loop();
 };
 
-#endif//INTERPRETER_LANGUAGE_LOOP_H_
+#endif// INTERPRETER_LANGUAGE_LOOP_H_

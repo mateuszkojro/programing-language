@@ -1,10 +1,11 @@
 #ifndef BLOCK_H
 #define BLOCK_H value
 
-#include "IStatment.h"
 #include <optional>
 #include <string>
 #include <vector>
+
+#include "IStatment.h"
 
 using std::optional;
 using std::pair;
@@ -24,7 +25,8 @@ using std::vector;
  * @code
  * x = { mat x = 0 x }
  * @endcode
- * and part of other language constructs (if statments, while loops, function definitions)
+ * and part of other language constructs (if statments, while loops, function
+ * definitions)
  * @code
  * if (1) {10}
  * @endcode
@@ -40,9 +42,7 @@ class Block : public IStatment {
 
   explicit Block(const vector<IStatment *> &exprs);
   ~Block() override {
-	for (auto statment : statments_) {
-	  delete statment;
-	}
+	for (auto statment : statments_) { delete statment; }
   };
   bool operator==(const Block &other) const;
 

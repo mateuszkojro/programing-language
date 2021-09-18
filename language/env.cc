@@ -1,6 +1,8 @@
 #include "env.h"
-#include "utils.h"
+
 #include <string>
+
+#include "utils.h"
 
 void Env::store_binding(const string &name, IValue *val) {
   bindings_[name] = val;
@@ -23,12 +25,15 @@ optional<FuncDef *> Env::get_function_def(const string &name) {
 	return std::nullopt;
   return functions_[name];
 }
+
 Env::~Env() {
-  FIXME("There is a memory leak here that is being solved in next version using shared ptrs");
-//  for (auto [key, value] : bindings_) {
-//	delete value;
-//  }
-//  for (auto [key, value] : functions_) {
-//	delete value;
-//  }
+  FIXME(
+	  "There is a memory leak here that is being solved in next version using "
+	  "shared ptrs");
+  //  for (auto [key, value] : bindings_) {
+  //	delete value;
+  //  }
+  //  for (auto [key, value] : functions_) {
+  //	delete value;
+  //  }
 }

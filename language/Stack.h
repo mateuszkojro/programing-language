@@ -54,7 +54,8 @@ Option<T> Stack<T>::pop() {
 }
 
 /// \returns Element at the idx element from the bottom if the value is negative
-///     the index is counted from the top (idx=-1 takes the last element put on the stack)
+///     the index is counted from the top (idx=-1 takes the last element put on
+///     the stack)
 template<class T>
 Option<T> Stack<T>::pop(int idx) {
   if (idx < 0) {

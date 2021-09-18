@@ -13,8 +13,7 @@
 class ErrorStatment : public IStatment, public IValue {
  public:
   explicit ErrorStatment(std::string error)
-	  : IValue(IValue::Type::Error),
-		error_message_(std::move(error)) {}
+	  : IValue(IValue::Type::Error), error_message_(std::move(error)) {}
 
   /**
    * @brief Evaluation of the Error returns itself
@@ -42,4 +41,4 @@ class ErrorStatment : public IStatment, public IValue {
   std::string error_message_;
 };
 
-#endif//INTERPRETER_LANGUAGE_ERRORSTATMENT_H_
+#endif// INTERPRETER_LANGUAGE_ERRORSTATMENT_H_

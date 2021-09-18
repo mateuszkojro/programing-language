@@ -11,11 +11,12 @@
  */
 class FuncDef : public IStatment {
  public:
-  static std::optional<std::pair<FuncDef *, std::string>> parse(const std::string &text);
+  static std::optional<std::pair<FuncDef *, std::string>> parse(
+	  const std::string &text);
 
   FuncDef() = delete;
-  FuncDef(std::string func_name, std::vector<std::string> args, Block *body) : name_(std::move(func_name)),
-																			   body_(body), args_(std::move(args)) {}
+  FuncDef(std::string func_name, std::vector<std::string> args, Block *body)
+	  : name_(std::move(func_name)), body_(body), args_(std::move(args)) {}
   /**
    * @brief Stores function definition in Scope and returns Null
    * @param env Scope in wich function definition should be stored
@@ -27,7 +28,7 @@ class FuncDef : public IStatment {
    * @brief Getter for names of the arguments used in function body
    * @return Vector of argument names
    */
-  const std::vector<std::string>& get_arg_names() { return args_; }
+  const std::vector<std::string> &get_arg_names() { return args_; }
 
   /**
    * @brief Getter for the function body block
@@ -51,4 +52,4 @@ class FuncDef : public IStatment {
   Block *body_;
 };
 
-#endif//INTERPRETER_LANGUAGE_FUNCDEF_H_
+#endif// INTERPRETER_LANGUAGE_FUNCDEF_H_

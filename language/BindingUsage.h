@@ -32,7 +32,8 @@ class BindingUsage : public IStatment {
   bool operator==(const BindingUsage &other) const;
 
   /**
-   * @brief Evaluates variable in scope and returns updated value of the variable
+   * @brief Evaluates variable in scope and returns updated value of the
+   * variable
    * @param env Current scope
    * @return Evaluation in current scope
    */

@@ -23,7 +23,8 @@ class IExpr : public IStatment {
   IExpr() = default;
 
   /**
-   * @deprecated Should not be used (Mostly there is no sense in evaluating without scope)
+   * @deprecated Should not be used (Mostly there is no sense in evaluating
+   * without scope)
    * @brief Evaluate expression
    * @return Value
    */
@@ -82,7 +83,8 @@ class ExprOperation : public IExpr {
   ExprOperation(IStatment *lhs, IStatment *rhs, const Operator &op);
 
   /**
-   * @deprecated For consistency and extendability sake other constructor should be used
+   * @deprecated For consistency and extendability sake other constructor should
+   * be used
    */
   ExprOperation(const Number &lhs, const Number &rhs, const Operator &op);
 

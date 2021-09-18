@@ -9,9 +9,7 @@ class IValue {
   /**
    * @brief Type of evaluated value
    */
-  enum Type { Number,
-			  Null,
-			  Error };
+  enum Type { Number, Null, Error };
 
   explicit IValue(Type type) : type_(type) {}
 
@@ -22,7 +20,8 @@ class IValue {
   Type get_type() { return type_; }
 
   /**
-   * @brief Every value needs to evaluate to double for now later this will be changed to matrix
+   * @brief Every value needs to evaluate to double for now later this will be
+   * changed to matrix
    * @return Either numeric value or NaN if not correct
    */
   [[nodiscard]] virtual double value() const = 0;
@@ -34,7 +33,6 @@ class IValue {
    * @brief Type of the value
    */
   Type type_;
-
 };
 
 #endif

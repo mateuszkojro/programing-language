@@ -1,7 +1,10 @@
 #include "Expr.h"
-#include "Block.h"
-#include "Null.h"
+
 #include <utility>
+
+#include "Block.h"
+#include "ErrorStatment.h"
+#include "Null.h"
 
 ExprNumber::ExprNumber(Number num) : value_(num) {}
 
@@ -14,8 +17,7 @@ std::ostream &operator<<(std::ostream &os, const ExprNumber &e) {
   return os;
 }
 
-ExprOperation::ExprOperation(IStatment *lhs, IStatment *rhs,
-							 const Operator &op)
+ExprOperation::ExprOperation(IStatment *lhs, IStatment *rhs, const Operator &op)
 	: lhs_(lhs), rhs_(rhs), op_(op) {}
 
 ExprOperation::ExprOperation(const Number &lhs, const Number &rhs,
@@ -59,19 +61,23 @@ IValue *ExprOperation::eval(Env &env) {
 	  break;
 	}
 	case Operator::Type::Mod: {
-	  result = (int64_t)lhs_->eval(env)->value() % (int64_t)rhs_->eval(env)->value();
+	  result =
+		  (int64_t)lhs_->eval(env)->value() % (int64_t)rhs_->eval(env)->value();
 	  break;
 	}
 	case Operator::Type::IntDivide: {
-	  result = (int64_t)lhs_->eval(env)->value() / (int64_t)rhs_->eval(env)->value();
+	  result =
+		  (int64_t)lhs_->eval(env)->value() / (int64_t)rhs_->eval(env)->value();
 	  break;
 	}
 	case Operator::Type::Eq: {
-	  result = compare_double(lhs_->eval(env)->value(), rhs_->eval(env)->value());
+	  result =
+		  compare_double(lhs_->eval(env)->value(), rhs_->eval(env)->value());
 	  break;
 	}
 	case Operator::Type::Neq: {
-	  result = !compare_double(lhs_->eval(env)->value(), rhs_->eval(env)->value());
+	  result =
+		  !compare_double(lhs_->eval(env)->value(), rhs_->eval(env)->value());
 	  break;
 	}
 	case Operator::Type::More: {
@@ -82,8 +88,7 @@ IValue *ExprOperation::eval(Env &env) {
 	  result = lhs_->eval(env)->value() < rhs_->eval(env)->value();
 	  break;
 	}
-	default:
-	  return new Null;
+	default: return new ErrorStatment("Operator is not supported");
   }
   return new Number(result);
 }
@@ -120,11 +125,13 @@ optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
 	  str = extract_whitespace(str).second;
 	  // Second element is a number
 	  if (auto parsed_number2 = Number::parse(str)) {
-		return std::make_pair(new ExprOperation(value1, parsed_number2->first, op->first), str);
+		return std::make_pair(
+			new ExprOperation(value1, parsed_number2->first, op->first), str);
 	  }
 	  // Second element is a variable
 	  else if (auto parsed_variable2 = BindingUsage::parse(str)) {
-		return std::make_pair(new ExprOperation(value1, parsed_variable2->first, op->first), str);
+		return std::make_pair(
+			new ExprOperation(value1, parsed_variable2->first, op->first), str);
 	  }
 	}
 	// There is no operator - it's a simple assigment
@@ -144,11 +151,13 @@ optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
 	  str = extract_whitespace(str).second;
 	  // Second element is a number
 	  if (auto parsed_number2 = Number::parse(str)) {
-		return std::make_pair(new ExprOperation(value1, parsed_number2->first, op->first), str);
+		return std::make_pair(
+			new ExprOperation(value1, parsed_number2->first, op->first), str);
 	  }
 	  // Second element is a variable
 	  else if (auto parsed_variable2 = BindingUsage::parse(str)) {
-		return std::make_pair(new ExprOperation(value1, parsed_variable2->first, op->first), str);
+		return std::make_pair(
+			new ExprOperation(value1, parsed_variable2->first, op->first), str);
 	  }
 
 	}
@@ -157,6 +166,6 @@ optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
 	  return std::make_pair(new ExprVariable(value1), str);
 	}
   }
-	// Parsing failed
+  // Parsing failed
   return std::nullopt;
 }

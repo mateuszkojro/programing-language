@@ -1,10 +1,6 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "IStatment.h"
-#include "IValue.h"
-#include "env.h"
-#include "utils.h"
 #include <cassert>
 #include <cctype>
 #include <cmath>
@@ -14,6 +10,11 @@
 #include <ostream>
 #include <string>
 #include <utility>
+
+#include "IStatment.h"
+#include "IValue.h"
+#include "env.h"
+#include "utils.h"
 
 using std::optional;
 using std::pair;
@@ -74,19 +75,20 @@ class Operator {
   /**
    * @brief Avaliable operator types
    */
-  enum class Type { Add,
-					Subtract,
-					Multiply,
-					Divide,
-					IntDivide,
-					Eq,
-					Less,
-					More,
-					Neq,
-					Incr,
-					Decr,
-					Pow,
-					Mod,
+  enum class Type {
+	Add,
+	Subtract,
+	Multiply,
+	Divide,
+	IntDivide,
+	Eq,
+	Less,
+	More,
+	Neq,
+	Incr,
+	Decr,
+	Pow,
+	Mod,
   };
 
   static optional<pair<Operator, string>> Parse(const string &op);

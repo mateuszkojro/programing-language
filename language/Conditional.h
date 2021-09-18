@@ -7,20 +7,23 @@
 /**
  * @brief Conditional statments (if, else statments)
  * @warning Every value other than NaN, 0, and Null is positive
- * @details Can be used in assigment operations then the block will be evaluated the standard way
+ * @details Can be used in assigment operations then the block will be evaluated
+ * the standard way
  */
 class Conditional : public IStatment {
  public:
-  static std::optional<std::pair<IStatment *, std::string>> parse(const std::string &text);
+  static std::optional<std::pair<IStatment *, std::string>> parse(
+	  const std::string &text);
 
   Conditional(IStatment *condition, Block *true_Case, Block *false_case);
 
   /**
    * @brief Evaluates all the statments in either true or false block
-   * depending on evaluation of condition (all in passed scope) and returns the last statment
-   * in corresponding block
+   * depending on evaluation of condition (all in passed scope) and returns the
+   * last statment in corresponding block
    * @param env Scope
-   * @return Evaluation of the last statment in one of the paths or Null if the path does not exist
+   * @return Evaluation of the last statment in one of the paths or Null if the
+   * path does not exist
    */
   IValue *eval(Env &env) override;
 
@@ -28,7 +31,8 @@ class Conditional : public IStatment {
 
  private:
   /**
-   * @brief Condition on wich depends the choice of the path (every value other than NaN, 0, and Null is positive)
+   * @brief Condition on wich depends the choice of the path (every value other
+   * than NaN, 0, and Null is positive)
    */
   IStatment *condition_;
   /**
@@ -41,4 +45,4 @@ class Conditional : public IStatment {
   Block *false_case_;
 };
 
-#endif//INTERPRETER_LANGUAGE_CONDITIONAL_H_
+#endif// INTERPRETER_LANGUAGE_CONDITIONAL_H_

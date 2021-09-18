@@ -33,7 +33,8 @@ optional<pair<Number, string>> Number::Parse(const string &number) {
 
 optional<pair<Number *, string>> Number::parse(const string &number) {
   if (auto parsed_number = Parse(number))
-	return std::make_pair(new Number(parsed_number->first), parsed_number->second);
+	return std::make_pair(new Number(parsed_number->first),
+						  parsed_number->second);
   return std::nullopt;
 }
 
@@ -98,20 +99,14 @@ std::ostream &operator<<(std::ostream &os, const Operator &n) {
   os << "Operator(" << (int)n.value_ << ")";
   return os;
 }
-Interpreter::Interpreter() {
-  environment_ = Env();
-}
+Interpreter::Interpreter() { environment_ = Env(); }
 int Interpreter::parse(const string &code) {
 
   if (auto result = IStatment::parse(code)) {
 	auto evaluated = result->first->eval(environment_);
 	switch (evaluated->get_type()) {
-	  case IValue::Number:
-		std::cout << evaluated->value() << std::endl;
-		break;
-	  case IValue::Null:
-		std::cout << "Null" << std::endl;
-		break;
+	  case IValue::Number: std::cout << evaluated->value() << std::endl; break;
+	  case IValue::Null: std::cout << "Null" << std::endl; break;
 	  case IValue::Error:
 		auto *err = (ErrorStatment *)evaluated;
 		std::cout << "Error(" << err->error() << ")" << std::endl;

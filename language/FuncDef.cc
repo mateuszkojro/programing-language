@@ -1,9 +1,12 @@
 #include "FuncDef.h"
-#include "Null.h"
-#include "utils.h"
+
 #include <optional>
 
-std::optional<std::pair<FuncDef *, std::string>> FuncDef::parse(const string &text) {
+#include "Null.h"
+#include "utils.h"
+
+std::optional<std::pair<FuncDef *, std::string>> FuncDef::parse(
+	const string &text) {
   auto str = extract_whitespace(text).second;
 
   auto maybe_fn = tag(str, "fn");
@@ -49,7 +52,9 @@ std::optional<std::pair<FuncDef *, std::string>> FuncDef::parse(const string &te
 	return std::nullopt;
   }
   str = extract_func_body->second;
-  return std::make_pair(new FuncDef(extract_func_name->first, arg_names, extract_func_body->first), str);
+  return std::make_pair(new FuncDef(extract_func_name->first, arg_names,
+									extract_func_body->first),
+						str);
 }
 
 IValue *FuncDef::eval(Env &env) {
@@ -57,6 +62,4 @@ IValue *FuncDef::eval(Env &env) {
   return new class Null;
 }
 
-FuncDef::~FuncDef() {
-  delete this->body_;
-}
+FuncDef::~FuncDef() { delete this->body_; }

@@ -1,9 +1,10 @@
 #ifndef NULL_H
 #define NULL_H
 
+#include <cmath>
+
 #include "BindDef.h"
 #include "IValue.h"
-#include <cmath>
 
 /**
  * @brief Null value

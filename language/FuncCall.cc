@@ -1,9 +1,10 @@
 #include "FuncCall.h"
 
+#include <utility>
+
 #include "ErrorStatment.h"
 #include "FuncDef.h"
 #include "Null.h"
-#include <utility>
 
 IValue *FuncCall::eval(Env &env) {
   auto function = env.get_function_def(func_name_);
@@ -14,14 +15,18 @@ IValue *FuncCall::eval(Env &env) {
   auto inner_names = function.value()->get_arg_names();
 
   if (inner_names.size() != args_.size())
-	return new ErrorStatment("Number of passed arguments: " + std::to_string(args_.size()) + " is not equal to number of expected arguments: " + std::to_string(inner_names.size()));
+	return new ErrorStatment("Number of passed arguments: "
+							 + std::to_string(args_.size())
+							 + " is not equal to number of expected arguments: "
+							 + std::to_string(inner_names.size()));
 
   for (int i = 0; i < args_.size(); i++) {
 	inner_scope.store_binding(inner_names[i], args_[i]->eval(env));
   }
   return function.value()->get_func_body()->eval(inner_scope);
 }
-std::optional<std::pair<FuncCall *, std::string>> FuncCall::parse(const string &text) {
+std::optional<std::pair<FuncCall *, std::string>> FuncCall::parse(
+	const string &text) {
   auto str = extract_whitespace(text).second;
 
   auto extracted_name = extract_identifier(text);
@@ -62,9 +67,8 @@ std::optional<std::pair<FuncCall *, std::string>> FuncCall::parse(const string &
 
   return std::make_pair(new FuncCall(extracted_name->first, args), str);
 }
-FuncCall::FuncCall(std::string func_name, std::vector<IStatment *> args) : func_name_(std::move(func_name)), args_(std::move(args)) {}
+FuncCall::FuncCall(std::string func_name, std::vector<IStatment *> args)
+	: func_name_(std::move(func_name)), args_(std::move(args)) {}
 FuncCall::~FuncCall() {
-  for (auto statment : this->args_) {
-	delete statment;
-  }
+  for (auto statment : this->args_) { delete statment; }
 }

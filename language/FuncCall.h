@@ -5,15 +5,17 @@
 #ifndef INTERPRETER_LANGUAGE_FUNCCALL_H_
 #define INTERPRETER_LANGUAGE_FUNCCALL_H_
 
-#include "IStatment.h"
 #include <vector>
+
+#include "IStatment.h"
 
 /**
  * @brief
  */
 class FuncCall : public IStatment {
  public:
-  static std::optional<std::pair<FuncCall *, std::string>> parse(const std::string &text);
+  static std::optional<std::pair<FuncCall *, std::string>> parse(
+	  const std::string &text);
 
   FuncCall(std::string func_name, std::vector<IStatment *> passed_names);
 
@@ -38,4 +40,4 @@ class FuncCall : public IStatment {
   std::vector<IStatment *> args_;
 };
 
-#endif//INTERPRETER_LANGUAGE_FUNCCALL_H_
+#endif// INTERPRETER_LANGUAGE_FUNCCALL_H_

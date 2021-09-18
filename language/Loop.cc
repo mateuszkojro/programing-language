@@ -1,9 +1,12 @@
 #include "Loop.h"
-#include "Null.h"
-#include "utils.h"
+
 #include <cmath>
 
-std::optional<std::pair<IStatment *, std::string>> Loop::parse(const string &text) {
+#include "Null.h"
+#include "utils.h"
+
+std::optional<std::pair<IStatment *, std::string>> Loop::parse(
+	const string &text) {
   auto str = extract_whitespace(text).second;
 
   auto extracted_tag = tag(str, "while");
@@ -44,12 +47,15 @@ std::optional<std::pair<IStatment *, std::string>> Loop::parse(const string &tex
   return std::make_pair(new Loop(condition->first, true_block->first), str);
 }
 
-Loop::Loop(IStatment *condition, Block *block) : condition_(condition), block_(block) {}
+Loop::Loop(IStatment *condition, Block *block)
+	: condition_(condition), block_(block) {}
 
 IValue *Loop::eval(Env &env) {
   IValue *condition = condition_->eval(env);
   IValue *result_value = nullptr;
-  while (!(condition->get_type() == IValue::Type::Null) && !(compare_double(condition->value(), 0)) && !(condition->value() == NAN)) {
+  while (!(condition->get_type() == IValue::Type::Null)
+		 && !(compare_double(condition->value(), 0))
+		 && !(condition->value() == NAN)) {
 	FIXME("Memory leak");
 	result_value = block_->eval(env);
 	condition = condition_->eval(env);

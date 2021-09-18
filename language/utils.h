@@ -30,11 +30,16 @@ using Str2 = std::pair<string, string>;
 
 static std::string debug_header(const std::string &title,
 								const std::string &file,
-								const std::string &function,
-								int line) {
+								const std::string &function, int line) {
   std::ostringstream ss;
   ss << title << std::endl
 	 << "[ " << file << ":" << line << " ] " << function << std::endl;
+  return ss.str();
+}
+static std::string debug_line(const std::string &file,
+							  const std::string &function, int line) {
+  std::ostringstream ss;
+  ss << "[ " << file << ":" << line << " ] " << function << '\t';
   return ss.str();
 }
 #ifdef NDEBUG
@@ -42,20 +47,31 @@ static std::string debug_header(const std::string &title,
 #define FIXME(msg) {};
 #define DEPR(msg) {};
 #define WARN(msg) {};
+#define LOG(msg) {};
 
 #else
 
-#define FIXME(msg) std::cout << std::endl                                                                             \
-							 << debug_header("=== FIXME ===", __FILE__, __FUNCTION__, __LINE__) << (msg) << std::endl \
-							 << std::endl
+#define LOG(msg) \
+  std::cout << debug_line(__FILE__, __FUNCTION__, __LINE__) << msg << std::endl;
 
-#define DEPR(msg) std::cout << std::endl                                                                            \
-							<< debug_header("=== DEPR ===", __FILE__, __FUNCTION__, __LINE__) << (msg) << std::endl \
-							<< std::endl
+#define FIXME(msg)                                                             \
+  std::cout << std::endl                                                       \
+			<< debug_header("=== FIXME ===", __FILE__, __FUNCTION__, __LINE__) \
+			<< (msg) << std::endl                                              \
+			<< std::endl
 
-#define WARN(msg) std::cout << std::endl                                                                               \
-							<< debug_header("=== WARNING ===", __FILE__, __FUNCTION__, __LINE__) << (msg) << std::endl \
-							<< std::endl
+#define DEPR(msg)                                                             \
+  std::cout << std::endl                                                      \
+			<< debug_header("=== DEPR ===", __FILE__, __FUNCTION__, __LINE__) \
+			<< (msg) << std::endl                                             \
+			<< std::endl
+
+#define WARN(msg)                                                      \
+  std::cout << std::endl                                               \
+			<< debug_header("=== WARNING ===", __FILE__, __FUNCTION__, \
+							__LINE__)                                  \
+			<< (msg) << std::endl                                      \
+			<< std::endl
 #endif
 
 static std::string ver_string(std::string name, int a, int b, int c) {
@@ -68,11 +84,14 @@ static std::string ver_string(std::string name, int a, int b, int c) {
 #endif
 
 #ifdef __clang__
-#define COMPILER ver_string("Clang++", __clang_major__, __clang_minor__, __clang_patchlevel__)
+#undef COMPILER
+#define COMPILER \
+  ver_string("Clang++", __clang_major__, __clang_minor__, __clang_patchlevel__)
 #endif
 
 #ifdef __GNUC__
-#define COMPILER ver_string("g++", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
+#define COMPILER \
+  ver_string("g++", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
 #endif
 
 #ifndef COMPILER
@@ -81,8 +100,7 @@ static std::string ver_string(std::string name, int a, int b, int c) {
 
 static Str2 take_whle(const string &expr, bool (*func)(char z)) {
   int i = 0;
-  while (func(expr[i]))
-	i++;
+  while (func(expr[i])) i++;
   return Str2(expr.substr(0, i), expr.substr(i));
 }
 
@@ -95,7 +113,9 @@ static bool is_whitespace(char c) {
 }
 
 static Str2 extract_digits(const std::string &expr) {
-  return take_whle(expr, [](char znak) { return is_digit(znak) || znak == '.' || znak == '-'; });
+  return take_whle(expr, [](char znak) {
+	return is_digit(znak) || znak == '.' || znak == '-';
+  });
 }
 
 static Str2 extract_whitespace(const std::string &expr) {
@@ -107,7 +127,8 @@ static optional<Str2> extract_operator(const std::string &expr) {
   if (char2 == "==" || char2 == "!=" || char2 == "//")
 	return make_pair(char2, expr.substr(2));
   char op = expr[0];
-  if (op == '+' || op == '-' || op == '*' || op == '/' || op == '>' || op == '<' || op == '%')
+  if (op == '+' || op == '-' || op == '*' || op == '/' || op == '>' || op == '<'
+	  || op == '%')
 	return make_pair(expr.substr(0, 1), expr.substr(1));
   return std::nullopt;
 }

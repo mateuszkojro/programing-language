@@ -5,8 +5,9 @@
 #ifndef INTERPRETER_LANGUAGE_MATRIX_H_
 #define INTERPRETER_LANGUAGE_MATRIX_H_
 
-#include "IStatment.h"
 #include <vector>
+
+#include "IStatment.h"
 
 class Matrix : public IValue, public IStatment {
  public:
@@ -42,4 +43,4 @@ class Matrix : public IValue, public IStatment {
   std::vector<double> value_;
 };
 
-#endif//INTERPRETER_LANGUAGE_MATRIX_H_
+#endif// INTERPRETER_LANGUAGE_MATRIX_H_

@@ -3,16 +3,18 @@
 //
 
 #include "Conditional.h"
-#include "Null.h"
-#include "utils.h"
+
 #include <cmath>
 
-Conditional::Conditional(IStatment *condition, Block *true_Case, Block *false_case)
-	: condition_(condition),
-	  true_case_(true_Case),
-	  false_case_(false_case) {}
+#include "Null.h"
+#include "utils.h"
 
-std::optional<std::pair<IStatment *, std::string>> Conditional::parse(const string &text) {
+Conditional::Conditional(IStatment *condition, Block *true_Case,
+						 Block *false_case)
+	: condition_(condition), true_case_(true_Case), false_case_(false_case) {}
+
+std::optional<std::pair<IStatment *, std::string>> Conditional::parse(
+	const string &text) {
   auto str = extract_whitespace(text).second;
 
   auto extracted_tag = tag(str, "if");
@@ -52,7 +54,8 @@ std::optional<std::pair<IStatment *, std::string>> Conditional::parse(const stri
 
   auto extracted_else = tag(str, "else");
   if (!extracted_else)
-	return std::make_pair(new Conditional(condition->first, true_block->first, nullptr), str);
+	return std::make_pair(
+		new Conditional(condition->first, true_block->first, nullptr), str);
 
   str = extracted_else->second;
   str = extract_whitespace(str).second;
@@ -64,7 +67,9 @@ std::optional<std::pair<IStatment *, std::string>> Conditional::parse(const stri
   str = false_block->second;
   str = extract_whitespace(str).second;
 
-  return std::make_pair(new Conditional(condition->first, true_block->first, false_block->first), str);
+  return std::make_pair(
+	  new Conditional(condition->first, true_block->first, false_block->first),
+	  str);
 }
 
 IValue *Conditional::eval(Env &env) {

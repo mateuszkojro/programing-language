@@ -1,4 +1,5 @@
 #include "IStatment.h"
+
 #include "BindDef.h"
 #include "BindingUsage.h"
 #include "Block.h"
@@ -26,10 +27,14 @@ optional<pair<IStatment *, string>> IStatment::parse(const string &text) {
 	return parse_if;
 
   auto parse_func_call = FuncCall::parse(str);
-  if (parse_func_call) { return parse_func_call; }
+  if (parse_func_call) {
+	return parse_func_call;
+  }
 
   auto parse_func_def = FuncDef::parse(str);
-  if (parse_func_def) { return parse_func_def; }
+  if (parse_func_def) {
+	return parse_func_def;
+  }
 
   auto parse_expr = IExpr::parse(str);
   if (parse_expr) {
@@ -42,7 +47,9 @@ optional<pair<IStatment *, string>> IStatment::parse(const string &text) {
   }
 
   auto parse_block = Block::parse(str);
-  if (parse_block) { return parse_block; }
+  if (parse_block) {
+	return parse_block;
+  }
 
   return nullopt;
 }

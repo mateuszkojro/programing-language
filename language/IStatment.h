@@ -1,9 +1,10 @@
 #ifndef STATMENT_H
 #define STATMENT_H
 
-#include "IValue.h"
 #include <optional>
 #include <string>
+
+#include "IValue.h"
 
 //#include "env.h"
 
