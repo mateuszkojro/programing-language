@@ -84,6 +84,12 @@ optional<std::pair<Operator, string>> Operator::Parse(const string& expr) {
 	return std::make_pair(Operator(Type::Mod), result.value().second);
   else if (op == "//")
 	return std::make_pair(Operator(Type::IntDivide), result.value().second);
+  else if (op == "++")
+	return std::make_pair(Operator(Type::Incr), result.value().second);
+  else if (op == "--")
+	return std::make_pair(Operator(Type::Decr), result.value().second);
+  else if (op == "**")
+	return std::make_pair(Operator(Type::Pow), result.value().second);
   else
 	return nullopt;
 }
