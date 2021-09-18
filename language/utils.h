@@ -124,7 +124,8 @@ static Str2 extract_whitespace(const std::string& expr) {
 
 static optional<Str2> extract_operator(const std::string& expr) {
   auto char2 = expr.substr(0, 2);
-  if (char2 == "==" || char2 == "!=" || char2 == "//")
+  if (char2 == "==" || char2 == "!=" || char2 == "//" || char2 == "--"
+	  || char2 == "++" || char2 == "**")
 	return make_pair(char2, expr.substr(2));
   char op = expr[0];
   if (op == '+' || op == '-' || op == '*' || op == '/' || op == '>' || op == '<'
