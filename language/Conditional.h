@@ -12,10 +12,10 @@
  */
 class Conditional : public IStatment {
  public:
-  static std::optional<std::pair<IStatment *, std::string>> parse(
-	  const std::string &text);
+  static std::optional<std::pair<IStatment*, std::string>> parse(
+	  const std::string& text);
 
-  Conditional(IStatment *condition, Block *true_Case, Block *false_case);
+  Conditional(IStatment* condition, Block* true_Case, Block* false_case);
 
   /**
    * @brief Evaluates all the statments in either true or false block
@@ -25,7 +25,7 @@ class Conditional : public IStatment {
    * @return Evaluation of the last statment in one of the paths or Null if the
    * path does not exist
    */
-  IValue *eval(Env &env) override;
+  IValue* eval(Env& env) override;
 
   virtual ~Conditional();
 
@@ -34,15 +34,15 @@ class Conditional : public IStatment {
    * @brief Condition on wich depends the choice of the path (every value other
    * than NaN, 0, and Null is positive)
    */
-  IStatment *condition_;
+  IStatment* condition_;
   /**
    * @brief Block that will be evaluated if the condition is positive
    */
-  Block *true_case_;
+  Block* true_case_;
   /**
    * @brief Block that will be evaluated if the condition is not positive
    */
-  Block *false_case_;
+  Block* false_case_;
 };
 
 #endif// INTERPRETER_LANGUAGE_CONDITIONAL_H_

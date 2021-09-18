@@ -19,7 +19,7 @@ using std::unique_ptr;
  */
 class IExpr : public IStatment {
  public:
-  static optional<pair<IExpr *, string>> parse(const string &expr);
+  static optional<pair<IExpr*, string>> parse(const string& expr);
   IExpr() = default;
 
   /**
@@ -28,14 +28,14 @@ class IExpr : public IStatment {
    * @brief Evaluate expression
    * @return Value
    */
-  virtual IValue *eval() = 0;
+  virtual IValue* eval() = 0;
 
   /**
    * @brief Evaluates expression in given scope
    * @param env Current scope
    * @return Evaluated expression
    */
-  IValue *eval(Env &env) override = 0;
+  IValue* eval(Env& env) override = 0;
 
   ~IExpr() override = default;
 };
@@ -53,20 +53,20 @@ class ExprNumber : public IExpr {
    * @brief Evaluates to a number that is conatined
    * @return Contained Number
    */
-  IValue *eval() override;
+  IValue* eval() override;
 
   /**
    * @brief Evaluates to a number that is conatined
    * @param env Ignored
    * @return Contained Number
    */
-  IValue *eval(Env &env) override;
+  IValue* eval(Env& env) override;
 
-  bool operator==(const ExprNumber &other) const;
+  bool operator==(const ExprNumber& other) const;
 
   ~ExprNumber() override = default;
 
-  friend std::ostream &operator<<(std::ostream &os, const ExprNumber &);
+  friend std::ostream& operator<<(std::ostream& os, const ExprNumber&);
 
  private:
   /**
@@ -80,47 +80,47 @@ class ExprNumber : public IExpr {
  */
 class ExprOperation : public IExpr {
  public:
-  ExprOperation(IStatment *lhs, IStatment *rhs, const Operator &op);
+  ExprOperation(IStatment* lhs, IStatment* rhs, const Operator& op);
 
   /**
    * @deprecated For consistency and extendability sake other constructor should
    * be used
    */
-  ExprOperation(const Number &lhs, const Number &rhs, const Operator &op);
+  ExprOperation(const Number& lhs, const Number& rhs, const Operator& op);
 
   /**
    * @deprecated Mostly not usefull will be removed
    * @brief Evaluates to operation performed on two operands
    * @return Evaluated value
    */
-  IValue *eval() override;
+  IValue* eval() override;
 
   /**
    * @brief Evaluates to operation performed on two operands
    * @param env Scope in wich Statments will be evaluated
    * @return Evaluated value
    */
-  IValue *eval(Env &env) override;
+  IValue* eval(Env& env) override;
 
-  bool operator==(const ExprOperation &other) const;
+  bool operator==(const ExprOperation& other) const;
 
   ~ExprOperation() override {
 	delete lhs_;
 	delete rhs_;
   };
 
-  friend std::ostream &operator<<(std::ostream &os, const ExprOperation &);
+  friend std::ostream& operator<<(std::ostream& os, const ExprOperation&);
 
  private:
   /**
    * @brief Statment on the left hand side of equation
    */
-  IStatment *lhs_;
+  IStatment* lhs_;
 
   /**
    * @brief Statment on the right hand side of equation
    */
-  IStatment *rhs_;
+  IStatment* rhs_;
 
   /**
    * @brief Operator that will be aplied betwwen evaluated statments
@@ -133,20 +133,20 @@ class ExprOperation : public IExpr {
  */
 class ExprVariable : public IExpr {
  public:
-  explicit ExprVariable(BindingUsage *b);
+  explicit ExprVariable(BindingUsage* b);
 
   /**
    * @deprecated Evaluating variable has no sense without scope
    */
-  IValue *eval() override;
+  IValue* eval() override;
 
   /**
    * @brief Evaluates to value of the variable in scopr
    * @param env Curremt scope
    * @return Value of the variable
    */
-  IValue *eval(Env &env) override;
-  bool operator==(const ExprVariable &other) const;
+  IValue* eval(Env& env) override;
+  bool operator==(const ExprVariable& other) const;
 
   ~ExprVariable() override = default;
 

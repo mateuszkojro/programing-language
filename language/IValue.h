@@ -9,7 +9,12 @@ class IValue {
   /**
    * @brief Type of evaluated value
    */
-  enum Type { Number, Null, Error };
+  enum Type
+  {
+	Number,
+	Null,
+	Error
+  };
 
   explicit IValue(Type type) : type_(type) {}
 

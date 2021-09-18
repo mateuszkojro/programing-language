@@ -19,7 +19,7 @@ class Env;
  */
 class IStatment {
  public:
-  static optional<pair<IStatment *, string>> parse(const string &str);
+  static optional<pair<IStatment*, string>> parse(const string& str);
   IStatment() = default;
 
   /**
@@ -27,7 +27,7 @@ class IStatment {
    * @param env Scope to evaluate statment in
    * @return Object of the class deriving IValue
    */
-  virtual IValue *eval(Env &env) = 0;
+  virtual IValue* eval(Env& env) = 0;
 
   virtual ~IStatment() = default;
 };

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <utility>
 
-optional<pair<BindDef, string>> BindDef::parse(const string &text) {
+optional<pair<BindDef, string>> BindDef::parse(const string& text) {
 
   // Variiable declaration needs to start with "mat"
   auto tag1 = tag(text, "mat");
@@ -45,21 +45,21 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   if (!expr_parse)
 	return nullopt;
 
-  IExpr *bind_expr = expr_parse->first;
+  IExpr* bind_expr = expr_parse->first;
 
   // Create var
   return std::make_pair(BindDef(bind_name, bind_expr), expr_parse->second);
 }
 
-BindDef::BindDef(std::string name, IExpr *expr)
+BindDef::BindDef(std::string name, IExpr* expr)
 	: name_(std::move(name)), expr_(expr) {}
 
-bool BindDef::operator==(const BindDef &other) const {
+bool BindDef::operator==(const BindDef& other) const {
   FIXME("Comparing variables with just the name");
   return name_ == other.name_;
 }
 
-IValue *BindDef::eval(Env &env) {
+IValue* BindDef::eval(Env& env) {
   // We need to eval variable in current contex
   auto result = this->expr_->eval(env);
   // And assign ist value

@@ -6,7 +6,7 @@
 #include "FuncDef.h"
 #include "Null.h"
 
-IValue *FuncCall::eval(Env &env) {
+IValue* FuncCall::eval(Env& env) {
   auto function = env.get_function_def(func_name_);
   if (!function)
 	return new ErrorStatment("Function does not exit: " + func_name_);
@@ -25,8 +25,8 @@ IValue *FuncCall::eval(Env &env) {
   }
   return function.value()->get_func_body()->eval(inner_scope);
 }
-std::optional<std::pair<FuncCall *, std::string>> FuncCall::parse(
-	const string &text) {
+std::optional<std::pair<FuncCall*, std::string>> FuncCall::parse(
+	const string& text) {
   auto str = extract_whitespace(text).second;
 
   auto extracted_name = extract_identifier(text);
@@ -44,7 +44,7 @@ std::optional<std::pair<FuncCall *, std::string>> FuncCall::parse(
   str = extract_open_tag->second;
   str = extract_whitespace(str).second;
 
-  vector<IStatment *> args;
+  vector<IStatment*> args;
 
   auto parse_statment = IStatment::parse(str);
   while (parse_statment) {
@@ -67,7 +67,7 @@ std::optional<std::pair<FuncCall *, std::string>> FuncCall::parse(
 
   return std::make_pair(new FuncCall(extracted_name->first, args), str);
 }
-FuncCall::FuncCall(std::string func_name, std::vector<IStatment *> args)
+FuncCall::FuncCall(std::string func_name, std::vector<IStatment*> args)
 	: func_name_(std::move(func_name)), args_(std::move(args)) {}
 FuncCall::~FuncCall() {
   for (auto statment : this->args_) { delete statment; }

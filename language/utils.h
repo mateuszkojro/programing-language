@@ -16,28 +16,28 @@ using Str2 = std::pair<string, string>;
 
 #define msg(var) std::cerr << #var << "='" << (var) << "'" << std::endl;
 
-#define err(message, value)                         \
-  do {                                              \
-	std::cerr << (message) << (value) << std::endl; \
-	std::exit(1);                                   \
+#define err(message, value)                                                    \
+  do {                                                                         \
+	std::cerr << (message) << (value) << std::endl;                            \
+	std::exit(1);                                                              \
   } while (false)
 
-#define errmsg(message)                  \
-  do {                                   \
-	std::cerr << (message) << std::endl; \
-	std::exit(1);                        \
+#define errmsg(message)                                                        \
+  do {                                                                         \
+	std::cerr << (message) << std::endl;                                       \
+	std::exit(1);                                                              \
   } while (false)
 
-static std::string debug_header(const std::string &title,
-								const std::string &file,
-								const std::string &function, int line) {
+static std::string debug_header(const std::string& title,
+								const std::string& file,
+								const std::string& function, int line) {
   std::ostringstream ss;
   ss << title << std::endl
 	 << "[ " << file << ":" << line << " ] " << function << std::endl;
   return ss.str();
 }
-static std::string debug_line(const std::string &file,
-							  const std::string &function, int line) {
+static std::string debug_line(const std::string& file,
+							  const std::string& function, int line) {
   std::ostringstream ss;
   ss << "[ " << file << ":" << line << " ] " << function << '\t';
   return ss.str();
@@ -51,7 +51,7 @@ static std::string debug_line(const std::string &file,
 
 #else
 
-#define LOG(msg) \
+#define LOG(msg)                                                               \
   std::cout << debug_line(__FILE__, __FUNCTION__, __LINE__) << msg << std::endl;
 
 #define FIXME(msg)                                                             \
@@ -60,17 +60,17 @@ static std::string debug_line(const std::string &file,
 			<< (msg) << std::endl                                              \
 			<< std::endl
 
-#define DEPR(msg)                                                             \
-  std::cout << std::endl                                                      \
-			<< debug_header("=== DEPR ===", __FILE__, __FUNCTION__, __LINE__) \
-			<< (msg) << std::endl                                             \
+#define DEPR(msg)                                                              \
+  std::cout << std::endl                                                       \
+			<< debug_header("=== DEPR ===", __FILE__, __FUNCTION__, __LINE__)  \
+			<< (msg) << std::endl                                              \
 			<< std::endl
 
-#define WARN(msg)                                                      \
-  std::cout << std::endl                                               \
-			<< debug_header("=== WARNING ===", __FILE__, __FUNCTION__, \
-							__LINE__)                                  \
-			<< (msg) << std::endl                                      \
+#define WARN(msg)                                                              \
+  std::cout << std::endl                                                       \
+			<< debug_header("=== WARNING ===", __FILE__, __FUNCTION__,         \
+							__LINE__)                                          \
+			<< (msg) << std::endl                                              \
 			<< std::endl
 #endif
 
@@ -85,12 +85,12 @@ static std::string ver_string(std::string name, int a, int b, int c) {
 
 #ifdef __clang__
 #undef COMPILER
-#define COMPILER \
+#define COMPILER                                                               \
   ver_string("Clang++", __clang_major__, __clang_minor__, __clang_patchlevel__)
 #endif
 
 #ifdef __GNUC__
-#define COMPILER \
+#define COMPILER                                                               \
   ver_string("g++", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
 #endif
 
@@ -98,7 +98,7 @@ static std::string ver_string(std::string name, int a, int b, int c) {
 #define COMPILER ver_string("Unknown", 0, 0, 0)
 #endif
 
-static Str2 take_whle(const string &expr, bool (*func)(char z)) {
+static Str2 take_whle(const string& expr, bool (*func)(char z)) {
   int i = 0;
   while (func(expr[i])) i++;
   return Str2(expr.substr(0, i), expr.substr(i));
@@ -112,17 +112,17 @@ static bool is_whitespace(char c) {
   return std::isspace(static_cast<unsigned char>(c)) || c == '\n';
 }
 
-static Str2 extract_digits(const std::string &expr) {
+static Str2 extract_digits(const std::string& expr) {
   return take_whle(expr, [](char znak) {
 	return is_digit(znak) || znak == '.' || znak == '-';
   });
 }
 
-static Str2 extract_whitespace(const std::string &expr) {
+static Str2 extract_whitespace(const std::string& expr) {
   return take_whle(expr, is_whitespace);
 }
 
-static optional<Str2> extract_operator(const std::string &expr) {
+static optional<Str2> extract_operator(const std::string& expr) {
   auto char2 = expr.substr(0, 2);
   if (char2 == "==" || char2 == "!=" || char2 == "//")
 	return make_pair(char2, expr.substr(2));
@@ -135,7 +135,7 @@ static optional<Str2> extract_operator(const std::string &expr) {
 
 static bool is_alphanumeric(char c) { return std::isalpha(c); }
 
-static optional<Str2> tag(const string &text, const string &prefix) {
+static optional<Str2> tag(const string& text, const string& prefix) {
   if (text.rfind(prefix, 0) == 0) {// pos=0 limits the search to the prefix
 	return make_pair(prefix, text.substr(prefix.size()));
   } else {
@@ -147,7 +147,7 @@ static bool is_alphanumeric_or_digit(char c) {
   return is_alphanumeric(c) || is_digit(c);
 }
 
-static optional<Str2> extract_identifier(const string &text) {
+static optional<Str2> extract_identifier(const string& text) {
   // FIXME: First character in id can be an number using that we should not
   // allow it
   auto result = take_whle(text, is_alphanumeric_or_digit);

@@ -20,7 +20,7 @@ class ErrorStatment : public IStatment, public IValue {
    * @param env Enviroment is ignored while evaluation
    * @return Itself
    */
-  IValue *eval(Env &env) override;
+  IValue* eval(Env& env) override;
 
   /**
    * @brief Value of error is NaN

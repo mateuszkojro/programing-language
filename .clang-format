@@ -1,5 +1,5 @@
 # Generated from CLion C/C++ Code Style settings
-BasedOnStyle: Google
+BasedOnStyle: Microsoft
 AccessModifierOffset: -1
 AlignAfterOpenBracket: Align
 #AlignConsecutiveAssignments: None
@@ -7,6 +7,9 @@ AlignOperands: Align
 #SortIncludesOptions:
 #BracketAlignmentStyle: Align
 #EscapedNewlineAlignmentStyle: Right
+#AlignConsecutiveDeclarations: true
+#BinPackParameters=false
+#BinPackArguments=false
 AllowAllArgumentsOnNextLine: true
 AllowAllConstructorInitializersOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true

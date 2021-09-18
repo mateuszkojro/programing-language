@@ -11,30 +11,30 @@
  */
 class FuncDef : public IStatment {
  public:
-  static std::optional<std::pair<FuncDef *, std::string>> parse(
-	  const std::string &text);
+  static std::optional<std::pair<FuncDef*, std::string>> parse(
+	  const std::string& text);
 
   FuncDef() = delete;
-  FuncDef(std::string func_name, std::vector<std::string> args, Block *body)
+  FuncDef(std::string func_name, std::vector<std::string> args, Block* body)
 	  : name_(std::move(func_name)), body_(body), args_(std::move(args)) {}
   /**
    * @brief Stores function definition in Scope and returns Null
    * @param env Scope in wich function definition should be stored
    * @return Always null
    */
-  IValue *eval(Env &env) override;
+  IValue* eval(Env& env) override;
 
   /**
    * @brief Getter for names of the arguments used in function body
    * @return Vector of argument names
    */
-  const std::vector<std::string> &get_arg_names() { return args_; }
+  const std::vector<std::string>& get_arg_names() { return args_; }
 
   /**
    * @brief Getter for the function body block
    * @return Pointer to function body block
    */
-  Block *get_func_body() { return body_; }
+  Block* get_func_body() { return body_; }
   virtual ~FuncDef();
 
  private:
@@ -49,7 +49,7 @@ class FuncDef : public IStatment {
   /**
    * @brief Body of the function
    */
-  Block *body_;
+  Block* body_;
 };
 
 #endif// INTERPRETER_LANGUAGE_FUNCDEF_H_

@@ -11,31 +11,31 @@
 
 class Matrix : public IValue, public IStatment {
  public:
-  Matrix(int rows, int cols, const std::vector<double> &data);
+  Matrix(int rows, int cols, const std::vector<double>& data);
   //  static optional<pair<Matrix, string>> Parse(string value);
-  static optional<pair<Matrix *, string>> parse(string value);
+  static optional<pair<Matrix*, string>> parse(string value);
 
-  bool operator==(const Matrix &other) const;
-  bool operator!=(const Matrix &other) const;
-  bool operator*(const Matrix &other) const;
-  bool operator%(const Matrix &other) const;
-  bool operator>(const Matrix &other) const;
-  bool operator<(const Matrix &other) const;
-  bool operator+(const Matrix &other) const;
-  bool operator-(const Matrix &other) const;
+  bool operator==(const Matrix& other) const;
+  bool operator!=(const Matrix& other) const;
+  bool operator*(const Matrix& other) const;
+  bool operator%(const Matrix& other) const;
+  bool operator>(const Matrix& other) const;
+  bool operator<(const Matrix& other) const;
+  bool operator+(const Matrix& other) const;
+  bool operator-(const Matrix& other) const;
 
   double value() const;
 
   double get_value() const { return value(); }
 
-  IValue *eval(Env &env) {
+  IValue* eval(Env& env) {
 	//	assert(false && "Should not be called temp hack");
 	return this;
   }
 
   ~Matrix() = default;
 
-  friend std::ostream &operator<<(std::ostream &os, const Matrix &n);
+  friend std::ostream& operator<<(std::ostream& os, const Matrix& n);
 
  private:
   int rows_;

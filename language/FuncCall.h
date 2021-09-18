@@ -14,17 +14,17 @@
  */
 class FuncCall : public IStatment {
  public:
-  static std::optional<std::pair<FuncCall *, std::string>> parse(
-	  const std::string &text);
+  static std::optional<std::pair<FuncCall*, std::string>> parse(
+	  const std::string& text);
 
-  FuncCall(std::string func_name, std::vector<IStatment *> passed_names);
+  FuncCall(std::string func_name, std::vector<IStatment*> passed_names);
 
   /**
    * @brief Function will be called with the argument passed
    * @param env Outer scope
    * @return Value returned from the function
    */
-  IValue *eval(Env &env) override;
+  IValue* eval(Env& env) override;
 
   virtual ~FuncCall();
 
@@ -37,7 +37,7 @@ class FuncCall : public IStatment {
   /**
    * @brief Statment that will be evaluated and passed to a function
    */
-  std::vector<IStatment *> args_;
+  std::vector<IStatment*> args_;
 };
 
 #endif// INTERPRETER_LANGUAGE_FUNCCALL_H_

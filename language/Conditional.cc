@@ -9,12 +9,12 @@
 #include "Null.h"
 #include "utils.h"
 
-Conditional::Conditional(IStatment *condition, Block *true_Case,
-						 Block *false_case)
+Conditional::Conditional(IStatment* condition, Block* true_Case,
+						 Block* false_case)
 	: condition_(condition), true_case_(true_Case), false_case_(false_case) {}
 
-std::optional<std::pair<IStatment *, std::string>> Conditional::parse(
-	const string &text) {
+std::optional<std::pair<IStatment*, std::string>> Conditional::parse(
+	const string& text) {
   auto str = extract_whitespace(text).second;
 
   auto extracted_tag = tag(str, "if");
@@ -72,7 +72,7 @@ std::optional<std::pair<IStatment *, std::string>> Conditional::parse(
 	  str);
 }
 
-IValue *Conditional::eval(Env &env) {
+IValue* Conditional::eval(Env& env) {
   auto condition = condition_->eval(env);
 
   if (condition->get_type() == IValue::Type::Null)

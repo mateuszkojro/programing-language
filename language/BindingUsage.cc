@@ -7,7 +7,7 @@
 
 BindingUsage::BindingUsage(string name) : name_(std::move(name)) {}
 
-optional<pair<BindingUsage *, string>> BindingUsage::parse(const string &text) {
+optional<pair<BindingUsage*, string>> BindingUsage::parse(const string& text) {
   auto parse_name = extract_identifier(text);
   if (!parse_name)
 	return nullopt;
@@ -32,10 +32,10 @@ optional<pair<BindingUsage *, string>> BindingUsage::parse(const string &text) {
   return std::make_pair(
 	  new BindingUsage(parse_name->first, parseed_statment->first), str);
 }
-bool BindingUsage::operator==(const BindingUsage &other) const {
+bool BindingUsage::operator==(const BindingUsage& other) const {
   return name_ == other.name_;
 }
-IValue *BindingUsage::eval(Env &env) {
+IValue* BindingUsage::eval(Env& env) {
 
   auto bind_val = env.get_binding_value(name_);
   if (!bind_val)
@@ -49,5 +49,5 @@ IValue *BindingUsage::eval(Env &env) {
 
   return new_eval;
 }
-BindingUsage::BindingUsage(string name, IStatment *new_value)
+BindingUsage::BindingUsage(string name, IStatment* new_value)
 	: name_(std::move(name)), new_value_(new_value) {}

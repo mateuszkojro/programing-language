@@ -18,7 +18,7 @@ class Stack {
 
   Option<T> pop(int idx);
 
-  Option<T> find(const std::string &name);
+  Option<T> find(const std::string& name);
 
   bool good_index(int idx);
 
@@ -72,7 +72,7 @@ Option<T> Stack<T>::pop(int idx) {
 }
 
 template<class T>
-Option<T> Stack<T>::find(const std::string &name) {
+Option<T> Stack<T>::find(const std::string& name) {
   for (auto element : data_) {
 	if (element->name() == name) {
 	  return optional(element);

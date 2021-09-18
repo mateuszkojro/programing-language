@@ -8,39 +8,39 @@
 
 ExprNumber::ExprNumber(Number num) : value_(num) {}
 
-bool ExprNumber::operator==(const ExprNumber &other) const {
+bool ExprNumber::operator==(const ExprNumber& other) const {
   return value_ == other.value_;
 }
 
-std::ostream &operator<<(std::ostream &os, const ExprNumber &e) {
+std::ostream& operator<<(std::ostream& os, const ExprNumber& e) {
   os << "IExpr(" << e.value_ << ")";
   return os;
 }
 
-ExprOperation::ExprOperation(IStatment *lhs, IStatment *rhs, const Operator &op)
+ExprOperation::ExprOperation(IStatment* lhs, IStatment* rhs, const Operator& op)
 	: lhs_(lhs), rhs_(rhs), op_(op) {}
 
-ExprOperation::ExprOperation(const Number &lhs, const Number &rhs,
-							 const Operator &op)
+ExprOperation::ExprOperation(const Number& lhs, const Number& rhs,
+							 const Operator& op)
 	: lhs_(new Number(lhs)), rhs_(new Number(rhs)), op_(op) {}
 
-IValue *ExprNumber::eval() { return new Number(value_); }
+IValue* ExprNumber::eval() { return new Number(value_); }
 
-IValue *ExprNumber::eval(Env &env) { return this->eval(); }
+IValue* ExprNumber::eval(Env& env) { return this->eval(); }
 
-bool ExprOperation::operator==(const ExprOperation &other) const {
+bool ExprOperation::operator==(const ExprOperation& other) const {
   bool lhs_eq = this->lhs_ == other.lhs_;
   bool rhs_eq = this->rhs_ == other.rhs_;
   bool op_eq = this->op_ == other.op_;
   return lhs_eq && rhs_eq && op_eq;
 }
 
-IValue *ExprOperation::eval() {
+IValue* ExprOperation::eval() {
   Env env;
   return eval(env);
 }
 
-IValue *ExprOperation::eval(Env &env) {
+IValue* ExprOperation::eval(Env& env) {
   double result;
 
   switch (op_.type()) {
@@ -93,30 +93,30 @@ IValue *ExprOperation::eval(Env &env) {
   return new Number(result);
 }
 
-std::ostream &operator<<(std::ostream &os, const ExprOperation &e) {
+std::ostream& operator<<(std::ostream& os, const ExprOperation& e) {
   os << "IExpr(" << e.lhs_ << "," << e.rhs_ << "," << e.op_ << ")";
   return os;
 }
 
-ExprVariable::ExprVariable(BindingUsage *b) : variable_(b) {}
+ExprVariable::ExprVariable(BindingUsage* b) : variable_(b) {}
 
-IValue *ExprVariable::eval() {
+IValue* ExprVariable::eval() {
   FIXME("Using variable without environment");
   return nullptr;
 }
 
-IValue *ExprVariable::eval(Env &env) { return variable_->eval(env); }
+IValue* ExprVariable::eval(Env& env) { return variable_->eval(env); }
 
-bool ExprVariable::operator==(const ExprVariable &other) const {
+bool ExprVariable::operator==(const ExprVariable& other) const {
   return *variable_ == *other.variable_;
 }
 
-optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
+optional<pair<IExpr*, string>> IExpr::parse(const string& expr) {
 
   auto str = expr;
   // First value is and number
   if (auto parsed_number = Number::parse(str)) {
-	Number *value1 = parsed_number->first;
+	Number* value1 = parsed_number->first;
 	str = parsed_number->second;
 	str = extract_whitespace(str).second;
 	// There is operator we continue
@@ -141,7 +141,7 @@ optional<pair<IExpr *, string>> IExpr::parse(const string &expr) {
   }
   // First value is a variable
   else if (auto parsed_binding = BindingUsage::parse(str)) {
-	BindingUsage *value1 = parsed_binding->first;
+	BindingUsage* value1 = parsed_binding->first;
 	str = parsed_binding->second;
 	str = extract_whitespace(str).second;
 

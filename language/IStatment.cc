@@ -8,7 +8,7 @@
 #include "FuncDef.h"
 #include "Loop.h"
 
-optional<pair<IStatment *, string>> IStatment::parse(const string &text) {
+optional<pair<IStatment*, string>> IStatment::parse(const string& text) {
 
   auto str = extract_whitespace(text).second;
 

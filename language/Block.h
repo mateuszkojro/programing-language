@@ -33,31 +33,31 @@ using std::vector;
  */
 class Block : public IStatment {
  public:
-  static optional<pair<Block *, string>> parse(const string &text);
+  static optional<pair<Block*, string>> parse(const string& text);
 
   /**
    * @deprecated For consistency parse should be used instead
    */
-  static optional<pair<Block, string>> Parse(const string &text);
+  static optional<pair<Block, string>> Parse(const string& text);
 
-  explicit Block(const vector<IStatment *> &exprs);
+  explicit Block(const vector<IStatment*>& exprs);
   ~Block() override {
 	for (auto statment : statments_) { delete statment; }
   };
-  bool operator==(const Block &other) const;
+  bool operator==(const Block& other) const;
 
   /**
    * @brief Evaluates all statment in block in current scope
    * @param env Scope to evaluate block in
    * @return Evaluation of the last statment in the block
    */
-  IValue *eval(Env &env) override;
+  IValue* eval(Env& env) override;
 
  private:
   /**
    * @brief List of statments in the block
    */
-  vector<IStatment *> statments_;
+  vector<IStatment*> statments_;
 };
 
 #endif

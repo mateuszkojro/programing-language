@@ -5,8 +5,8 @@
 #include "Null.h"
 #include "utils.h"
 
-std::optional<std::pair<IStatment *, std::string>> Loop::parse(
-	const string &text) {
+std::optional<std::pair<IStatment*, std::string>> Loop::parse(
+	const string& text) {
   auto str = extract_whitespace(text).second;
 
   auto extracted_tag = tag(str, "while");
@@ -47,12 +47,12 @@ std::optional<std::pair<IStatment *, std::string>> Loop::parse(
   return std::make_pair(new Loop(condition->first, true_block->first), str);
 }
 
-Loop::Loop(IStatment *condition, Block *block)
+Loop::Loop(IStatment* condition, Block* block)
 	: condition_(condition), block_(block) {}
 
-IValue *Loop::eval(Env &env) {
-  IValue *condition = condition_->eval(env);
-  IValue *result_value = nullptr;
+IValue* Loop::eval(Env& env) {
+  IValue* condition = condition_->eval(env);
+  IValue* result_value = nullptr;
   while (!(condition->get_type() == IValue::Type::Null)
 		 && !(compare_double(condition->value(), 0))
 		 && !(condition->value() == NAN)) {

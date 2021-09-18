@@ -18,13 +18,13 @@ using std::string;
  */
 class BindDef : public IStatment {
  public:
-  static optional<pair<BindDef, string>> parse(const string &text);
+  static optional<pair<BindDef, string>> parse(const string& text);
 
   BindDef() = delete;
-  BindDef(string name, IExpr *expr);
+  BindDef(string name, IExpr* expr);
   ~BindDef() override = default;// FIXME We need pass using ptr
 
-  bool operator==(const BindDef &op) const;
+  bool operator==(const BindDef& op) const;
 
   /**
    * @brief Evaluation of Binding stores te value of the binding in current
@@ -32,7 +32,7 @@ class BindDef : public IStatment {
    * @param env Current scope
    * @return Evaluated IValue
    */
-  IValue *eval(Env &env) override;
+  IValue* eval(Env& env) override;
 
  private:
   /***
@@ -42,7 +42,7 @@ class BindDef : public IStatment {
   /**
    * @brief Expression that will be evaluated to get variabe value
    */
-  IExpr *expr_;
+  IExpr* expr_;
 };
 
 #endif

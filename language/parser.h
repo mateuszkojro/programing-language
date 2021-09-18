@@ -29,11 +29,11 @@ class Number : public IValue, public IStatment {
   /**
    * @deprecated lowerace parse should be used
    */
-  static optional<pair<Number, string>> Parse(const string &number);
-  static optional<pair<Number *, string>> parse(const string &number);
+  static optional<pair<Number, string>> Parse(const string& number);
+  static optional<pair<Number*, string>> parse(const string& number);
 
-  bool operator==(const Number &other) const;
-  bool operator!=(const Number &other) const;
+  bool operator==(const Number& other) const;
+  bool operator!=(const Number& other) const;
 
   /**
    * @brief Returns contained number
@@ -54,11 +54,11 @@ class Number : public IValue, public IStatment {
    * @param env Scope is ignored
    * @return Itself
    */
-  IValue *eval(Env &env) override { return this; }
+  IValue* eval(Env& env) override { return this; }
 
   ~Number() override = default;
 
-  friend std::ostream &operator<<(std::ostream &os, const Number &n);
+  friend std::ostream& operator<<(std::ostream& os, const Number& n);
 
  private:
   /**
@@ -75,7 +75,8 @@ class Operator {
   /**
    * @brief Avaliable operator types
    */
-  enum class Type {
+  enum class Type
+  {
 	Add,
 	Subtract,
 	Multiply,
@@ -91,7 +92,7 @@ class Operator {
 	Mod,
   };
 
-  static optional<pair<Operator, string>> Parse(const string &op);
+  static optional<pair<Operator, string>> Parse(const string& op);
 
   explicit Operator(Type t);
 
@@ -101,12 +102,12 @@ class Operator {
    */
   Type type();
 
-  bool operator==(const Operator &op) const;
-  bool operator==(const Operator::Type &op) const;
+  bool operator==(const Operator& op) const;
+  bool operator==(const Operator::Type& op) const;
 
   ~Operator() = default;
 
-  friend std::ostream &operator<<(std::ostream &os, const Operator &n);
+  friend std::ostream& operator<<(std::ostream& os, const Operator& n);
 
  private:
   /**
@@ -127,7 +128,7 @@ class Interpreter {
    * @param code Text to be interpreted as code
    * @return Status code
    */
-  int parse(const std::string &code);
+  int parse(const std::string& code);
 
  private:
   /**

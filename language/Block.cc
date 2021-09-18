@@ -6,7 +6,7 @@
 #include "parser.h"
 #include "utils.h"
 
-optional<pair<Block *, string>> Block::parse(const string &text) {
+optional<pair<Block*, string>> Block::parse(const string& text) {
 
   auto str = extract_whitespace(text).second;
 
@@ -18,7 +18,7 @@ optional<pair<Block *, string>> Block::parse(const string &text) {
 
   str = extract_whitespace(str).second;
 
-  vector<IStatment *> statments;
+  vector<IStatment*> statments;
 
   auto parse_statment = IStatment::parse(str);
   while (parse_statment) {
@@ -39,16 +39,16 @@ optional<pair<Block *, string>> Block::parse(const string &text) {
   return pair(new Block(statments), close_block->second);
 }
 
-optional<pair<Block, string>> Block::Parse(const string &text) {
+optional<pair<Block, string>> Block::Parse(const string& text) {
   DEPR("Derpiciated you should use parse with lowercase 'P' instead");
   if (auto result = parse(text))
 	auto [value, str] = result.value();
   return std::nullopt;
 }
 
-Block::Block(const vector<IStatment *> &statments) : statments_(statments) {}
+Block::Block(const vector<IStatment*>& statments) : statments_(statments) {}
 
-bool Block::operator==(const Block &other) const {
+bool Block::operator==(const Block& other) const {
 
   FIXME(
 	  "Comparison might not be correct because it creates its own environment");
@@ -59,8 +59,8 @@ bool Block::operator==(const Block &other) const {
 	return false;
 
   for (int i = 0; i < statments_.size(); i++) {
-	auto *n1 = (Number *)statments_[i]->eval(env);
-	auto *n2 = (Number *)other.statments_[i]->eval(env);
+	auto* n1 = (Number*)statments_[i]->eval(env);
+	auto* n2 = (Number*)other.statments_[i]->eval(env);
 
 	if (n1->get_value() != n2->get_value())
 	  return false;
@@ -69,7 +69,7 @@ bool Block::operator==(const Block &other) const {
   return true;
 }
 
-IValue *Block::eval(Env &outer_scope) {
+IValue* Block::eval(Env& outer_scope) {
 
   Env inner_scope(outer_scope);
 
@@ -79,7 +79,7 @@ IValue *Block::eval(Env &outer_scope) {
 	return new Null;
 
   // We need to evaluate all the statmemts in block to get the last value
-  for (const auto &s : statments_) { s->eval(inner_scope); }
+  for (const auto& s : statments_) { s->eval(inner_scope); }
 
   // Copy changes to variables from the outer scope
   for (auto [key, val] : outer_scope.get_bindings()) {

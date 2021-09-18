@@ -5,8 +5,9 @@
 #include "Null.h"
 #include "utils.h"
 
-std::optional<std::pair<FuncDef *, std::string>> FuncDef::parse(
-	const string &text) {
+std::optional<std::pair<FuncDef*, std::string>> FuncDef::parse(
+	const string& text) {
+
   auto str = extract_whitespace(text).second;
 
   auto maybe_fn = tag(str, "fn");
@@ -57,7 +58,7 @@ std::optional<std::pair<FuncDef *, std::string>> FuncDef::parse(
 						str);
 }
 
-IValue *FuncDef::eval(Env &env) {
+IValue* FuncDef::eval(Env& env) {
   env.store_function(name_, this);
   return new class Null;
 }

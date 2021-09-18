@@ -22,14 +22,14 @@ using std::string;
  */
 class BindingUsage : public IStatment {
  public:
-  static optional<pair<BindingUsage *, string>> parse(const string &text);
+  static optional<pair<BindingUsage*, string>> parse(const string& text);
 
   explicit BindingUsage(string name);
-  BindingUsage(string name, IStatment *new_value);
+  BindingUsage(string name, IStatment* new_value);
 
   ~BindingUsage() override { delete new_value_; };
 
-  bool operator==(const BindingUsage &other) const;
+  bool operator==(const BindingUsage& other) const;
 
   /**
    * @brief Evaluates variable in scope and returns updated value of the
@@ -37,7 +37,7 @@ class BindingUsage : public IStatment {
    * @param env Current scope
    * @return Evaluation in current scope
    */
-  IValue *eval(Env &env) override;
+  IValue* eval(Env& env) override;
 
  private:
   /**
@@ -47,7 +47,7 @@ class BindingUsage : public IStatment {
   /**
    * @brief If not null evaluated will be assigned to variable in scope
    */
-  IStatment *new_value_ = nullptr;
+  IStatment* new_value_ = nullptr;
 };
 
 #endif
