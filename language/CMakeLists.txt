@@ -4,15 +4,26 @@ project(language VERSION 0.1.0)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   message("Using Clang additional compiler options enabled")
   #  SET(CMAKE_CXX_FLAGS  ${CMAKE_CXX_FLAGS} "-g -fsanitize=null,undefined,address -Wall -Wpedantic -std=c++17 -Wno-unused -Wno-c99-extensions")
+  set(FORCE_COLORED_OUTPUT true)
   # set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=*")
   # set(CMAKE_CXX_CLANG_TIDY "clang-tidy; --use-color -checks=*")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   # using GCC
+  set(FORCE_COLORED_OUTPUT true)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   # using Intel C++
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
 endif()
+
+option (FORCE_COLORED_OUTPUT "Always produce ANSI-colored output (GNU/Clang only)." FALSE)
+if (${FORCE_COLORED_OUTPUT})
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+       add_compile_options (-fdiagnostics-color=always)
+    elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+       add_compile_options (-fcolor-diagnostics)
+    endif ()  
+endif ()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
