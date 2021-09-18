@@ -22,7 +22,7 @@ class BindDef : public IStatment {
 
   BindDef() = delete;
   BindDef(string name, IExpr *expr);
-  ~BindDef() override = default;
+  ~BindDef() override = default; // FIXME We need pass using ptr
 
   bool operator==(const BindDef &op) const;
 

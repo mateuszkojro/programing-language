@@ -1,11 +1,13 @@
 #include "BindDef.h"
+#include <utility>
+#include <cmath>
 
 optional<pair<BindDef, string>> BindDef::parse(const string &text) {
 
   // Variiable declaration needs to start with "mat"
   auto tag1 = tag(text, "mat");
   if (!tag1)
-	return nullopt;
+	  return nullopt;
 
   auto str = tag1->second;
 
@@ -13,13 +15,13 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   auto whitespace1 = extract_whitespace(str);
   // There needs to be a space between "mat" and var name
   if (whitespace1.first.empty())
-	return nullopt;
+	  return nullopt;
   str = whitespace1.second;
 
   // Extract the name of the variable
   auto name_parse = extract_identifier(str);
   if (!name_parse)
-	return nullopt;
+	  return nullopt;
 
   str = name_parse.value().second;
 
@@ -31,7 +33,7 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   // Now there needs to be a "="
   auto tag2 = tag(str, "=");
   if (!tag2)
-	return nullopt;
+	  return std::make_pair(BindDef(bind_name,new ExprNumber(Number(NAN))), str);
 
   str = tag2->second;
 
@@ -40,7 +42,7 @@ optional<pair<BindDef, string>> BindDef::parse(const string &text) {
   // Parse an expresion that should be assigned to var
   auto expr_parse = IExpr::parse(str);
   if (!expr_parse)
-	return nullopt;
+	  return nullopt;
 
   IExpr *bind_expr = expr_parse->first;
 
