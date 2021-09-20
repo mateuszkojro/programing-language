@@ -43,6 +43,8 @@ make -C build/
 
 ### 3. Running
 
+#### Interactive mode
+
 On Windows
 ```bash
 ./build/interpreter.exe
@@ -51,8 +53,37 @@ and on Linux:
 ```bash
 ./build/interpreter
 ```
+Program runtime can be extended using arbitrary script:
+
+On Windows
+```bash
+./build/interpreter.exe -l <path-dto-script> 
+
+```
+and on Linux:
+```bash
+./build/interpreter -l <path-to-script>
+```
+
+
+
+#### Running a script
+
+On Windows
+```bash
+./build/interpreter.exe <script-path>
+```
+and on Linux:
+```bash
+./build/interpreter <script-path>
+```
+
 
 ### 4. Testing
+
+> WARNING!
+> Tests are not compiled when using code blocks make file
+
 Tests are written using [Catch2]() testing framework and can be run after compiling by typing: 
 
 On linux:
@@ -74,6 +105,8 @@ Compiled with MSVC 1929.0.0 on Sep 17 2021 23:29:44
 ```
 
 ## Currently supported language features:
+
+All expression can be run inside interactive shell
 
 ###  Not nested math expressions
 For example:
@@ -106,6 +139,10 @@ You can bind variable using `mat` keyword:
 ```python
 => mat x = 12
 12
+=> mat x= null
+null
+=>mat x
+nan
 ```
 as you can see variable assigments return value that is currently being assigned
 
@@ -247,6 +284,18 @@ then while calling arguments need to be added that will be passed to function
 => add(2 12)
 14
 ```
+
+### Loading scripts:
+
+Additional scripts can be loaded into runtime using `@load <path-without-spaces>` call
+
+For example to load `stdlib.m`:
+```python
+=> @load stdlib.m
+=> PI
+3.1415926
+```
+Where PI is defined inside `stdlib.m`
 
 ## Planned features
 
