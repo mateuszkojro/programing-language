@@ -9,9 +9,13 @@
 /**
  * @brief Null value
  */
-class Null : public IValue {
+class Null : public IStatment, public IValue {
  public:
+  static std::optional<std::pair<Null*, std::string>> parse(
+	  const std::string& text);
+
   Null() : IValue(IValue::Null) {}
+  Null(const Null& other) : IValue(Type::Null) {}
 
   /**
    * @brief Always evaluated to NaN
@@ -21,6 +25,8 @@ class Null : public IValue {
 	FIXME("Value of Null is implicitly NaN");
 	return NAN;
   }
+
+  IValue* eval(Env& env) override { return new Null; }
   Null* clone() override { return new Null(*this); }
 
   ~Null() override = default;
