@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="programming-language" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/programming-language" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/programming-language" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="language/BindDef.cc" />
+		<Unit filename="language/BindDef.h" />
+		<Unit filename="language/BindingUsage.cc" />
+		<Unit filename="language/BindingUsage.h" />
+		<Unit filename="language/Block.cc" />
+		<Unit filename="language/Block.h" />
+		<Unit filename="language/Conditional.cc" />
+		<Unit filename="language/Conditional.h" />
+		<Unit filename="language/ErrorStatment.cc" />
+		<Unit filename="language/ErrorStatment.h" />
+		<Unit filename="language/Expr.cc" />
+		<Unit filename="language/Expr.h" />
+		<Unit filename="language/FuncCall.cc" />
+		<Unit filename="language/FuncCall.h" />
+		<Unit filename="language/FuncDef.cc" />
+		<Unit filename="language/FuncDef.h" />
+		<Unit filename="language/IStatment.cc" />
+		<Unit filename="language/IStatment.h" />
+		<Unit filename="language/IValue.h" />
+		<Unit filename="language/Loop.cc" />
+		<Unit filename="language/Loop.h" />
+		<Unit filename="language/Matrix.cc" />
+		<Unit filename="language/Matrix.h" />
+		<Unit filename="language/Null.cc" />
+		<Unit filename="language/Null.h" />
+		<Unit filename="language/Stack.h" />
+		<Unit filename="language/env.cc" />
+		<Unit filename="language/env.h" />
+		<Unit filename="language/parser.cc" />
+		<Unit filename="language/parser.h" />
+		<Unit filename="language/utils.h" />
+		<Unit filename="interpreter.cc" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
