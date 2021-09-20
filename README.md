@@ -4,6 +4,8 @@ This programing language has been created for the Object oriented programing cla
 
 ## Compiling and development
 
+This project is written in ISO C++ 17 compliant C++.
+
 ### Binaries
 
 To download compiled binary files for windows and linux go to:
@@ -289,17 +291,18 @@ then while calling arguments need to be added that will be passed to function
 
 Additional scripts can be loaded into runtime using `@load <path-without-spaces>` call
 
-For example to load `stdlib.m`:
+For example to load `stdlib.script`:
 ```python
-=> @load stdlib.m
+=> @load stdlib.script
 => PI
 3.1415926
 ```
-Where PI is defined inside `stdlib.m`
+Where PI is defined inside `stdlib.script`
 
 ## Planned features
 
+- Refernece counting garbage collector
 - Builtin funtcions support - support for functions defined in C++
 - Changing main datatype from `Scalar` to `Matrix`
-- Loading files not interactivly
 - Oreder of operations in math equations
+- Bug fixes

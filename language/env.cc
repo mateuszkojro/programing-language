@@ -31,9 +31,9 @@ optional<FuncDef*> Env::get_function_def(const string& name) {
  * @details
  * Here is the place where language memory management needs to be considered
  * there are basically two options:
+ *
  * - Leave the memory management to the user
  * - Implement some kind of garbage collection
- *
  * Given the fact that the language needs a runtime to execute scripts
  * I decided on implementing the garbage collector using method of reference
  * counting. Unfortunately time for finishing this assigment run out so for now
