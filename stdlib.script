@@ -17,6 +17,17 @@ fn pow(x n) {
 	res
 };
 
+fn recursivepow(x n) {
+	mat res=x
+	mat intedn = int(n)
+	mat power=n-1
+	while(power) {
+		res = res*x
+		power = power-1
+	}
+	res
+};
+
 fn fibo(n) {
 	mat cond = n < 2
 	if (cond) { 
