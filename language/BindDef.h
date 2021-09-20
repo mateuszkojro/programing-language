@@ -22,6 +22,7 @@ class BindDef : public IStatment {
 
   BindDef() = delete;
   BindDef(string name, IExpr* expr);
+  BindDef(string name, IStatment* expr);
   ~BindDef() override = default;// FIXME We need pass using ptr
 
   bool operator==(const BindDef& op) const;
@@ -44,6 +45,7 @@ class BindDef : public IStatment {
    * @brief Expression that will be evaluated to get variabe value
    */
   IExpr* expr_;
+  IStatment* expr_;
 };
 
 #endif

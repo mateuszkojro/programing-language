@@ -41,17 +41,17 @@ optional<pair<BindDef, string>> BindDef::parse(const string& text) {
   str = extract_whitespace(str).second;
 
   // Parse an expresion that should be assigned to var
-  auto expr_parse = IExpr::parse(str);
+  auto expr_parse = IStatment::parse(str);
   if (!expr_parse)
 	return nullopt;
 
-  IExpr* bind_expr = expr_parse->first;
+  IStatment* bind_expr = expr_parse->first;
 
   // Create var
   return std::make_pair(BindDef(bind_name, bind_expr), expr_parse->second);
 }
 
-BindDef::BindDef(std::string name, IExpr* expr)
+BindDef::BindDef(std::string name, IStatment* expr)
 	: name_(std::move(name)), expr_(expr) {}
 
 bool BindDef::operator==(const BindDef& other) const {
