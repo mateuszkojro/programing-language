@@ -15,6 +15,8 @@ class ErrorStatment : public IStatment, public IValue {
   explicit ErrorStatment(std::string error)
 	  : IValue(IValue::Type::Error), error_message_(std::move(error)) {}
 
+  ErrorStatment(const ErrorStatment& other)
+	  : IValue(IValue::Type::Error), error_message_(other.error_message_) {}
   /**
    * @brief Evaluation of the Error returns itself
    * @param env Enviroment is ignored while evaluation

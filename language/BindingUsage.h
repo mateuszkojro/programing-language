@@ -26,7 +26,9 @@ class BindingUsage : public IStatment {
 
   explicit BindingUsage(string name);
   BindingUsage(string name, IStatment* new_value);
-
+  BindingUsage(const BindingUsage& other)
+	  : name_(other.name_),
+		new_value_(other.new_value_ ? other.new_value_->clone() : nullptr) {}
   ~BindingUsage() override { delete new_value_; };
 
   bool operator==(const BindingUsage& other) const;

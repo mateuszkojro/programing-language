@@ -79,11 +79,12 @@ IValue* Block::eval(Env& outer_scope) {
 	return new Null;
 
   // We need to evaluate all the statmemts in block to get the last value
-  for (const auto& s : statments_) { s->eval(inner_scope); }
+  for (const auto& s : statments_) { s->eval(inner_scope); }// FIXME mem leak
 
   // Copy changes to variables from the outer scope
   for (auto [key, val] : outer_scope.get_bindings()) {
-	outer_scope.store_binding(key, inner_scope.get_binding_value(key).value());
+	outer_scope.store_binding(
+		key, inner_scope.get_binding_value(key).value()->clone());
   }
 
   // That could be possibly null

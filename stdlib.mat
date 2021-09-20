@@ -1,0 +1,32 @@
+mat PI=3.1415926;
+mat E=2.71828182846;
+
+fn int(x){
+	x = x//1
+	x
+};
+
+fn pow(x n) {
+	mat res=x
+	mat intedn = int(n)
+	mat power=n-1
+	while(power) {
+		res = res*x
+		power = power-1
+	}
+	res
+};
+
+fn fibo(n) {
+	mat cond = n < 2
+	if (cond) { 
+		mat newn = n -1
+		mat f1 = fibo(newn)
+		mat f2 = fibo(newn)
+		mat res = f1 + f2
+		res
+	}
+	else {
+		1
+	}
+};

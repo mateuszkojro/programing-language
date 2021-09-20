@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "IStatment.h"
+#include <algorithm>
 
 using std::optional;
 using std::pair;
@@ -41,6 +42,14 @@ class Block : public IStatment {
   static optional<pair<Block, string>> Parse(const string& text);
 
   explicit Block(const vector<IStatment*>& exprs);
+
+  Block(const Block& other) {
+	statments_.reserve(other.statments_.size());
+	for (auto statment : other.statments_) {
+	  statments_.push_back(statment->clone());
+	}
+  }
+
   ~Block() override {
 	for (auto statment : statments_) { delete statment; }
   };

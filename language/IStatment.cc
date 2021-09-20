@@ -7,10 +7,16 @@
 #include "FuncCall.h"
 #include "FuncDef.h"
 #include "Loop.h"
+#include "Null.h"
 
 optional<pair<IStatment*, string>> IStatment::parse(const string& text) {
 
   auto str = extract_whitespace(text).second;
+
+  auto parse_null = Null::parse(str);
+  if (parse_null) {
+	return parse_null;
+  }
 
   auto parse_binding = BindDef::parse(str);
   if (parse_binding) {

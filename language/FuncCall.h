@@ -19,6 +19,11 @@ class FuncCall : public IStatment {
 
   FuncCall(std::string func_name, std::vector<IStatment*> passed_names);
 
+  FuncCall(const FuncCall& other) : func_name_(other.func_name_) {
+	args_.reserve(other.args_.size());
+	for (auto statment : other.args_) { args_.push_back(statment->clone()); }
+  }
+
   /**
    * @brief Function will be called with the argument passed
    * @param env Outer scope

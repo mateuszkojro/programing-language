@@ -36,6 +36,7 @@ class IExpr : public IStatment {
    * @return Evaluated expression
    */
   IValue* eval(Env& env) override = 0;
+  IExpr* clone() override = 0;
 
   ~IExpr() override = default;
 };

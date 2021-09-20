@@ -13,7 +13,9 @@ class Loop : public IStatment {
 	  const std::string& text);
 
   Loop(IStatment* condition, Block* bloc);
-
+  Loop(const Loop& other)
+	  : block_(other.block_->clone()), condition_(other.condition_->clone()) {}
+  ~Loop() override;
   /**
    * @brief Evaluates all statments in block as long as condition is true
    * @param env Scope in wich the loop should be evaluated
@@ -33,9 +35,6 @@ class Loop : public IStatment {
    * @brief Block of statments that will be executed while Condition is true
    */
   Block* block_;
-
- public:
-  virtual ~Loop();
 };
 
 #endif// INTERPRETER_LANGUAGE_LOOP_H_

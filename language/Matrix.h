@@ -30,7 +30,8 @@ class Matrix : public IValue, public IStatment {
 
   IValue* eval(Env& env) {
 	//	assert(false && "Should not be called temp hack");
-	return this;
+//	return new Matrix(*this);
+	return nullptr;
   }
 
   ~Matrix() = default;

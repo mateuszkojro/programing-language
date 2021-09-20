@@ -17,6 +17,10 @@ class FuncDef : public IStatment {
   FuncDef() = delete;
   FuncDef(std::string func_name, std::vector<std::string> args, Block* body)
 	  : name_(std::move(func_name)), body_(body), args_(std::move(args)) {}
+
+  FuncDef(const FuncDef& other)
+	  : name_(other.name_), args_(other.args_), body_(other.body_->clone()) {}
+
   /**
    * @brief Stores function definition in Scope and returns Null
    * @param env Scope in wich function definition should be stored

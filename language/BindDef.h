@@ -22,6 +22,8 @@ class BindDef : public IStatment {
 
   BindDef() = delete;
   BindDef(string name, IStatment* expr);
+  BindDef(const BindDef& other)
+	  : name_(other.name_), expr_(other.expr_->clone()) {}
   ~BindDef() override = default;// FIXME We need pass using ptr
 
   bool operator==(const BindDef& op) const;

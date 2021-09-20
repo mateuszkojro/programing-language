@@ -23,7 +23,7 @@ IValue* FuncCall::eval(Env& env) {
   for (int i = 0; i < args_.size(); i++) {
 	inner_scope.store_binding(inner_names[i], args_[i]->eval(env));
   }
-  return function.value()->get_func_body()->eval(inner_scope);
+  return function.value()->get_func_body()->eval(inner_scope)->clone();
 }
 std::optional<std::pair<FuncCall*, std::string>> FuncCall::parse(
 	const string& text) {

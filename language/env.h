@@ -21,7 +21,6 @@ using std::string;
 class Env {
  public:
   Env() = default;
-
   Env(const Env& other);
 
   /**

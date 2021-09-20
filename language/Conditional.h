@@ -16,14 +16,18 @@ class Conditional : public IStatment {
 	  const std::string& text);
 
   Conditional(IStatment* condition, Block* true_Case, Block* false_case);
+  Conditional(const Conditional& other)
+	  : condition_(other.condition_->clone()),
+		true_case_(other.true_case_->clone()),
+		false_case_(other.false_case_->clone()) {}
 
   /**
    * @brief Evaluates all the statments in either true or false block
-   * depending on evaluation of condition (all in passed scope) and returns the
-   * last statment in corresponding block
+   * depending on evaluation of condition (all in passed scope) and
+   * returns the last statment in corresponding block
    * @param env Scope
-   * @return Evaluation of the last statment in one of the paths or Null if the
-   * path does not exist
+   * @return Evaluation of the last statment in one of the paths or
+   * Null if the path does not exist
    */
   IValue* eval(Env& env) override;
   Conditional* clone() override;

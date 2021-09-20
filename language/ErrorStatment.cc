@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-IValue* ErrorStatment::eval(Env& env) { return this; }
+IValue* ErrorStatment::eval(Env& env) { return new ErrorStatment(*this); }
 
 double ErrorStatment::value() const {
   FIXME("Error is implicitly converted to NaN here");
