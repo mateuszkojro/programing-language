@@ -44,7 +44,7 @@ add_library(parser
         Conditional.cc Conditional.h
         Loop.cc Loop.h
         Matrix.cc Matrix.h
-        ErrorStatment.cc ErrorStatment.h)
+        ErrorStatment.cc ErrorStatment.h Null.cc)
 # target_compile_features(parser PRIVATE cxx_std_17)
 
 add_subdirectory(lib/Catch2)
