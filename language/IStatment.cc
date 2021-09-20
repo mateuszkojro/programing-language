@@ -14,8 +14,7 @@ optional<pair<IStatment*, string>> IStatment::parse(const string& text) {
 
   auto parse_binding = BindDef::parse(str);
   if (parse_binding) {
-	auto result = parse_binding.value();
-	return pair(new BindDef(result.first), result.second);
+	return parse_binding;
   }
 
   auto parse_loop = Loop::parse(str);

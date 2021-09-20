@@ -114,12 +114,14 @@ int Interpreter::parse(const string& code) {
 	auto evaluated = result->first->eval(environment_);
 	switch (evaluated->get_type()) {
 	  case IValue::Number: std::cout << evaluated->value() << std::endl; break;
-	  case IValue::Null: std::cout << "Null" << std::endl; break;
+	  case IValue::Null: std::cout << "null" << std::endl; break;
 	  case IValue::Error:
 		auto* err = (ErrorStatment*)evaluated;
 		std::cout << "Error(" << err->error() << ")" << std::endl;
 		break;
 	}
+  } else {
+	std::cout << "Error(Bad syntax)" << std::endl;
   }
 
   return 0;

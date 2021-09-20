@@ -18,10 +18,9 @@ using std::string;
  */
 class BindDef : public IStatment {
  public:
-  static optional<pair<BindDef, string>> parse(const string& text);
+  static optional<pair<BindDef*, string>> parse(const string& text);
 
   BindDef() = delete;
-  BindDef(string name, IExpr* expr);
   BindDef(string name, IStatment* expr);
   ~BindDef() override = default;// FIXME We need pass using ptr
 
@@ -44,7 +43,6 @@ class BindDef : public IStatment {
   /**
    * @brief Expression that will be evaluated to get variabe value
    */
-  IExpr* expr_;
   IStatment* expr_;
 };
 

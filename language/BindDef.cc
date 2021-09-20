@@ -3,7 +3,7 @@
 #include <cmath>
 #include <utility>
 
-optional<pair<BindDef, string>> BindDef::parse(const string& text) {
+optional<pair<BindDef*, string>> BindDef::parse(const string& text) {
 
   // Variiable declaration needs to start with "mat"
   auto tag1 = tag(text, "mat");
@@ -34,7 +34,7 @@ optional<pair<BindDef, string>> BindDef::parse(const string& text) {
   // Now there needs to be a "="
   auto tag2 = tag(str, "=");
   if (!tag2)
-	return std::make_pair(BindDef(bind_name, new ExprNumber(Number(NAN))), str);
+	return std::make_pair(new BindDef(bind_name, new ExprNumber(Number(NAN))), str);
 
   str = tag2->second;
 
@@ -48,7 +48,7 @@ optional<pair<BindDef, string>> BindDef::parse(const string& text) {
   IStatment* bind_expr = expr_parse->first;
 
   // Create var
-  return std::make_pair(BindDef(bind_name, bind_expr), expr_parse->second);
+  return std::make_pair(new BindDef(bind_name, bind_expr), expr_parse->second);
 }
 
 BindDef::BindDef(std::string name, IStatment* expr)
