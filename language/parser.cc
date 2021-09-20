@@ -108,20 +108,41 @@ std::ostream& operator<<(std::ostream& os, const Operator& n) {
   return os;
 }
 Interpreter::Interpreter() { environment_ = Env(); }
-int Interpreter::parse(const string& code) {
 
-  if (auto result = IStatment::parse(code)) {
-	auto evaluated = result->first->eval(environment_);
-	switch (evaluated->get_type()) {
-	  case IValue::Number: std::cout << evaluated->value() << std::endl; break;
-	  case IValue::Null: std::cout << "null" << std::endl; break;
-	  case IValue::Error:
-		auto* err = (ErrorStatment*)evaluated;
-		std::cout << "Error(" << err->error() << ")" << std::endl;
-		break;
+int Interpreter::parse(const string& input, bool interactive) {
+  auto code = input;
+  if (interactive)
+	code.append(";");
+  for (auto& statment : tokenize(code)) {
+	if (auto result = IStatment::parse(statment)) {
+	  auto evaluated = result->first->eval(environment_);
+	  switch (evaluated->get_type()) {
+		case IValue::Number:
+		  if (interactive) {
+			std::cout << evaluated->value() << std::endl;
+		  }
+		  break;
+		case IValue::Null:
+		  if (interactive) {
+			std::cout << "null" << std::endl;
+		  }
+		  break;
+		case IValue::Error: {
+		  auto* err = (ErrorStatment*)evaluated;
+		  std::cout << "Error(" << err->error() << ")" << std::endl;
+		  break;
+		}
+		default: {
+		  std::cout << "Error("
+					<< "Internal error wrong value type"
+					<< ")" << std::endl;
+		}
+	  }
+	  // If after parsing str is not empty or full of whitespce somethin went
+	  // wrong
+	} else {
+	  std::cout << "Error(Bad syntax)" << std::endl;
 	}
-  } else {
-	std::cout << "Error(Bad syntax)" << std::endl;
   }
 
   return 0;

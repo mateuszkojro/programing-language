@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <utility>
+#include <vector>
 
 using std::nullopt;
 using std::optional;
@@ -109,7 +110,7 @@ static bool is_digit(char c) {
 }
 
 static bool is_whitespace(char c) {
-  return std::isspace(static_cast<unsigned char>(c)) || c == '\n';
+  return std::isspace(static_cast<unsigned char>(c)) || c == '\n' || c == '\r';
 }
 
 static Str2 extract_digits(const std::string& expr) {
@@ -166,5 +167,23 @@ static bool compare_double(double a, double b) {
   int N = 10;
   return std::abs(a - b) < std::numeric_limits<double>::epsilon() * N;
 };
+
+static std::vector<std::string> tokenize(const string& s,
+										 const string& del = ";") {
+  std::vector<std::string> statments;
+  size_t start = 0;
+  size_t end = s.find(del);
+  while (end != -1) {
+	auto token = s.substr(start, end - start);
+	if (!token.empty())
+	  statments.push_back(token);
+	start = end + del.size();
+	end = s.find(del, start);
+  }
+  auto token = s.substr(start, end - start);
+  if (!token.empty())
+	statments.push_back(token);
+  return statments;
+}
 
 #endif

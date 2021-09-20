@@ -26,6 +26,8 @@ using std::string;
 class Number : public IValue, public IStatment {
  public:
   explicit Number(double number);
+  Number(const Number& other)
+	  : IValue(IValue::Type::Number), value_(other.value_){};
   /**
    * @deprecated lowerace parse should be used
    */
@@ -54,7 +56,7 @@ class Number : public IValue, public IStatment {
    * @param env Scope is ignored
    * @return Itself
    */
-  IValue* eval(Env& env) override { return this; }
+  IValue* eval(Env& env) override { return new Number(*this); }
 
   Number* clone() override;
 
@@ -97,6 +99,7 @@ class Operator {
   static optional<pair<Operator, string>> Parse(const string& op);
 
   explicit Operator(Type t);
+  Operator(const Operator& other) = default;
 
   /**
    * @brief Getter for the operator type
@@ -130,7 +133,7 @@ class Interpreter {
    * @param code Text to be interpreted as code
    * @return Status code
    */
-  int parse(const std::string& code);
+  int parse(const std::string& code, bool interactive=false);
 
  private:
   /**
